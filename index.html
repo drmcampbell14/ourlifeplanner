@@ -1,0 +1,1702 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Our Life</title>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<script src="https://apis.google.com/js/api.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&family=Roboto+Mono:wght@400;500&display=swap');
+:root{--navy:#1a2332;--navy-mid:#243044;--navy-light:#2e3d56;--gold:#c9a84c;--gold-light:#e8c878;--sage:#7a9e7e;--rose:#c4756b;--sky:#5b8fa8;--text:#e8e4dc;--text-dim:#8a9ab0;--card:#1e2d42;--border:rgba(201,168,76,0.15);--p1:#c9a84c;--p2:#c4756b;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Inter',sans-serif;background:var(--navy);color:var(--text);min-height:100vh;overflow-x:hidden;}
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.78);z-index:2000;align-items:center;justify-content:center;padding:16px;}
+.modal-overlay.open{display:flex;}
+.modal{background:var(--navy-mid);border:1px solid var(--border);border-radius:16px;padding:26px;width:100%;max-width:460px;max-height:92vh;overflow-y:auto;}
+.modal h2{font-family:'Playfair Display',serif;color:var(--gold);font-size:19px;margin-bottom:3px;}
+.modal p{font-size:11px;color:var(--text-dim);margin-bottom:16px;}
+.modal-close{float:right;background:none;border:none;color:var(--text-dim);font-size:17px;cursor:pointer;}
+.form-group{margin-bottom:13px;}
+.form-label{font-size:10px;text-transform:uppercase;letter-spacing:.07em;color:var(--text-dim);margin-bottom:4px;display:block;}
+header{background:linear-gradient(135deg,var(--navy),var(--navy-mid));border-bottom:1px solid var(--border);padding:13px 18px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+.header-left h1{font-family:'Playfair Display',serif;font-size:18px;color:var(--gold);}
+.header-left p{font-size:10px;color:var(--text-dim);letter-spacing:.04em;margin-top:1px;}
+.header-right{display:flex;gap:6px;align-items:center;}
+.avatar{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;cursor:pointer;transition:transform .2s;}
+.avatar:hover{transform:scale(1.1);}
+.avatar.p1{background:var(--p1);color:var(--navy);}
+.avatar.p2{background:var(--p2);color:#fff;}
+.date-pill{font-family:'Roboto Mono',monospace;font-size:10px;color:var(--text-dim);background:var(--navy-light);padding:4px 9px;border-radius:18px;border:1px solid var(--border);}
+.icon-btn{background:var(--navy-light);border:1px solid var(--border);color:var(--text-dim);width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;transition:all .2s;}
+.icon-btn:hover{color:var(--gold);border-color:var(--gold);}
+.person-bar{background:var(--navy-mid);border-bottom:1px solid var(--border);padding:6px 18px;display:flex;gap:6px;align-items:center;}
+.person-btn{padding:4px 13px;border-radius:18px;border:1px solid var(--border);background:transparent;color:var(--text-dim);font-size:11px;font-weight:500;cursor:pointer;transition:all .2s;font-family:'Inter',sans-serif;}
+.person-btn.active-p1{background:var(--p1);color:var(--navy);border-color:var(--p1);}
+.person-btn.active-p2{background:var(--p2);color:#fff;border-color:var(--p2);}
+.person-bar span{font-size:10px;color:var(--text-dim);}
+nav{display:flex;gap:1px;padding:11px 18px 0;border-bottom:1px solid var(--border);overflow-x:auto;scrollbar-width:none;background:var(--navy);}
+nav::-webkit-scrollbar{display:none;}
+.tab{padding:7px 12px 9px;font-size:10px;font-weight:500;letter-spacing:.05em;text-transform:uppercase;color:var(--text-dim);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:all .2s;background:none;border-left:none;border-right:none;border-top:none;font-family:'Inter',sans-serif;}
+.tab:hover{color:var(--text);}
+.tab.active{color:var(--gold);border-bottom-color:var(--gold);}
+main{padding:18px;max-width:1400px;margin:0 auto;}
+.section{display:none;}
+.section.active{display:block;}
+.grid{display:grid;gap:15px;}
+.g2{grid-template-columns:repeat(auto-fit,minmax(280px,1fr));}
+.g3{grid-template-columns:repeat(auto-fit,minmax(200px,1fr));}
+.g4{grid-template-columns:repeat(auto-fit,minmax(145px,1fr));}
+.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px;}
+.card-title{font-family:'Playfair Display',serif;font-size:15px;color:var(--gold);margin-bottom:2px;}
+.card-title-input{font-family:'Playfair Display',serif;font-size:15px;color:var(--gold);background:transparent;border:none;border-bottom:1px dashed transparent;outline:none;width:100%;cursor:text;display:block;margin-bottom:2px;}
+.card-title-input:hover{border-bottom-color:rgba(201,168,76,.4);}
+.card-title-input:focus{border-bottom-color:var(--gold);}
+.card-sub{font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.06em;margin-bottom:13px;}
+.card-sub-input{font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.06em;margin-bottom:13px;background:transparent;border:none;border-bottom:1px dashed transparent;outline:none;width:100%;cursor:text;display:block;}
+.card-sub-input:focus{border-bottom-color:var(--text-dim);}
+.sec-hdr{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:18px;gap:10px;flex-wrap:wrap;}
+.sec-hdr h2{font-family:'Playfair Display',serif;font-size:21px;color:var(--text);}
+.eyebrow{font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.1em;}
+.hdr-actions{display:flex;gap:7px;flex-wrap:wrap;}
+.stat-box{background:var(--navy-light);border-radius:10px;padding:13px;text-align:center;border:1px solid var(--border);}
+.stat-num{font-family:'Playfair Display',serif;font-size:26px;color:var(--gold);line-height:1;}
+.stat-label{font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.06em;margin-top:3px;}
+.prog-row{margin-bottom:9px;}
+.prog-label{display:flex;justify-content:space-between;font-size:11px;margin-bottom:3px;}
+.prog-bar{height:5px;background:var(--navy-light);border-radius:3px;overflow:hidden;}
+.prog-fill{height:100%;border-radius:3px;transition:width .5s;}
+.fill-gold{background:linear-gradient(90deg,var(--gold),var(--gold-light));}
+.fill-sage{background:var(--sage);}
+.fill-rose{background:var(--rose);}
+.fill-sky{background:var(--sky);}
+.task-list{list-style:none;}
+.task-item{display:flex;align-items:flex-start;gap:8px;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.04);position:relative;}
+.task-item:last-child{border-bottom:none;}
+.task-check{width:15px;height:15px;border:1.5px solid var(--text-dim);border-radius:3px;flex-shrink:0;margin-top:1px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:9px;transition:all .2s;}
+.task-item.done .task-check{background:var(--sage);border-color:var(--sage);color:#fff;}
+.task-item.done .task-check::after{content:'✓';}
+.task-item.done .task-text-input{text-decoration:line-through;color:var(--text-dim);}
+.task-body{flex:1;min-width:0;}
+.task-text-input{font-size:12px;background:transparent;border:none;border-bottom:1px dashed transparent;color:var(--text);width:100%;outline:none;font-family:'Inter',sans-serif;cursor:text;line-height:1.4;}
+.task-text-input:focus{border-bottom-color:var(--gold);}
+.task-meta{font-size:10px;color:var(--text-dim);margin-top:2px;}
+.task-actions{display:flex;gap:3px;opacity:0;transition:opacity .2s;flex-shrink:0;}
+.task-item:hover .task-actions{opacity:1;}
+.tbtn{background:none;border:none;cursor:pointer;font-size:11px;padding:1px 3px;border-radius:3px;color:var(--text-dim);}
+.tdel{color:var(--rose)!important;}
+.editable{background:transparent;border:none;border-bottom:1px dashed transparent;color:inherit;font:inherit;cursor:text;transition:border-color .2s;outline:none;}
+.editable:hover{border-bottom-color:rgba(138,154,176,.4);}
+.editable:focus{border-bottom-color:var(--gold);}
+input[type=text],input[type=number],input[type=date],input[type=time],select,textarea{flex:1;background:var(--navy-light);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'Inter',sans-serif;font-size:12px;padding:7px 10px;outline:none;transition:border-color .2s;width:100%;}
+input:focus,select:focus,textarea:focus{border-color:var(--gold);}
+input::placeholder,textarea::placeholder{color:var(--text-dim);}
+textarea{resize:vertical;min-height:55px;}
+select option{background:var(--navy-mid);}
+.btn{padding:7px 13px;border-radius:8px;border:none;cursor:pointer;font-family:'Inter',sans-serif;font-size:11px;font-weight:600;letter-spacing:.04em;transition:all .2s;white-space:nowrap;}
+.btn-gold{background:var(--gold);color:var(--navy);}
+.btn-gold:hover{background:var(--gold-light);}
+.btn-ghost{background:transparent;color:var(--text-dim);border:1px solid var(--border);}
+.btn-ghost:hover{border-color:var(--text-dim);color:var(--text);}
+.btn-sm{padding:5px 10px;font-size:10px;}
+.add-row{display:flex;gap:6px;margin-top:11px;flex-wrap:wrap;}
+.add-row input,.add-row select{flex:1;min-width:70px;}
+.tag{display:inline-block;font-size:9px;padding:2px 6px;border-radius:8px;font-weight:500;letter-spacing:.04em;text-transform:uppercase;}
+.tag-gold{background:rgba(201,168,76,.15);color:var(--gold-light);}
+.ms-list{list-style:none;}
+.ms-item{display:flex;gap:11px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.04);align-items:flex-start;}
+.ms-item:last-child{border-bottom:none;}
+.ms-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;margin-top:3px;cursor:pointer;}
+.dot-done{background:var(--sage);}
+.dot-active{background:var(--gold);}
+.dot-pending{background:var(--navy-light);border:1px solid var(--text-dim);}
+.dot-key{background:var(--rose);}
+.ms-body{flex:1;}
+.ms-actions{opacity:0;transition:opacity .2s;}
+.ms-item:hover .ms-actions{opacity:1;}
+.note-card{background:var(--navy-light);border-radius:8px;padding:11px;margin-bottom:8px;font-size:12px;line-height:1.6;position:relative;}
+.note-meta{font-size:9px;color:var(--text-dim);margin-top:5px;font-family:'Roboto Mono',monospace;}
+.note-del{position:absolute;top:7px;right:7px;background:none;border:none;color:var(--rose);cursor:pointer;opacity:0;font-size:12px;}
+.note-card:hover .note-del{opacity:1;}
+.cal-toolbar{display:flex;align-items:center;gap:8px;margin-bottom:14px;flex-wrap:wrap;}
+.cal-toolbar h3{font-family:'Playfair Display',serif;font-size:17px;flex:1;}
+.view-toggle{display:flex;border:1px solid var(--border);border-radius:8px;overflow:hidden;}
+.view-btn{padding:5px 12px;background:transparent;border:none;color:var(--text-dim);font-size:11px;cursor:pointer;font-family:'Inter',sans-serif;transition:all .2s;}
+.view-btn.active{background:var(--gold);color:var(--navy);font-weight:600;}
+.cal-nav-btn{background:var(--navy-light);border:1px solid var(--border);color:var(--text);width:28px;height:28px;border-radius:7px;cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center;}
+.month-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;}
+.cal-dh{text-align:center;font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.05em;padding:3px;}
+.cal-day{min-height:80px;display:flex;flex-direction:column;padding:5px;border-radius:7px;cursor:pointer;transition:all .2s;border:1px solid transparent;}
+.cal-day:hover{background:var(--navy-light);}
+.cal-day.today{background:rgba(201,168,76,.12);border-color:var(--gold);}
+.cal-day.sel{border-color:var(--gold);background:rgba(201,168,76,.08);}
+.cal-day.other-m{opacity:.3;}
+.cal-day-num{font-size:11px;font-weight:500;margin-bottom:3px;}
+.cal-day.today .cal-day-num{color:var(--gold);font-weight:700;}
+.cal-chip{font-size:9px;padding:1px 5px;border-radius:4px;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;}
+.more-chip{font-size:9px;color:var(--text-dim);padding:1px 3px;}
+.week-scroll{overflow-x:auto;}
+.week-grid{display:grid;grid-template-columns:52px repeat(7,1fr);border:1px solid var(--border);border-radius:10px;overflow:hidden;min-width:580px;}
+.week-time-col{background:var(--navy-light);}
+.week-time-slot{height:44px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-dim);font-family:'Roboto Mono',monospace;border-bottom:1px solid rgba(255,255,255,.04);}
+.week-day-col{border-left:1px solid var(--border);}
+.week-day-header{padding:7px 4px;text-align:center;background:var(--navy-mid);border-bottom:1px solid var(--border);cursor:pointer;}
+.week-dh-name{font-size:9px;color:var(--text-dim);text-transform:uppercase;}
+.week-dh-date{font-size:14px;font-weight:600;font-family:'Playfair Display',serif;}
+.week-dh-today{color:var(--gold);}
+.week-cell{height:44px;border-bottom:1px solid rgba(255,255,255,.03);position:relative;overflow:hidden;}
+.week-event{position:absolute;left:2px;right:2px;top:2px;font-size:9px;padding:2px 4px;border-radius:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer;}
+.day-panel{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px;margin-top:15px;}
+.day-panel-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px;}
+.day-panel-date{font-family:'Playfair Display',serif;font-size:16px;}
+.person-filter{display:flex;gap:5px;}
+.pf-btn{padding:4px 10px;border-radius:14px;border:1px solid var(--border);background:transparent;color:var(--text-dim);font-size:10px;cursor:pointer;font-family:'Inter',sans-serif;transition:all .2s;}
+.pf-all.active{background:var(--navy-light);color:var(--text);border-color:var(--text-dim);}
+.day-section{margin-bottom:14px;}
+.day-section-title{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--text-dim);margin-bottom:6px;padding-bottom:4px;border-bottom:1px solid var(--border);}
+.day-task-item{display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:7px;margin-bottom:4px;cursor:pointer;transition:background .15s;}
+.day-task-item:hover{background:var(--navy-light);}
+.day-task-check{width:14px;height:14px;border:1.5px solid var(--text-dim);border-radius:3px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:8px;transition:all .2s;}
+.day-task-item.done .day-task-check{background:var(--sage);border-color:var(--sage);color:#fff;}
+.day-task-item.done .day-task-check::after{content:'✓';}
+.day-task-item.done .day-task-label{text-decoration:line-through;color:var(--text-dim);}
+.day-task-label{font-size:12px;flex:1;}
+.day-who-dot{width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;flex-shrink:0;}
+.skip-btn{font-size:9px;color:var(--rose);background:none;border:none;cursor:pointer;padding:1px 5px;opacity:0;border-radius:4px;transition:opacity .2s;}
+.day-task-item:hover .skip-btn{opacity:1;}
+.day-event-item{display:flex;gap:8px;padding:6px 8px;border-radius:7px;margin-bottom:4px;border-left:3px solid var(--gold);background:var(--navy-light);}
+.day-event-time{font-family:'Roboto Mono',monospace;font-size:10px;color:var(--text-dim);white-space:nowrap;}
+.empty-msg{font-size:12px;color:var(--text-dim);padding:8px 0;}
+.fund-card{background:var(--navy-light);border-radius:9px;padding:14px;margin-bottom:9px;position:relative;border:1px solid var(--border);}
+.fund-bar{height:7px;background:var(--navy);border-radius:4px;overflow:hidden;margin:7px 0;}
+.fund-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--gold),var(--gold-light));transition:width .5s;}
+.fund-del{position:absolute;top:9px;right:9px;background:none;border:none;color:var(--rose);cursor:pointer;opacity:0;font-size:12px;}
+.fund-card:hover .fund-del{opacity:1;}
+.bud-table{width:100%;border-collapse:collapse;font-size:12px;}
+.bud-table th{text-align:left;font-size:9px;text-transform:uppercase;letter-spacing:.07em;color:var(--text-dim);padding:6px 8px;border-bottom:1px solid var(--border);font-weight:500;}
+.bud-table td{padding:7px 8px;border-bottom:1px solid rgba(255,255,255,.04);vertical-align:middle;}
+.bud-table tr:last-child td{border-bottom:none;}
+.bud-input{background:transparent;border:none;color:var(--text);font-family:'Roboto Mono',monospace;font-size:11px;width:100%;padding:1px 2px;border-radius:3px;}
+.bud-input:focus{background:var(--navy-light);outline:1px solid var(--gold);}
+.col-income{color:var(--sage);font-family:'Roboto Mono',monospace;}
+.col-expense{color:var(--rose);font-family:'Roboto Mono',monospace;}
+.col-savings{color:var(--gold);font-family:'Roboto Mono',monospace;}
+.bud-del{background:none;border:none;color:var(--rose);cursor:pointer;opacity:0;font-size:12px;}
+tr:hover .bud-del{opacity:1;}
+.bud-foot td{font-weight:600;border-top:2px solid var(--border)!important;padding-top:11px;}
+.dog-box{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px;position:relative;}
+.dog-box-del{position:absolute;top:11px;right:11px;background:none;border:none;color:var(--rose);cursor:pointer;opacity:0;font-size:12px;}
+.dog-box:hover .dog-box-del{opacity:1;}
+.sched-row{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.04);}
+.sched-row:last-child{border-bottom:none;}
+.sched-actions{opacity:0;transition:opacity .2s;display:flex;gap:3px;}
+.sched-row:hover .sched-actions{opacity:1;}
+.meal-day{background:var(--navy-light);border-radius:8px;padding:11px;margin-bottom:7px;}
+.meal-day-title{font-size:10px;font-weight:600;color:var(--gold);text-transform:uppercase;letter-spacing:.05em;margin-bottom:7px;}
+.meal-slot{display:flex;align-items:center;gap:7px;margin-bottom:5px;}
+.meal-slot-label{font-size:10px;color:var(--text-dim);width:58px;flex-shrink:0;}
+.swatch-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:4px;}
+.swatch{width:24px;height:24px;border-radius:50%;cursor:pointer;border:2px solid transparent;transition:all .2s;}
+.swatch.sel{border-color:#fff;transform:scale(1.15);}
+.cdown{text-align:center;padding:12px;background:var(--navy-light);border-radius:9px;margin-bottom:9px;position:relative;}
+.cdown-num{font-family:'Playfair Display',serif;font-size:34px;color:var(--gold);line-height:1;}
+.cdown-lbl{font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.1em;margin-top:2px;}
+.reading-card{background:var(--navy-light);border-radius:9px;padding:14px;margin-bottom:9px;border-left:3px solid var(--gold);}
+.reading-label{font-size:9px;color:var(--gold);text-transform:uppercase;letter-spacing:.08em;margin-bottom:3px;}
+.reading-ref{font-size:12px;font-weight:600;margin-bottom:5px;}
+.reading-text{font-size:11px;line-height:1.7;color:var(--text-dim);}
+@media(max-width:640px){header{padding:10px 12px;}nav{padding:8px 12px 0;}main{padding:12px 10px;}.g2,.g3,.g4{grid-template-columns:1fr;}.sec-hdr h2{font-size:19px;}.modal{padding:18px;}.cal-day{min-height:55px;}}
+</style>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj4KICA8cmVjdCB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgcng9IjgwIiBmaWxsPSIjMWEyMzMyIi8+CiAgPHJlY3QgeD0iMjM2IiB5PSI3NSIgd2lkdGg9IjQwIiBoZWlnaHQ9IjI5MCIgcng9IjEwIiBmaWxsPSIjYzlhODRjIi8+CiAgPHJlY3QgeD0iMTM1IiB5PSIxNTUiIHdpZHRoPSIyNDIiIGhlaWdodD0iNDAiIHJ4PSIxMCIgZmlsbD0iI2M5YTg0YyIvPgogIDxjaXJjbGUgY3g9IjI1NiIgY3k9IjQyNCIgcj0iMzIiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2M5YTg0YyIgc3Ryb2tlLXdpZHRoPSI2IiBvcGFjaXR5PSIwLjYiLz4KICA8Y2lyY2xlIGN4PSIyNTYiIGN5PSI0MjQiIHI9IjEwIiBmaWxsPSIjYzlhODRjIiBvcGFjaXR5PSIwLjUiLz4KICA8cmVjdCB4PSIyNDQiIHk9Ijc4IiB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHJ4PSI0IiBmaWxsPSIjZThjODc4IiBvcGFjaXR5PSIwLjUiLz4KPC9zdmc+">
+<link rel="apple-touch-icon" href="data:image/png;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj4KICA8cmVjdCB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgcng9IjgwIiBmaWxsPSIjMWEyMzMyIi8+CiAgPHJlY3QgeD0iMjM2IiB5PSI3NSIgd2lkdGg9IjQwIiBoZWlnaHQ9IjI5MCIgcng9IjEwIiBmaWxsPSIjYzlhODRjIi8+CiAgPHJlY3QgeD0iMTM1IiB5PSIxNTUiIHdpZHRoPSIyNDIiIGhlaWdodD0iNDAiIHJ4PSIxMCIgZmlsbD0iI2M5YTg0YyIvPgogIDxjaXJjbGUgY3g9IjI1NiIgY3k9IjQyNCIgcj0iMzIiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2M5YTg0YyIgc3Ryb2tlLXdpZHRoPSI2IiBvcGFjaXR5PSIwLjYiLz4KICA8Y2lyY2xlIGN4PSIyNTYiIGN5PSI0MjQiIHI9IjEwIiBmaWxsPSIjYzlhODRjIiBvcGFjaXR5PSIwLjUiLz4KICA8cmVjdCB4PSIyNDQiIHk9Ijc4IiB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHJ4PSI0IiBmaWxsPSIjZThjODc4IiBvcGFjaXR5PSIwLjUiLz4KPC9zdmc+">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Our Life">
+<meta name="theme-color" content="#1a2332">
+</head>
+<body>
+<!-- MODALS -->
+<div class="modal-overlay" id="mSettings"><div class="modal">
+  <button class="modal-close" onclick="closeM('mSettings')">✕</button>
+  <h2>Customize</h2><p>All changes save automatically.</p>
+  <div class="form-group"><label class="form-label">Your Name</label><input type="text" id="sP1Name" oninput="applySettings()"></div>
+  <div class="form-group"><label class="form-label">Your Initials</label><input type="text" id="sP1Init" maxlength="3" oninput="applySettings()"></div>
+  <div class="form-group"><label class="form-label">Your Color</label><div class="swatch-row">
+    <div class="swatch sel" style="background:#c9a84c" onclick="pickColor('p1','#c9a84c',this)"></div>
+    <div class="swatch" style="background:#5b8fa8" onclick="pickColor('p1','#5b8fa8',this)"></div>
+    <div class="swatch" style="background:#7a9e7e" onclick="pickColor('p1','#7a9e7e',this)"></div>
+    <div class="swatch" style="background:#8b6fad" onclick="pickColor('p1','#8b6fad',this)"></div>
+  </div></div>
+  <hr style="border-color:var(--border);margin:14px 0;">
+  <div class="form-group"><label class="form-label">Partner's Name</label><input type="text" id="sP2Name" oninput="applySettings()"></div>
+  <div class="form-group"><label class="form-label">Partner's Initials</label><input type="text" id="sP2Init" maxlength="3" oninput="applySettings()"></div>
+  <div class="form-group"><label class="form-label">Partner's Color</label><div class="swatch-row">
+    <div class="swatch sel" style="background:#c4756b" onclick="pickColor('p2','#c4756b',this)"></div>
+    <div class="swatch" style="background:#e8a87c" onclick="pickColor('p2','#e8a87c',this)"></div>
+    <div class="swatch" style="background:#a8c5a0" onclick="pickColor('p2','#a8c5a0',this)"></div>
+    <div class="swatch" style="background:#c4a0c4" onclick="pickColor('p2','#c4a0c4',this)"></div>
+  </div></div>
+  <hr style="border-color:var(--border);margin:14px 0;">
+  <div class="form-group"><label class="form-label">Location</label><input type="text" id="sLocation" oninput="applySettings()"></div>
+  <div class="form-group"><label class="form-label">Practice Open Date</label><input type="date" id="sTargetDate" oninput="applySettings()"></div>
+  <button class="btn btn-gold" style="width:100%;margin-top:6px;" onclick="closeM('mSettings')">Done</button>
+</div></div>
+
+<div class="modal-overlay" id="mEvent"><div class="modal">
+  <button class="modal-close" onclick="closeM('mEvent')">✕</button>
+  <h2>Add Event</h2><p>One-time event — mirrors your Google Calendar.</p>
+  <div class="form-group"><label class="form-label">Title</label><input type="text" id="evTitle" placeholder="Appointment, class, errand…"></div>
+  <div class="form-group"><label class="form-label">Date</label><input type="date" id="evDate"></div>
+  <div class="form-group"><label class="form-label">Time</label><input type="time" id="evTime"></div>
+  <div class="form-group"><label class="form-label">Notes / Location</label><input type="text" id="evNotes" placeholder="Optional details…"></div>
+  <div class="form-group"><label class="form-label">Who</label><select id="evWho"><option value="both">Both</option><option value="p1">Mitch</option><option value="p2">Liz</option></select></div>
+  <div class="form-group"><label class="form-label">Category</label><select id="evCat">
+    <option value="work">Work/Clinical</option><option value="health">Health</option>
+    <option value="faith">Faith</option><option value="dogs">Dogs</option>
+    <option value="practice">Practice</option><option value="finance">Finance</option><option value="personal">Personal</option>
+  </select></div>
+  <button class="btn btn-gold" style="width:100%;margin-top:6px;" onclick="saveEvent()">Add to Calendar</button>
+</div></div>
+
+<div class="modal-overlay" id="mTask"><div class="modal">
+  <button class="modal-close" onclick="closeM('mTask')">✕</button>
+  <h2>Add Recurring Task</h2>
+  <p>Appears in the calendar every week on the chosen day. Skip individual weeks without deleting it.</p>
+  <div class="form-group"><label class="form-label">Task Name</label><input type="text" id="rtName" placeholder="e.g. Take out trash"></div>
+  <div class="form-group"><label class="form-label">Assigned To</label><select id="rtWho"><option value="both">Both</option><option value="p1">Mitch</option><option value="p2">Liz</option></select></div>
+  <div class="form-group"><label class="form-label">Day of Week</label><select id="rtDay">
+    <option value="0">Sunday</option><option value="1">Monday</option><option value="2">Tuesday</option>
+    <option value="3">Wednesday</option><option value="4">Thursday</option><option value="5">Friday</option><option value="6">Saturday</option>
+  </select></div>
+  <div class="form-group"><label class="form-label">Category</label><select id="rtCat">
+    <option value="household">Household</option><option value="health">Health</option>
+    <option value="dogs">Dogs</option><option value="faith">Faith</option><option value="personal">Personal</option>
+  </select></div>
+  <div class="form-group"><label class="form-label">Notes / Frequency label</label><input type="text" id="rtFreq" placeholder="e.g. Weekly, Every Mon…"></div>
+  <button class="btn btn-gold" style="width:100%;margin-top:6px;" onclick="saveRecurringTask()">Add to Calendar</button>
+</div></div>
+
+<div class="modal-overlay" id="mPillar"><div class="modal">
+  <button class="modal-close" onclick="closeM('mPillar')">✕</button>
+  <h2>Add Life Pillar</h2>
+  <div class="form-group"><label class="form-label">Name</label><input type="text" id="pillarName" placeholder="e.g. 💰 Finances"></div>
+  <div class="form-group"><label class="form-label">Starting %</label><input type="number" id="pillarPct" value="0" min="0" max="100"></div>
+  <div class="form-group"><label class="form-label">Color</label><select id="pillarColor"><option value="fill-gold">Gold</option><option value="fill-sage">Sage</option><option value="fill-rose">Rose</option><option value="fill-sky">Sky</option></select></div>
+  <button class="btn btn-gold" style="width:100%;margin-top:6px;" onclick="savePillar()">Add</button>
+</div></div>
+
+<div class="modal-overlay" id="mFund"><div class="modal">
+  <button class="modal-close" onclick="closeM('mFund')">✕</button>
+  <h2>Add Savings Fund</h2>
+  <div class="form-group"><label class="form-label">Fund Name</label><input type="text" id="fundName" placeholder="Practice Fund, Ring Fund…"></div>
+  <div class="form-group"><label class="form-label">Goal ($)</label><input type="number" id="fundGoal"></div>
+  <div class="form-group"><label class="form-label">Saved So Far ($)</label><input type="number" id="fundSaved" value="0"></div>
+  <div class="form-group"><label class="form-label">Notes</label><input type="text" id="fundNotes"></div>
+  <button class="btn btn-gold" style="width:100%;margin-top:6px;" onclick="saveFund()">Create Fund</button>
+</div></div>
+
+<div class="modal-overlay" id="mMilestone"><div class="modal">
+  <button class="modal-close" onclick="closeM('mMilestone')">✕</button>
+  <h2>Add Milestone</h2>
+  <div class="form-group"><label class="form-label">Title</label><input type="text" id="msTitle"></div>
+  <div class="form-group"><label class="form-label">Date / Timeframe</label><input type="text" id="msDate" placeholder="Q1 2027"></div>
+  <div class="form-group"><label class="form-label">Status</label><select id="msStatus"><option value="active">Active (gold)</option><option value="pending">Pending</option><option value="done">Done (green)</option><option value="key">Key milestone (rose)</option></select></div>
+  <div class="form-group"><label class="form-label">Tag</label><input type="text" id="msTag" placeholder="Legal, Career…"></div>
+  <div class="form-group"><label class="form-label">Section</label><select id="msSection"><option value="practice">Practice</option><option value="faith">Faith</option></select></div>
+  <button class="btn btn-gold" style="width:100%;margin-top:6px;" onclick="saveMilestone()">Add</button>
+</div></div>
+
+<div class="modal-overlay" id="mDogBox"><div class="modal">
+  <button class="modal-close" onclick="closeM('mDogBox')">✕</button>
+  <h2>Add Dog Section</h2>
+  <div class="form-group"><label class="form-label">Title</label><input type="text" id="dogBoxTitle" placeholder="Vet Info, Grooming…"></div>
+  <div class="form-group"><label class="form-label">Subtitle</label><input type="text" id="dogBoxSub"></div>
+  <div class="form-group"><label class="form-label">Type</label><select id="dogBoxType"><option value="schedule">Time Schedule</option><option value="checklist">Checklist</option><option value="notes">Notes</option></select></div>
+  <button class="btn btn-gold" style="width:100%;margin-top:6px;" onclick="saveDogBox()">Create</button>
+</div></div>
+
+<!-- HEADER -->
+<header>
+  <div class="header-left"><h1>✝ Our Life</h1><p id="hdrLoc">Lancaster, PA · Ponte Vedra Beach 2027</p></div>
+  <div class="header-right">
+    <div class="date-pill" id="datePill"></div>
+    <div class="avatar p1" id="avP1" onclick="switchPerson('p1')">MD</div>
+    <div class="avatar p2" id="avP2" onclick="switchPerson('p2')">Liz</div>
+    <button class="icon-btn" onclick="openM('mSettings')">⚙</button>
+  </div>
+</header>
+<div class="person-bar">
+  <button class="person-btn active-p1" id="pbP1" onclick="switchPerson('p1')">Mitch's View</button>
+  <button class="person-btn" id="pbP2" onclick="switchPerson('p2')">Liz's View</button>
+  <span id="viewAs">Viewing as Mitch</span>
+  <button class="icon-btn" id="gcalSyncBtn_p1" style="width:auto;border-radius:18px;padding:4px 11px;font-size:10px;margin-left:auto;" onclick="gcalConnect('p1')">Connect Mitch's Calendar</button>
+  <button class="icon-btn" id="gcalSyncBtn_p2" style="width:auto;border-radius:18px;padding:4px 11px;font-size:10px;" onclick="gcalConnect('p2')">Connect Liz's Calendar</button>
+</div>
+<nav>
+  <button class="tab active" onclick="showTab('home',this)">Home</button>
+  <button class="tab" onclick="showTab('calendar',this)">Calendar</button>
+  <button class="tab" onclick="showTab('finances',this)">Finances</button>
+  <button class="tab" onclick="showTab('money',this)">Money Moves</button>
+  <button class="tab" onclick="showTab('practice',this)">Practice</button>
+  <button class="tab" onclick="showTab('household',this)">Household</button>
+  <button class="tab" onclick="showTab('meals',this)">Meals</button>
+  <button class="tab" onclick="showTab('health',this)">Health</button>
+  <button class="tab" onclick="showTab('faith',this)">Faith & Life</button>
+  <button class="tab" onclick="showTab('dogs',this)">🐾 Dogs</button>
+  <button class="tab" onclick="showTab('notes',this)">Notes</button>
+</nav>
+<main>
+
+<!-- HOME -->
+<section class="section active" id="home">
+  <div class="sec-hdr"><div><div class="eyebrow">Dashboard</div><h2>Life at a Glance</h2></div>
+  <div class="hdr-actions"><button class="btn btn-ghost btn-sm" onclick="openM('mTask')">+ Recurring Task</button></div></div>
+  <div class="grid g2" style="margin-bottom:14px;">
+    <div class="card" id="dailyQuoteCard" style="display:flex;flex-direction:column;justify-content:center;text-align:center;padding:24px 18px;background:linear-gradient(135deg,var(--navy-mid),var(--card));">
+      <div style="font-size:9px;text-transform:uppercase;letter-spacing:.12em;color:var(--gold);margin-bottom:10px;" id="dailyQuoteLabel">Today's Word</div>
+      <div style="font-family:'Playfair Display',serif;font-size:16px;line-height:1.5;color:var(--text);font-style:italic;margin-bottom:8px;" id="dailyQuoteText">—</div>
+      <div style="font-size:11px;color:var(--text-dim);letter-spacing:.04em;" id="dailyQuoteSource">—</div>
+    </div>
+    <div class="card"><div class="card-title">Today</div><div class="card-sub" id="homeTodayLbl">—</div><div id="homeTodayContent"></div><button class="btn btn-ghost btn-sm" style="margin-top:10px;" onclick="showTab('calendar',document.querySelectorAll('.tab')[1])">Full Calendar →</button></div>
+  </div>
+  <div class="grid g2" style="margin-bottom:14px;">
+    <div class="card"><input class="card-title-input" value="This Week's Focus"><input class="card-sub-input" id="focusSub" value="Mitch's priorities"><ul class="task-list" id="focusList"></ul>
+      <div class="add-row"><input type="text" id="focusInput" placeholder="Add priority…"><select id="focusWho" style="flex:0 0 auto;width:auto;"></select><button class="btn btn-gold btn-sm" onclick="addFocusTask()">Add</button></div></div>
+    <div class="card"><div class="card-title">Countdowns</div><div class="card-sub">Edit any date · auto-calculated</div><div id="countdownsContainer"></div>
+      <div class="add-row"><input type="text" id="cdName" placeholder="Label…"><input type="date" id="cdDate" style="flex:0 0 auto;width:auto;"><button class="btn btn-gold btn-sm" onclick="addCountdown()">Add</button></div></div>
+  </div>
+  <div class="grid g3">
+    <div class="stat-box"><div class="stat-num" id="statDays">—</div><div class="stat-label">Days to Open</div></div>
+    <div class="stat-box"><div class="stat-num" id="statToday">0</div><div class="stat-label">Today's Events</div></div>
+    <div class="stat-box"><div class="stat-num" id="statTasks">0</div><div class="stat-label">Tasks Due Today</div></div>
+  </div>
+</section>
+
+<!-- CALENDAR -->
+<section class="section" id="calendar">
+  <div class="sec-hdr"><div><div class="eyebrow">Schedule</div><h2>Calendar</h2></div>
+  <div class="hdr-actions"><button class="btn btn-ghost btn-sm" onclick="openM('mTask')">+ Recurring Task</button><button class="btn btn-gold btn-sm" onclick="openM('mEvent')">+ Event</button></div></div>
+  <div class="card">
+    <div class="cal-toolbar">
+      <button class="cal-nav-btn" onclick="navCal(-1)">&#8249;</button>
+      <h3 id="calTitle">—</h3>
+      <button class="cal-nav-btn" onclick="navCal(1)">&#8250;</button>
+      <button class="cal-nav-btn" onclick="goToday()" style="font-size:10px;width:auto;padding:0 8px;">Today</button>
+      <div class="view-toggle">
+        <button class="view-btn active" id="vbMonth" onclick="switchView('month')">Month</button>
+        <button class="view-btn" id="vbWeek" onclick="switchView('week')">Week</button>
+        <button class="view-btn" id="vbDay" onclick="switchView('day')">Day</button>
+      </div>
+    </div>
+    <div style="display:flex;gap:12px;margin-bottom:12px;flex-wrap:wrap;font-size:10px;color:var(--text-dim);">
+      <span><span id="legDot1" style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--p1);margin-right:4px;"></span><span id="legP1">Mitch</span></span>
+      <span><span id="legDot2" style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--p2);margin-right:4px;"></span><span id="legP2">Liz</span></span>
+      <span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--sage);margin-right:4px;"></span>Both</span>
+      <span><span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:rgba(91,143,168,.5);margin-right:4px;"></span>Event</span>
+      <span><span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:rgba(138,154,176,.3);margin-right:4px;"></span>Recurring</span>
+    </div>
+    <div id="calBody"></div>
+  </div>
+  <div class="day-panel" id="dayPanel">
+    <div class="day-panel-hdr">
+      <div class="day-panel-date" id="dayPanelDate">Select a day to zoom in</div>
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+        <div class="person-filter">
+          <button class="pf-btn pf-all active" id="pfAll" onclick="setPersonFilter('all')">All</button>
+          <button class="pf-btn" id="pfP1" onclick="setPersonFilter('p1')" style="border-color:var(--p1);">Mitch</button>
+          <button class="pf-btn" id="pfP2" onclick="setPersonFilter('p2')" style="border-color:var(--p2);">Liz</button>
+        </div>
+        <button class="btn btn-ghost btn-sm" onclick="document.getElementById('evDate').value=selectedDate;openM('mEvent')">+ Event this day</button>
+      </div>
+    </div>
+    <div id="dayPanelContent"><p class="empty-msg">Click any day on the calendar above to zoom in and see all tasks and events for that day.</p></div>
+  </div>
+</section>
+
+<!-- FINANCES -->
+<section class="section" id="finances">
+  <div class="sec-hdr"><div><div class="eyebrow">Financial Pillar</div><h2>Finances</h2></div>
+  <div class="hdr-actions"><button class="btn btn-ghost btn-sm" onclick="addBudgetRow('income')">+ Income</button><button class="btn btn-ghost btn-sm" onclick="addBudgetRow('expense')">+ Expense</button><button class="btn btn-ghost btn-sm" onclick="addBudgetRow('savings')">+ Savings</button><button class="btn btn-gold btn-sm" onclick="openM('mFund')">+ Fund</button></div></div>
+  <div class="grid g4" style="margin-bottom:14px;">
+    <div class="stat-box"><div class="stat-num col-income" id="totIncome">$0</div><div class="stat-label">Monthly Income</div></div>
+    <div class="stat-box"><div class="stat-num col-expense" id="totExpenses">$0</div><div class="stat-label">Expenses</div></div>
+    <div class="stat-box"><div class="stat-num col-savings" id="totSavings">$0</div><div class="stat-label">Saving/mo</div></div>
+    <div class="stat-box"><div class="stat-num" id="totNet">$0</div><div class="stat-label">Net Remaining</div></div>
+  </div>
+  <div class="grid g2">
+    <div class="card"><div class="card-title">Monthly Budget</div><div class="card-sub">Click any field to edit · auto-saves</div>
+      <table class="bud-table"><thead><tr><th>Category</th><th>Type</th><th>$/mo</th><th></th></tr></thead><tbody id="budgetBody"></tbody>
+      <tfoot><tr class="bud-foot"><td colspan="2">Net Monthly</td><td id="budNet">$0</td><td></td></tr></tfoot></table></div>
+    <div>
+      <div class="card" style="margin-bottom:14px;"><div class="card-title">Savings & Funds</div><div class="card-sub">Each goal tracked separately</div><div id="fundsContainer"></div></div>
+      <div class="card"><input class="card-title-input" value="Financial Action List"><input class="card-sub-input" value="Tasks for your money life"><ul class="task-list" id="finTaskList"></ul>
+        <div class="add-row"><input type="text" id="finTaskInput" placeholder="Add task…"><button class="btn btn-gold btn-sm" onclick="addToList('finTaskList','finTaskInput','both')">Add</button></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- MONEY MOVES -->
+<section class="section" id="money">
+  <div class="sec-hdr"><div><div class="eyebrow">Income Strategy</div><h2>Money Moves</h2></div></div>
+  <div class="grid g2">
+    <div class="card"><input class="card-title-input" value="Income Ideas & Side Hustles"><input class="card-sub-input" value="Check off what you're pursuing · delete what's not relevant"><ul class="task-list" id="moneyList"></ul>
+      <div class="add-row"><input type="text" id="moneyInput" placeholder="Add idea…"><button class="btn btn-gold btn-sm" onclick="addToList('moneyList','moneyInput','both')">Add</button></div></div>
+    <div class="card"><input class="card-title-input" value="Strategy Notes"><input class="card-sub-input" value="Plans, research, thoughts"><div id="moneyNotes"></div>
+      <div style="display:flex;flex-direction:column;gap:7px;margin-top:11px;"><input type="text" id="moneyNoteTitle" placeholder="Title"><textarea id="moneyNoteBody" placeholder="Note or strategy…"></textarea>
+      <button class="btn btn-gold btn-sm" style="align-self:flex-end;" onclick="addNote('moneyNotes','moneyNoteTitle','moneyNoteBody')">Save Note</button></div></div>
+  </div>
+</section>
+
+<!-- PRACTICE -->
+<section class="section" id="practice">
+  <div class="sec-hdr"><div><div class="eyebrow">The Dream</div><h2>Ponte Vedra Beach Practice</h2></div>
+  <button class="btn btn-ghost btn-sm" onclick="openM('mMilestone');document.getElementById('msSection').value='practice'">+ Milestone</button></div>
+  <div class="grid g4" style="margin-bottom:14px;">
+    <div class="stat-box"><div class="stat-num" id="pracDays">—</div><div class="stat-label">Days to Open</div></div>
+    <div class="stat-box"><div class="stat-num" id="pracMonths">—</div><div class="stat-label">Months Away</div></div>
+    <div class="stat-box"><div class="stat-label" style="margin-bottom:5px;font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.06em;">Open Date</div><input type="date" id="pracOpenDate" style="background:transparent;border:none;color:var(--gold);font-size:12px;width:100%;text-align:center;" onchange="savePracDate()"></div>
+    <div class="stat-box"><div class="stat-num">2</div><div class="stat-label">Specialties</div></div>
+  </div>
+  <div class="grid g2">
+    <div class="card"><input class="card-title-input" value="Practice Roadmap"><input class="card-sub-input" value="Click dot to cycle status · click text to edit"><ul class="ms-list" id="pracMilestones"></ul></div>
+    <div>
+      <div class="card" style="margin-bottom:14px;"><input class="card-title-input" value="Practice Tasks"><input class="card-sub-input" value="Action items · all editable"><ul class="task-list" id="pracTaskList"></ul>
+        <div class="add-row"><input type="text" id="pracTaskInput" placeholder="Add task…"><select id="pracTaskWho" style="flex:0 0 auto;width:auto;"></select><button class="btn btn-gold btn-sm" onclick="addPracTask()">Add</button></div></div>
+      <div class="card"><input class="card-title-input" value="Practice Notes"><div id="pracNotes"></div>
+        <div style="display:flex;flex-direction:column;gap:7px;margin-top:11px;"><input type="text" id="pracNoteTitle" placeholder="Title"><textarea id="pracNoteBody" placeholder="Ideas, research, plans…"></textarea>
+        <button class="btn btn-gold btn-sm" style="align-self:flex-end;" onclick="addNote('pracNotes','pracNoteTitle','pracNoteBody')">Save Note</button></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- HOUSEHOLD -->
+<section class="section" id="household">
+  <div class="sec-hdr"><div><div class="eyebrow">Home Base</div><h2>Household</h2></div>
+  <div class="hdr-actions"><button class="btn btn-ghost btn-sm" onclick="openM('mTask')">+ Recurring Task</button><button class="btn btn-ghost btn-sm" onclick="resetHousehold()">&#8635; Reset Week</button></div></div>
+  <p style="font-size:11px;color:var(--text-dim);margin-bottom:13px;">Use <strong>+ Recurring Task</strong> to assign a chore a specific day — it shows in the calendar every week. Auto-resets every Sunday.</p>
+  <div class="grid g2">
+    <div class="card"><input class="card-title-input" id="hhP1Title" value="Mitch's Responsibilities"><input class="card-sub-input" value="Weekly recurring"><ul class="task-list" id="hhP1List"></ul>
+      <div class="add-row"><input type="text" id="hhP1Input" placeholder="Add chore…"><input type="text" id="hhP1Freq" placeholder="Day/Freq" style="flex:0 0 auto;width:100px;"><button class="btn btn-gold btn-sm" onclick="addHHTask('P1')">Add</button></div></div>
+    <div class="card"><input class="card-title-input" id="hhP2Title" value="Liz's Responsibilities"><input class="card-sub-input" value="Weekly recurring"><ul class="task-list" id="hhP2List"></ul>
+      <div class="add-row"><input type="text" id="hhP2Input" placeholder="Add chore…"><input type="text" id="hhP2Freq" placeholder="Day/Freq" style="flex:0 0 auto;width:100px;"><button class="btn btn-gold btn-sm" onclick="addHHTask('P2')">Add</button></div></div>
+    <div class="card"><input class="card-title-input" value="Shared / Rotating"><input class="card-sub-input" value="Take turns or together"><ul class="task-list" id="hhSharedList"></ul>
+      <div class="add-row"><input type="text" id="hhSharedInput" placeholder="Add chore…"><input type="text" id="hhSharedFreq" placeholder="Day/Freq" style="flex:0 0 auto;width:100px;"><button class="btn btn-gold btn-sm" onclick="addHHTask('Shared')">Add</button></div></div>
+    <div class="card"><input class="card-title-input" value="Downsize Checklist"><input class="card-sub-input" value="Save $400-800/mo"><ul class="task-list" id="hhDownsizeList"></ul>
+      <div class="add-row"><input type="text" id="hhDownInput" placeholder="Add step…"><button class="btn btn-gold btn-sm" onclick="addToList('hhDownsizeList','hhDownInput','both')">Add</button></div></div>
+  </div>
+</section>
+
+<!-- MEALS -->
+<section class="section" id="meals">
+  <div class="sec-hdr"><div><div class="eyebrow">Nutrition</div><h2>Meal Planning</h2></div><button class="btn btn-ghost btn-sm" onclick="clearMeals()">Clear Week</button></div>
+  <div class="grid g2">
+    <div class="card"><input class="card-title-input" value="This Week's Meals"><input class="card-sub-input" value="Fill in as you plan · saves automatically"><div id="mealPlanContainer"></div></div>
+    <div class="card"><input class="card-title-input" value="Grocery List"><input class="card-sub-input" value="Check off when bought"><ul class="task-list" id="groceryList"></ul>
+      <div class="add-row"><input type="text" id="groceryInput" placeholder="Add item…"><button class="btn btn-gold btn-sm" onclick="addToList('groceryList','groceryInput','both')">Add</button></div></div>
+  </div>
+</section>
+
+<!-- HEALTH -->
+<section class="section" id="health">
+  <div class="sec-hdr"><div><div class="eyebrow">Wellness</div><h2>Health & Energy</h2></div>
+  <div class="hdr-actions"><button class="btn btn-ghost btn-sm" onclick="openM('mTask')">+ Recurring Task</button><button class="btn btn-ghost btn-sm" onclick="resetHealth()">&#8635; Reset Week</button></div></div>
+  <p style="font-size:11px;color:var(--text-dim);margin-bottom:13px;">All section titles are editable — click any gold title to rename it. Resets every Sunday.</p>
+  <div class="grid g2">
+    <div class="card"><input class="card-title-input" value="Weekly Workout Plan"><input class="card-sub-input" value="Tap days · check off workouts · resets Sunday">
+      <div id="workoutDays" style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:12px;"></div>
+      <ul class="task-list" id="workoutList"></ul>
+      <div class="add-row"><input type="text" id="workoutInput" placeholder="Add workout…"><button class="btn btn-gold btn-sm" onclick="addToList('workoutList','workoutInput','both')">Add</button></div></div>
+    <div class="card"><input class="card-title-input" value="Daily Habits"><input class="card-sub-input" value="Click title above to rename this section"><ul class="task-list" id="dailyHabitList"></ul>
+      <div class="add-row"><input type="text" id="habitInput" placeholder="Add habit…"><button class="btn btn-gold btn-sm" onclick="addToList('dailyHabitList','habitInput','both')">Add</button></div></div>
+    <div class="card"><input class="card-title-input" value="Weekly Rules & Intentions"><input class="card-sub-input" value="Rename this section to anything you want"><ul class="task-list" id="nutritionList"></ul>
+      <div class="add-row"><input type="text" id="nutritionInput" placeholder="Add item…"><button class="btn btn-gold btn-sm" onclick="addToList('nutritionList','nutritionInput','both')">Add</button></div></div>
+  </div>
+</section>
+
+<!-- FAITH -->
+<section class="section" id="faith">
+  <div class="sec-hdr"><div><div class="eyebrow">Sacramental Life</div><h2>&#10011;&#65039; Faith &amp; Marriage</h2></div>
+  <button class="btn btn-ghost btn-sm" onclick="openM('mMilestone');document.getElementById('msSection').value='faith'">+ Milestone</button></div>
+  <div class="grid g2">
+    <div class="card"><div class="card-title">Daily Mass Readings</div><div class="card-sub" id="massDateLbl">Today</div><div id="massReadings"><p style="color:var(--text-dim);font-size:12px;">Loading…</p></div>
+      <button class="btn btn-ghost btn-sm" style="margin-top:10px;" onclick="fetchMassReadings()">&#8635; Refresh</button></div>
+    <div class="card"><input class="card-title-input" value="Sacramental Path"><input class="card-sub-input" value="Click dot to change status · click text to edit"><ul class="ms-list" id="faithMilestones"></ul></div>
+    <div class="card"><input class="card-title-input" value="Engagement & Marriage"><input class="card-sub-input" value="Add your own steps · edit or delete anything"><ul class="task-list" id="engageList"></ul>
+      <div class="add-row"><input type="text" id="engageInput" placeholder="Add step…"><button class="btn btn-gold btn-sm" onclick="addToList('engageList','engageInput','both')">Add</button></div></div>
+    <div class="card"><input class="card-title-input" value="Spiritual Habits"><input class="card-sub-input" value="Daily & weekly practices · all editable"><ul class="task-list" id="faithHabitList"></ul>
+      <div class="add-row"><input type="text" id="faithHabitInput" placeholder="Add practice…"><button class="btn btn-gold btn-sm" onclick="addToList('faithHabitList','faithHabitInput','both')">Add</button></div></div>
+  </div>
+</section>
+
+<!-- DOGS -->
+<section class="section" id="dogs">
+  <div class="sec-hdr"><div><div class="eyebrow">The Boys</div><h2>Denver &amp; Gordie &#128062;</h2></div>
+  <button class="btn btn-gold btn-sm" onclick="openM('mDogBox')">+ Add Section</button></div>
+  <p style="font-size:11px;color:var(--text-dim);margin-bottom:13px;">Every title, subtitle, time, and item is editable. Delete any section or item with ✕.</p>
+  <div class="grid g2" id="dogBoxContainer"></div>
+</section>
+
+<!-- NOTES -->
+<section class="section" id="notes">
+  <div class="sec-hdr"><div><div class="eyebrow">Open Pad</div><h2>Notes &amp; Ideas</h2></div></div>
+  <div class="grid g2">
+    <div class="card"><div class="card-title">Add a Note</div>
+      <div style="display:flex;flex-direction:column;gap:8px;"><input type="text" id="noteTitle" placeholder="Title…"><textarea id="noteBody" placeholder="Idea, thought, plan…" style="min-height:90px;"></textarea>
+        <div style="display:flex;gap:7px;"><select id="noteWho" style="flex:1;"></select><button class="btn btn-gold btn-sm" onclick="addNote('notesList','noteTitle','noteBody')">Save</button></div></div></div>
+    <div class="card"><div class="card-title">Saved Notes</div>
+      <div id="notesList"><div class="note-card"><strong>Our Why</strong><br>We want to build a life that reflects what we're called to — ordered, purposeful, sacramental, free. Keep this in view when the day-to-day gets hard.<button class="note-del" onclick="this.closest('.note-card').remove()">&#10005;</button><div class="note-meta">Pinned &middot; Both</div></div></div></div>
+  </div>
+</section>
+</main>
+<script>
+const LS={get:(k,d)=>{try{const v=localStorage.getItem(k);return v!=null?JSON.parse(v):d;}catch{return d;}},set:(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v));}catch{}}};
+let cfg=LS.get('cfg4',{p1Name:'Mitch',p1Init:'MD',p1Color:'#c9a84c',p2Name:'Liz',p2Init:'Liz',p2Color:'#c4756b',location:'Lancaster, PA · Ponte Vedra Beach 2027',targetDate:'2027-09-01'});
+let currentPerson='p1',personFilter='all',calView='month';
+const now=new Date();
+let calYear=now.getFullYear(),calMonth=now.getMonth(),calWeekStart=getWeekStart(now),selectedDate=ds(now);
+let events=LS.get('events4',[]);
+const GCAL_CLIENT_ID = '297776959268-bu61akpvvu49v4cbada6j9on9bbndj2q.apps.googleusercontent.com';
+const GCAL_SCOPE = 'https://www.googleapis.com/auth/calendar.readonly';
+let gcalTokenClients = { p1: null, p2: null };
+let gcalTokens = LS.get('gcalTokens', { p1: null, p2: null });
+let gcalEvents = LS.get('gcalEvents', { p1: [], p2: [] });
+let recurringTasks=LS.get('rTasks4',[
+  {id:1,name:'Take out trash & recycling',who:'p1',day:1,cat:'household',freq:'Weekly'},
+  {id:2,name:'Morning dog walks',who:'p1',day:1,cat:'dogs',freq:''},{id:3,name:'Morning dog walks',who:'p1',day:2,cat:'dogs',freq:''},{id:4,name:'Morning dog walks',who:'p1',day:3,cat:'dogs',freq:''},{id:5,name:'Morning dog walks',who:'p1',day:4,cat:'dogs',freq:''},{id:6,name:'Morning dog walks',who:'p1',day:5,cat:'dogs',freq:''},
+  {id:7,name:'Evening dog walks',who:'p2',day:1,cat:'dogs',freq:''},{id:8,name:'Evening dog walks',who:'p2',day:2,cat:'dogs',freq:''},{id:9,name:'Evening dog walks',who:'p2',day:3,cat:'dogs',freq:''},{id:10,name:'Evening dog walks',who:'p2',day:4,cat:'dogs',freq:''},{id:11,name:'Evening dog walks',who:'p2',day:5,cat:'dogs',freq:''},
+  {id:12,name:'Meal planning & prep',who:'p2',day:0,cat:'household',freq:'Weekly'},{id:13,name:'Laundry',who:'p2',day:6,cat:'household',freq:'Weekly'},{id:14,name:'Vacuum common areas',who:'p1',day:6,cat:'household',freq:'Weekly'},
+  {id:15,name:'Sunday Mass together',who:'both',day:0,cat:'faith',freq:'Weekly'},
+]);
+let skipped=LS.get('skipped4',{});
+let taskDone=LS.get('taskDone4',{});
+let budget=LS.get('bud4',[
+  {id:1,name:'Take-home (est. after PA tax)',type:'income',amount:9200},{id:2,name:'Rent',type:'expense',amount:2200},
+  {id:3,name:'Food & Groceries',type:'expense',amount:600},{id:4,name:'Dog care',type:'expense',amount:300},
+  {id:5,name:'Car / Transportation',type:'expense',amount:700},{id:6,name:'Student Loans',type:'expense',amount:1800},
+  {id:7,name:'Health Insurance',type:'expense',amount:600},{id:8,name:'Subscriptions',type:'expense',amount:200},
+  {id:9,name:'Liz cert costs',type:'expense',amount:200},{id:10,name:'Practice Fund',type:'savings',amount:500},
+]);
+let funds=LS.get('funds4',[{id:1,name:'Practice Fund',goal:80000,saved:0,notes:'PVB office opening'},{id:2,name:'Ring Fund',goal:5000,saved:0,notes:'Engagement ring'}]);
+let pillars=LS.get('pillars4',[{id:1,name:'💰 Financial Health',pct:20,color:'fill-gold'},{id:2,name:'🏥 Practice Build',pct:5,color:'fill-sky'},{id:3,name:'🏠 Household Order',pct:30,color:'fill-sage'},{id:4,name:'💪 Health & Wellness',pct:15,color:'fill-rose'},{id:5,name:'✝️ Faith & Sacramental Life',pct:25,color:'fill-gold'},{id:6,name:'💍 Engagement & Marriage',pct:10,color:'fill-rose'}]);
+let countdowns=LS.get('cdns4',[{id:1,name:'Practice Open',date:'2027-09-01'}]);
+let pracMS=LS.get('pracMS4',[{id:1,title:'Research PVB market & competition',date:'Now — Q3 2025',status:'active',tag:'Active'},{id:2,title:'Liz completes pediatric cranial cert',date:'2025 · In progress',status:'active',tag:'Career'},{id:3,title:'Apply for Florida chiro licenses',date:'Q1 2026',status:'pending',tag:'Legal'},{id:4,title:'Form LLC in Florida',date:'Q2 2026',status:'pending',tag:'Legal'},{id:5,title:'Identify & tour PVB office spaces',date:'Q3–Q4 2026',status:'pending',tag:'Space'},{id:6,title:'Sign lease · begin buildout',date:'Q1 2027',status:'pending',tag:'Big Step'},{id:7,title:'Hire front desk · set up EHR',date:'Q2–Q3 2027',status:'pending',tag:'Ops'},{id:8,title:'🎉 Open Doors',date:'September 2027',status:'key',tag:'Launch'}]);
+let faithMS=LS.get('faithMS4',[{id:1,title:'Find a solid local Catholic parish',date:'Now',status:'active',tag:''},{id:2,title:'Liz: Explore RCIA',date:'RCIA begins Sept each year',status:'pending',tag:''},{id:3,title:'Meet with a priest — guidance on living situation',date:'Soon',status:'pending',tag:''},{id:4,title:'Engagement + Pre-Cana marriage prep',date:'6 months before wedding',status:'pending',tag:''},{id:5,title:'💍 Sacramental marriage',date:'Timeline TBD',status:'key',tag:''}]);
+let dogBoxes=LS.get('dogBoxes4',[{id:1,title:'Daily Schedule',sub:'Consistency = calmer dogs',type:'schedule',items:[{id:1,time:'7:00 AM',text:'Morning walk — Mitch (before work)'},{id:2,time:'12:00 PM',text:'Midday potty break'},{id:3,time:'5:30 PM',text:'Evening walk — Liz (after work)'},{id:4,time:'8:00 PM',text:'Play / wind-down time'},{id:5,time:'9:30 PM',text:'Last potty break before bed'}]},{id:2,title:'Care Checklist',sub:'Weekly & monthly tasks',type:'checklist',items:[{id:1,text:'Denver: flea/tick/heartworm meds',freq:'Monthly',done:false},{id:2,text:'Gordie: flea/tick/heartworm meds',freq:'Monthly',done:false},{id:3,text:'Brush both dogs',freq:'Weekly',done:false},{id:4,text:'Wash dog bowls & bedding',freq:'Weekly',done:false},{id:5,text:'Restock food & treats',freq:'As needed',done:false},{id:6,text:'Annual vet checkups',freq:'Yearly',done:false}]}]);
+let mealPlan=LS.get('meals4',{});
+let budIdC=LS.get('bidC4',20);
+const PERSISTABLE_LISTS = ['focusList','finTaskList','moneyList','pracTaskList','hhP1List','hhP2List','hhSharedList','hhDownsizeList','groceryList','workoutList','dailyHabitList','nutritionList','engageList','faithHabitList'];
+
+function ds(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
+function fmtTime(t){if(!t)return '';const[h,m]=t.split(':');const hr=parseInt(h);return(hr%12||12)+':'+m+' '+(hr<12?'AM':'PM');}
+function getWeekStart(d){const s=new Date(d);s.setDate(d.getDate()-d.getDay());s.setHours(0,0,0,0);return s;}
+function addDays(d,n){const r=new Date(d);r.setDate(r.getDate()+n);return r;}
+function wc(who){return who==='p1'?cfg.p1Color:who==='p2'?cfg.p2Color:'var(--sage)';}
+function wn(who){return who==='p1'?cfg.p1Name:who==='p2'?cfg.p2Name:'Both';}
+function wi(who){return who==='p1'?cfg.p1Init:who==='p2'?cfg.p2Init:'★';}
+
+initSettings();renderAll();fetchMassReadings();buildWorkoutDays();checkWeeklyReset();
+
+/* ===== DAILY QUOTE — Scripture & Saints, rotates by date ===== */
+const DAILY_QUOTES = [
+  // SCRIPTURE — Douay-Rheims
+  {text:"Be not afraid.",source:"John 6:20"},
+  {text:"I can do all things in him who strengtheneth me.",source:"Philippians 4:13 (DR)"},
+  {text:"The Lord is my shepherd; I shall not want.",source:"Psalm 23:1"},
+  {text:"Seek ye first the kingdom of God, and his justice, and all these things shall be added unto you.",source:"Matthew 6:33 (DR)"},
+  {text:"For I know the thoughts that I think toward you, saith the Lord, thoughts of peace, and not of affliction.",source:"Jeremiah 29:11 (DR)"},
+  {text:"Trust in the Lord with all thy heart, and lean not upon thy own prudence.",source:"Proverbs 3:5 (DR)"},
+  {text:"This is the day the Lord hath made; let us be glad and rejoice therein.",source:"Psalm 118:24 (DR)"},
+  {text:"Be strong, and let your heart be strengthened, all ye that hope in the Lord.",source:"Psalm 31:24 (DR)"},
+  {text:"If God be for us, who is against us?",source:"Romans 8:31"},
+  {text:"Charity is patient, is kind: charity envieth not, dealeth not perversely; is not puffed up.",source:"1 Corinthians 13:4 (DR)"},
+  {text:"Even though I walk through the valley of the shadow of death, I will fear no evil: for thou art with me.",source:"Psalm 23:4 (DR)"},
+  {text:"Let us not love in word, neither in tongue, but in deed and in truth.",source:"1 John 3:18 (DR)"},
+  {text:"Watch ye, stand fast in the faith, do manfully, and be strengthened.",source:"1 Corinthians 16:13 (DR)"},
+  {text:"And we know that to them that love God, all things work together unto good.",source:"Romans 8:28 (DR)"},
+  {text:"He that shall persevere to the end, he shall be saved.",source:"Matthew 24:13 (DR)"},
+  {text:"Come to me, all you that labour, and are burdened, and I will refresh you.",source:"Matthew 11:28 (DR)"},
+  {text:"Ask, and it shall be given you: seek, and you shall find: knock, and it shall be opened to you.",source:"Matthew 7:7 (DR)"},
+  {text:"Be not overcome by evil, but overcome evil by good.",source:"Romans 12:21 (DR)"},
+  {text:"For what shall it profit a man, if he gain the whole world, and suffer the loss of his soul?",source:"Mark 8:36 (DR)"},
+  {text:"I am the way, and the truth, and the life.",source:"John 14:6 (DR)"},
+  {text:"The truth shall make you free.",source:"John 8:32 (DR)"},
+  {text:"Greater love than this no man hath, that a man lay down his life for his friends.",source:"John 15:13 (DR)"},
+  {text:"He that humbleth himself shall be exalted.",source:"Luke 14:11 (DR)"},
+  {text:"Fear not, little flock, for it hath pleased your Father to give you a kingdom.",source:"Luke 12:32 (DR)"},
+  {text:"With God all things are possible.",source:"Matthew 19:26 (DR)"},
+  {text:"The Lord is my light and my salvation, whom shall I fear?",source:"Psalm 27:1 (DR)"},
+  {text:"Unless the Lord build the house, they labour in vain that build it.",source:"Psalm 127:1 (DR)"},
+  {text:"The fear of the Lord is the beginning of wisdom.",source:"Proverbs 9:10 (DR)"},
+  {text:"A faithful friend is a strong defence: and he that hath found him, hath found a treasure.",source:"Sirach 6:14 (DR)"},
+  {text:"Be ye angry, and sin not. Let not the sun go down upon your anger.",source:"Ephesians 4:26 (DR)"},
+  {text:"Put on the armour of God, that you may be able to stand against the deceits of the devil.",source:"Ephesians 6:11 (DR)"},
+  {text:"I have fought a good fight, I have finished my course, I have kept the faith.",source:"2 Timothy 4:7 (DR)"},
+  {text:"Be sober and watch: because your adversary the devil, as a roaring lion, goeth about seeking whom he may devour.",source:"1 Peter 5:8 (DR)"},
+  {text:"Casting all your care upon him, for he hath care of you.",source:"1 Peter 5:7 (DR)"},
+  {text:"Draw nigh to God, and he will draw nigh to you.",source:"James 4:8 (DR)"},
+  {text:"What doth it profit, my brethren, if a man say he hath faith, but hath not works?",source:"James 2:14 (DR)"},
+  {text:"Whatsoever you do in word or in work, do all in the name of the Lord Jesus Christ.",source:"Colossians 3:17 (DR)"},
+  {text:"And above all these things have charity, which is the bond of perfection.",source:"Colossians 3:14 (DR)"},
+  {text:"Do all things without murmurings and hesitations.",source:"Philippians 2:14 (DR)"},
+  {text:"I have learned, in whatsoever state I am, to be content therewith.",source:"Philippians 4:11 (DR)"},
+  {text:"Now the God of hope fill you with all joy and peace in believing.",source:"Romans 15:13 (DR)"},
+  {text:"For the wages of sin is death. But the grace of God, life everlasting.",source:"Romans 6:23 (DR)"},
+  {text:"There is therefore now no condemnation to them that are in Christ Jesus.",source:"Romans 8:1 (DR)"},
+  {text:"Who shall separate us from the love of Christ?",source:"Romans 8:35 (DR)"},
+  {text:"For I am sure that neither death, nor life... shall be able to separate us from the love of God.",source:"Romans 8:38-39 (DR)"},
+  {text:"Rejoice always. Pray without ceasing. In all things give thanks.",source:"1 Thessalonians 5:16-18 (DR)"},
+  {text:"Do not be conformed to this world, but be reformed in the newness of your mind.",source:"Romans 12:2 (DR)"},
+  {text:"Blessed are the pure of heart: for they shall see God.",source:"Matthew 5:8 (DR)"},
+  {text:"Blessed are the peacemakers: for they shall be called the children of God.",source:"Matthew 5:9 (DR)"},
+  {text:"Blessed are they that hunger and thirst after justice: for they shall have their fill.",source:"Matthew 5:6 (DR)"},
+  {text:"You are the light of the world. A city seated on a mountain cannot be hid.",source:"Matthew 5:14 (DR)"},
+  {text:"No man can serve two masters.",source:"Matthew 6:24 (DR)"},
+  {text:"Be you therefore perfect, as also your heavenly Father is perfect.",source:"Matthew 5:48 (DR)"},
+  {text:"The harvest indeed is great, but the labourers are few.",source:"Matthew 9:37 (DR)"},
+  {text:"He that findeth his life, shall lose it: and he that shall lose his life for me, shall find it.",source:"Matthew 10:39 (DR)"},
+  {text:"Blessed is the man that endureth temptation; for when he hath been proved, he shall receive the crown of life.",source:"James 1:12 (DR)"},
+  {text:"Every best gift, and every perfect gift, is from above, coming down from the Father of lights.",source:"James 1:17 (DR)"},
+  {text:"Humble yourselves therefore under the mighty hand of God, that he may exalt you in the time of visitation.",source:"1 Peter 5:6 (DR)"},
+  {text:"For we walk by faith and not by sight.",source:"2 Corinthians 5:7 (DR)"},
+  {text:"Now faith is the substance of things to be hoped for, the evidence of things that appear not.",source:"Hebrews 11:1 (DR)"},
+  {text:"Jesus Christ, yesterday, and today; and the same for ever.",source:"Hebrews 13:8 (DR)"},
+  {text:"Let us run by patience to the fight proposed to us: looking on Jesus, the author and finisher of faith.",source:"Hebrews 12:1-2 (DR)"},
+  {text:"Whom have I in heaven? and besides thee what do I desire upon earth?",source:"Psalm 73:25 (DR)"},
+  {text:"My God and my all.",source:"St. Francis of Assisi — his constant prayer"},
+  {text:"Create a clean heart in me, O God: and renew a right spirit within my bowels.",source:"Psalm 51:12 (DR)"},
+  {text:"Have mercy on me, O God, according to thy great mercy.",source:"Psalm 51:1 (DR)"},
+  {text:"My soul is thirsting for God, the living God.",source:"Psalm 42:2 (DR)"},
+  {text:"As the hart panteth after the fountains of water; so my soul panteth after thee, O God.",source:"Psalm 42:1 (DR)"},
+  {text:"Taste and see that the Lord is sweet.",source:"Psalm 34:8 (DR)"},
+  {text:"The Lord is nigh unto them that are of a contrite heart: and he will save the humble of spirit.",source:"Psalm 34:18 (DR)"},
+  {text:"Many are the afflictions of the just; but out of them all will the Lord deliver them.",source:"Psalm 34:19 (DR)"},
+  {text:"Cast thy care upon the Lord, and he shall sustain thee.",source:"Psalm 55:22 (DR)"},
+  {text:"God is our refuge and strength; a helper in troubles, which have found us exceedingly.",source:"Psalm 46:1 (DR)"},
+  {text:"Be still and see that I am God.",source:"Psalm 46:10 (DR)"},
+  {text:"In God is my salvation and my glory: he is the God of my help, and my hope is in God.",source:"Psalm 62:7 (DR)"},
+  {text:"They that trust in the Lord shall be as mount Sion: he shall not be moved for ever.",source:"Psalm 125:1 (DR)"},
+  {text:"Unless the Lord keep the city, he watcheth in vain that keepeth it.",source:"Psalm 127:1 (DR)"},
+  {text:"The Lord is thy keeper, the Lord is thy protection upon thy right hand.",source:"Psalm 121:5 (DR)"},
+  {text:"I will lift up my eyes to the mountains, from whence help shall come to me.",source:"Psalm 121:1 (DR)"},
+  {text:"Out of the depths I have cried to thee, O Lord: Lord, hear my voice.",source:"Psalm 130:1 (DR)"},
+  {text:"With the Lord there is mercy: and with him plentiful redemption.",source:"Psalm 130:7 (DR)"},
+  {text:"Praise ye the Lord, for he is good: for his mercy endureth for ever.",source:"Psalm 106:1 (DR)"},
+  {text:"He hath not dealt with us according to our sins: nor rewarded us according to our iniquities.",source:"Psalm 103:10 (DR)"},
+  {text:"Bless the Lord, O my soul: and let all that is within me bless his holy name.",source:"Psalm 103:1 (DR)"},
+  {text:"What reward shall I give to the Lord, for all the things that he hath given to me?",source:"Psalm 116:12 (DR)"},
+  {text:"The stone which the builders rejected; the same is become the head of the corner.",source:"Psalm 118:22 (DR)"},
+  {text:"Thy word is a lamp to my feet, and a light to my paths.",source:"Psalm 119:105 (DR)"},
+  {text:"I rejoiced at the things that were said to me: We shall go into the house of the Lord.",source:"Psalm 122:1 (DR)"},
+  {text:"Thou art my God, and I will praise thee: thou art my God, and I will exalt thee.",source:"Psalm 118:28 (DR)"},
+  {text:"Not to us, O Lord, not to us; but to thy name give glory.",source:"Psalm 115:1 (DR)"},
+  {text:"The Lord is my strength and my praise, and he is become my salvation.",source:"Psalm 118:14 (DR)"},
+  {text:"I will praise thee, O Lord, with my whole heart.",source:"Psalm 9:1 (DR)"},
+  {text:"The Lord is the portion of my inheritance and of my cup: it is thou that wilt restore my inheritance to me.",source:"Psalm 16:5 (DR)"},
+  {text:"I will love thee, O Lord, my strength: The Lord is my firmament, my refuge, and my deliverer.",source:"Psalm 18:1-2 (DR)"},
+  {text:"The heavens shew forth the glory of God, and the firmament declareth the work of his hands.",source:"Psalm 19:1 (DR)"},
+  {text:"The Lord ruleth me: and I shall want nothing.",source:"Psalm 23:1 (DR)"},
+  {text:"The earth is the Lord's and the fulness thereof: the world, and all they that dwell therein.",source:"Psalm 24:1 (DR)"},
+  {text:"Who is this king of glory? The Lord who is strong and mighty: the Lord mighty in battle.",source:"Psalm 24:8 (DR)"},
+  {text:"To thee, O Lord, have I lifted up my soul.",source:"Psalm 25:1 (DR)"},
+  {text:"One thing I have asked of the Lord, this will I seek after; that I may dwell in the house of the Lord all the days of my life.",source:"Psalm 27:4 (DR)"},
+  {text:"Wait on the Lord, do manfully, and let thy heart take courage, and wait thou on the Lord.",source:"Psalm 27:14 (DR)"},
+  // SAINTS
+  {text:"Our heart is restless until it rests in Thee.",source:"St. Augustine, Confessions"},
+  {text:"Thou madest us for Thyself, and our heart is restless, until it repose in Thee.",source:"St. Augustine, Confessions I.1"},
+  {text:"Love, and do what you will.",source:"St. Augustine"},
+  {text:"Pray as though everything depended on God. Work as though everything depended on you.",source:"St. Augustine / St. Ignatius tradition"},
+  {text:"Our soul is restless until it finds its rest in thee.",source:"St. Augustine"},
+  {text:"To fall in love with God is the greatest romance; to seek him the greatest adventure; to find him, the greatest human achievement.",source:"St. Augustine"},
+  {text:"You have made us for yourself, O Lord, and our hearts are restless until they rest in you.",source:"St. Augustine, Confessions"},
+  {text:"Conquer yourself and the world lies at your feet.",source:"St. Augustine"},
+  {text:"God has no need of your money, but the poor have. You give it to the poor, and God receives it.",source:"St. Augustine"},
+  {text:"Take care of your body as if you were going to live forever; and take care of your soul as if you were going to die tomorrow.",source:"St. Augustine"},
+  {text:"He who created us without our help will not save us without our consent.",source:"St. Augustine"},
+  {text:"Thou art beautiful, O Lord, and thy truth is beautiful above all things.",source:"St. Augustine"},
+  {text:"Let us not look for rest in this life; let us look for it in the next.",source:"St. Augustine"},
+  {text:"Our soul is made for God, and it will not rest until it rests in God.",source:"St. Augustine"},
+  {text:"What does it profit a man to have great qualities if he does not know how to make use of them?",source:"St. Francis de Sales"},
+  {text:"Do not look forward to what may happen tomorrow. The same everlasting Father who cares for you today will take care of you tomorrow.",source:"St. Francis de Sales"},
+  {text:"Be who you are and be that well.",source:"St. Francis de Sales"},
+  {text:"Have patience with all things, but chiefly have patience with yourself.",source:"St. Francis de Sales"},
+  {text:"The everlasting God has in His wisdom foreseen from eternity the cross that He now presents to you as a gift.",source:"St. Francis de Sales"},
+  {text:"Make friends with the angels, who though invisible are always with you.",source:"St. Francis de Sales"},
+  {text:"Never be in a hurry; do everything quietly and in a calm spirit.",source:"St. Francis de Sales"},
+  {text:"Nothing is so strong as gentleness, nothing so gentle as real strength.",source:"St. Francis de Sales"},
+  {text:"We must hate our faults, but with a quiet, tranquil hatred, not with a harsh, restless hatred.",source:"St. Francis de Sales"},
+  {text:"The glory of God is man fully alive.",source:"St. Irenaeus"},
+  {text:"Sanctity is not the privilege of a few, but a duty for all.",source:"St. Maximilian Kolbe"},
+  {text:"No one in the world can alter truth. All we can do is seek it and live it.",source:"St. Maximilian Kolbe"},
+  {text:"The most deadly poison of our times is indifference.",source:"St. Maximilian Kolbe"},
+  {text:"Let us remember that love lives through sacrifice and is nourished by giving.",source:"St. Maximilian Kolbe"},
+  {text:"He who suffers much will know much.",source:"St. John Vianney"},
+  {text:"The saints did not all begin well, but they all ended well.",source:"St. John Vianney"},
+  {text:"Without the cross there is no ladder by which we can get to heaven.",source:"St. John Vianney"},
+  {text:"Prayer is to our soul what rain is to the soil.",source:"St. John Vianney"},
+  {text:"Tell God all that is in your heart, as one unloads one's heart, its pleasures and its pains, to a dear friend.",source:"St. John Vianney"},
+  {text:"A soul which has given itself to God thinks only of Him and how to please Him.",source:"St. John Vianney"},
+  {text:"A good shepherd, a shepherd after God's heart, is the greatest treasure which the good Lord can grant to a parish.",source:"St. John Vianney"},
+  {text:"Holiness consists simply in doing the will of God, and being just what God wants us to be.",source:"St. Thérèse of Lisieux"},
+  {text:"I will spend my heaven doing good on earth.",source:"St. Thérèse of Lisieux"},
+  {text:"Miss no single opportunity of making some small sacrifice, here by a smiling look, there by a kindly word.",source:"St. Thérèse of Lisieux"},
+  {text:"You cannot be half a saint; you must be a whole saint or no saint at all.",source:"St. Thérèse of Lisieux"},
+  {text:"The world's thy ship and not thy home.",source:"St. Thérèse of Lisieux"},
+  {text:"Without love, deeds, even the most brilliant, count as nothing.",source:"St. Thérèse of Lisieux"},
+  {text:"My vocation is love.",source:"St. Thérèse of Lisieux"},
+  {text:"In the evening of life, we shall be judged on love alone.",source:"St. John of the Cross"},
+  {text:"Where there is no love, put love — and you will find love.",source:"St. John of the Cross"},
+  {text:"To reach satisfaction in all, desire satisfaction in nothing.",source:"St. John of the Cross"},
+  {text:"The soul that is attached to anything, however much good there may be in it, will not arrive at the liberty of divine union.",source:"St. John of the Cross"},
+  {text:"God passes through the thicket of the world, and wherever His glance falls He turns all things to beauty.",source:"St. John of the Cross"},
+  {text:"Let nothing disturb thee; let nothing dismay thee: all things pass; God never changes.",source:"St. Teresa of Ávila"},
+  {text:"Christ has no body now on earth but yours; yours are the hands with which He blesses all the world.",source:"St. Teresa of Ávila"},
+  {text:"The feeling remains that God is on the journey, too.",source:"St. Teresa of Ávila"},
+  {text:"It is love alone that gives worth to all things.",source:"St. Teresa of Ávila"},
+  {text:"We can only learn to know ourselves and do what we can — namely, surrender our will and fulfill God's will in us.",source:"St. Teresa of Ávila"},
+  {text:"There are more tears shed over answered prayers than over unanswered prayers.",source:"St. Teresa of Ávila"},
+  {text:"Accustom yourself continually to make many acts of love, for they enkindle and melt the soul.",source:"St. Teresa of Ávila"},
+  {text:"If you would progress in virtue, do all your actions as if you saw the face of God.",source:"St. Teresa of Ávila"},
+  {text:"The important thing is not to think much, but to love much.",source:"St. Teresa of Ávila"},
+  {text:"Run, jump, shout, but do not sin.",source:"St. John Bosco"},
+  {text:"Without confidence and love, there can be no true education.",source:"St. John Bosco"},
+  {text:"Cheerfulness strengthens the heart and makes us persevere in a good life.",source:"St. Philip Neri"},
+  {text:"Cast yourself into the arms of God and be very sure that if he wants anything of you, He will fit you for the work.",source:"St. Philip Neri"},
+  {text:"A joyful heart is more easily made perfect than a downcast one.",source:"St. Philip Neri"},
+  {text:"He who wants to be perfectly obeyed, should give but few orders.",source:"St. Philip Neri"},
+  {text:"Acquire the habit of speaking to God as if you were alone with Him, familiarly and with confidence and love.",source:"St. Alphonsus Liguori"},
+  {text:"He who prays is certainly saved. He who prays not is certainly damned.",source:"St. Alphonsus Liguori"},
+  {text:"He who trusts himself is lost. He who trusts in God can do all things.",source:"St. Alphonsus Liguori"},
+  {text:"Do not let us take earthly things for our treasure, if we wish to find our treasure with Christ in heaven.",source:"St. Alphonsus Liguori"},
+  {text:"A man who governs his passions is master of the world. We must either command them or be enslaved by them.",source:"St. Dominic"},
+  {text:"Arm yourself with prayer rather than a sword; wear humility rather than fine clothes.",source:"St. Dominic"},
+  {text:"Speak to God as to a friend.",source:"St. Dominic"},
+  {text:"Sanctify yourself and you will sanctify society.",source:"St. Francis of Assisi"},
+  {text:"Start by doing what's necessary; then do what's possible; and suddenly you are doing the impossible.",source:"St. Francis of Assisi"},
+  {text:"Where there is charity and wisdom, there is neither fear nor ignorance.",source:"St. Francis of Assisi"},
+  {text:"It is no use walking anywhere to preach unless our walking is our preaching.",source:"St. Francis of Assisi"},
+  {text:"Lord, make me an instrument of your peace.",source:"St. Francis of Assisi — Peace Prayer"},
+  {text:"For it is in giving that we receive; it is in pardoning that we are pardoned.",source:"St. Francis of Assisi — Peace Prayer"},
+  {text:"We have been called to heal wounds, to unite what has fallen apart, and to bring home those who have lost their way.",source:"St. Francis of Assisi"},
+  {text:"While you are proclaiming peace with your lips, be careful to have it even more fully in your heart.",source:"St. Francis of Assisi"},
+  {text:"Do not grieve or complain that you were born in a time when you can no longer see God in the flesh.",source:"St. Thomas Aquinas"},
+  {text:"The things that we love tell us what we are.",source:"St. Thomas Aquinas"},
+  {text:"To one who has faith, no explanation is necessary. To one without faith, no explanation is possible.",source:"St. Thomas Aquinas"},
+  {text:"Better to illuminate than merely to shine, to deliver to others contemplated truths than merely to contemplate.",source:"St. Thomas Aquinas"},
+  {text:"There is nothing on this earth more to be prized than true friendship.",source:"St. Thomas Aquinas"},
+  {text:"The soul is like an eye: when it rests on what is beautiful, it sees more clearly.",source:"St. Thomas Aquinas"},
+  {text:"Love takes up where knowledge leaves off.",source:"St. Thomas Aquinas"},
+  {text:"God is the purest good. He is goodness itself.",source:"St. Thomas Aquinas"},
+  {text:"Three things are necessary for the salvation of man: to know what he ought to believe; to know what he ought to desire; and to know what he ought to do.",source:"St. Thomas Aquinas"},
+  {text:"Charity is no substitute for justice withheld.",source:"St. Augustine"},
+  {text:"If you are suffering, know that God is working on you.",source:"St. Pio of Pietrelcina (Padre Pio)"},
+  {text:"Pray, hope, and don't worry.",source:"St. Pio of Pietrelcina (Padre Pio)"},
+  {text:"Suffering is nothing by itself, but suffering shared with Christ's passion is a wonderful gift.",source:"St. Pio of Pietrelcina (Padre Pio)"},
+  {text:"Through the study of books one seeks God; by meditation one finds him.",source:"St. Pio of Pietrelcina (Padre Pio)"},
+  {text:"Do not fear the battle; it is necessary for the victory.",source:"St. Pio of Pietrelcina (Padre Pio)"},
+  {text:"Have courage and do not fear the assaults of the Devil.",source:"St. Pio of Pietrelcina (Padre Pio)"},
+  {text:"The Cross is the school of love.",source:"St. Pio of Pietrelcina (Padre Pio)"},
+  {text:"In the morning, think about what you want to do; at night, examine what you have done.",source:"St. Pio of Pietrelcina (Padre Pio)"},
+  {text:"God is love, and if you put love into everything you do, you will find God everywhere.",source:"St. Pio of Pietrelcina (Padre Pio)"},
+  {text:"Remember that your guardian angel is always present with you.",source:"St. Pio of Pietrelcina (Padre Pio)"},
+  {text:"The prayer that God hears most willingly is the prayer that comes from a humble heart.",source:"St. Bernard of Clairvaux"},
+  {text:"You will not find honey in the hive if you have frightened away the bees.",source:"St. Bernard of Clairvaux"},
+  {text:"What we love we shall grow to resemble.",source:"St. Bernard of Clairvaux"},
+  {text:"He who is his own master is a scholar under a fool.",source:"St. Bernard of Clairvaux"},
+  {text:"Sorrow for sin is indeed necessary, but it should not be an endless preoccupation.",source:"St. Bernard of Clairvaux"},
+  {text:"The true measure of love is to love without measure.",source:"St. Bernard of Clairvaux"},
+  {text:"Hell is full of good meanings and wishings.",source:"St. Bernard of Clairvaux"},
+  {text:"You aspire to great things? Begin with little ones.",source:"St. Augustine"},
+  {text:"If you are what you should be, you will set the whole world ablaze.",source:"St. Catherine of Siena"},
+  {text:"Be who God meant you to be and you will set the world on fire.",source:"St. Catherine of Siena"},
+  {text:"Nothing great is ever achieved without much enduring.",source:"St. Catherine of Siena"},
+  {text:"Speak the truth in a million voices. It is silence that kills.",source:"St. Catherine of Siena"},
+  {text:"We must be resolute and not give up the fight.",source:"St. Catherine of Siena"},
+  {text:"Every one of us needs half an hour of prayer each day, except when we are busy — then we need an hour.",source:"St. Francis de Sales"},
+  {text:"God commands you to pray, but He forbids you to worry.",source:"St. John Vianney"},
+  {text:"A saint is not someone who never sins, but one who sins less and less and gets up more and more quickly.",source:"St. Bernard of Clairvaux"},
+  {text:"We must not only give what we have; we must also give what we are.",source:"St. Desire Moreau"},
+  {text:"It is impossible to love deeply without sacrifice.",source:"St. Maximilian Kolbe"},
+  {text:"If you are faithful in little things, you will be faithful in large ones.",source:"St. Augustine"},
+  {text:"The strength of a man consists in finding out the way God is going, and going that way.",source:"Henry Ward Beecher — echoing the saints"},
+  {text:"Better to have a patch of virtue than a field of vice.",source:"St. Augustine"},
+  {text:"Never be too afraid of falling; always be afraid of not getting back up.",source:"St. Francis de Sales"},
+  {text:"The one who does not pick up the cross does not follow Christ.",source:"Imitation of Christ, Thomas à Kempis"},
+  {text:"What does it profit thee to enter into deep discussion concerning the Holy Trinity, if thou lack humility?",source:"Thomas à Kempis, Imitation of Christ"},
+  {text:"What doth it profit thee to know the whole Bible by heart, and the principles of all the philosophers, if thou be without love?",source:"Thomas à Kempis, Imitation of Christ"},
+  {text:"Better of a surety is a lowly peasant who serveth God, than a proud philosopher who watcheth the stars.",source:"Thomas à Kempis, Imitation of Christ"},
+  {text:"Vanity of vanities, all is vanity, save to love God and serve Him alone.",source:"Thomas à Kempis, Imitation of Christ"},
+  {text:"Many words satisfy not the soul, but a good life refresheth the mind.",source:"Thomas à Kempis, Imitation of Christ"},
+  {text:"Restrain the appetite, and thou shalt the more easily restrain every carnal desire.",source:"Thomas à Kempis, Imitation of Christ"},
+  {text:"He who knoweth himself well is vile in his own sight.",source:"Thomas à Kempis, Imitation of Christ"},
+  {text:"What doth it profit thee to have a profound discussion concerning the Trinity, if thou be void of humility?",source:"Thomas à Kempis, Imitation of Christ"},
+  {text:"He hath truly great peace who careth for nothing.",source:"Thomas à Kempis, Imitation of Christ"},
+  {text:"For naturally every man desireth knowledge, but what profiteth knowledge without the fear of God?",source:"Thomas à Kempis, Imitation of Christ"},
+  {text:"In truth, when the Day of Judgment comes, it will not matter what we have read but what we have done.",source:"Thomas à Kempis, Imitation of Christ"},
+  {text:"It is far better truly to know about thyself, than about the course of the stars.",source:"Thomas à Kempis, Imitation of Christ"},
+  {text:"If thou wilt learn and know anything profitably, love to be unknown and to be considered as nothing.",source:"Thomas à Kempis, Imitation of Christ"},
+  {text:"There is naturally in every man a desire to know, but what profiteth knowledge without the fear of God?",source:"Thomas à Kempis, Imitation of Christ"},
+  {text:"Keep thyself in peace, and then thou shalt be able to make peace among others.",source:"Thomas à Kempis, Imitation of Christ"},
+  {text:"Better of a surety is a humble peasant who serveth God, than a proud philosopher who watcheth the stars.",source:"Thomas à Kempis, Imitation of Christ"},
+  {text:"Many words satisfy not the soul, but a good life refresheth the mind.",source:"Thomas à Kempis, Imitation of Christ I.2"},
+  {text:"Prefer always to have less rather than more.",source:"Thomas à Kempis, Imitation of Christ"},
+  {text:"If thou desirest to learn anything for thy profit, love to be unknown and to be counted for nothing.",source:"Thomas à Kempis, Imitation of Christ"},
+  {text:"For it is vanity to wish for long life, and to have little care for a good life.",source:"Thomas à Kempis, Imitation of Christ"},
+  {text:"What profiteth it thee to enter into deep discussion concerning the Holy Trinity, if thou lack humility?",source:"Thomas à Kempis, Imitation of Christ"},
+  // CHESTERTON
+  {text:"The madman is not the man who has lost his reason. The madman is the man who has lost everything except his reason.",source:"G.K. Chesterton, Orthodoxy"},
+  {text:"The poet only asks to get his head into the heavens. It is the logician who seeks to get the heavens into his head. And it is his head that splits.",source:"G.K. Chesterton, Orthodoxy"},
+  {text:"Courage is almost a contradiction in terms. It means a strong desire to live taking the form of a readiness to die.",source:"G.K. Chesterton, Orthodoxy"},
+  {text:"It is not merely that God has arbitrarily made us such that we need Him; it is that without God we literally cannot be ourselves.",source:"G.K. Chesterton"},
+  {text:"There are two ways to get enough. One is to continue to accumulate more and more. The other is to desire less.",source:"G.K. Chesterton"},
+  {text:"The Christian ideal has not been tried and found wanting; it has been found difficult and left untried.",source:"G.K. Chesterton, What's Wrong with the World"},
+  {text:"To be clever enough to get all that money, one must be stupid enough to want it.",source:"G.K. Chesterton"},
+  {text:"Coincidences are spiritual puns.",source:"G.K. Chesterton"},
+  {text:"The way to love anything is to realize that it might be lost.",source:"G.K. Chesterton"},
+  {text:"Education is simply the soul of a society as it passes from one generation to another.",source:"G.K. Chesterton"},
+  {text:"Fairy tales do not tell children the dragons exist. Children already know that dragons exist. Fairy tales tell children the dragons can be killed.",source:"G.K. Chesterton"},
+  {text:"The purpose of a prophet is not to see the future, but to correct the present.",source:"G.K. Chesterton"},
+  {text:"The true soldier fights not because he hates what is in front of him, but because he loves what is behind him.",source:"G.K. Chesterton"},
+  {text:"When it comes to life the critical thing is whether you take things for granted or take them with gratitude.",source:"G.K. Chesterton"},
+  {text:"To have a right to do a thing is not at all the same as to be right in doing it.",source:"G.K. Chesterton"},
+  {text:"It is not that Christianity has been tried and found wanting. It has been found difficult and left untried.",source:"G.K. Chesterton"},
+  {text:"A dead thing can go with the stream, but only a living thing can go against it.",source:"G.K. Chesterton"},
+  {text:"The man who does not bellow the truth when he knows the truth makes himself the accomplice of liars and forgers.",source:"G.K. Chesterton"},
+  {text:"Humor can get in under the door while seriousness is still fumbling at the handle.",source:"G.K. Chesterton"},
+  {text:"It is not a lack of love, but a lack of friendship that makes unhappy marriages.",source:"Friedrich Nietzsche — cited in Chesterton tradition as a warning"},
+  {text:"The riddles of God are more satisfying than the solutions of man.",source:"G.K. Chesterton"},
+  {text:"An adventure is only an inconvenience rightly considered.",source:"G.K. Chesterton"},
+  {text:"There is a road from the eye to the heart that does not go through the intellect.",source:"G.K. Chesterton"},
+  {text:"It is not bigotry to be certain we are right; but it is bigotry to be unable to imagine how we might possibly have gone wrong.",source:"G.K. Chesterton"},
+  // JOHN PAUL II
+  {text:"Do not abandon yourselves to despair. We are the Easter people and hallelujah is our song.",source:"St. John Paul II"},
+  {text:"Do not be afraid. Do not be satisfied with mediocrity.",source:"St. John Paul II"},
+  {text:"Freedom consists not in doing what we like, but in having the right to do what we ought.",source:"St. John Paul II"},
+  {text:"The future starts today, not tomorrow.",source:"St. John Paul II"},
+  {text:"Man is called to a fullness of life which far exceeds the dimensions of his earthly existence.",source:"St. John Paul II"},
+  {text:"As the family goes, so goes the nation, and so goes the whole world in which we live.",source:"St. John Paul II"},
+  {text:"Life is given to us to be spent, not saved.",source:"St. John Paul II"},
+  {text:"It is Jesus that you seek when you dream of happiness; He is waiting for you when nothing else you find satisfies you.",source:"St. John Paul II"},
+  {text:"Do not be afraid to be holy! Have the courage and humility to present yourselves to God just as you are.",source:"St. John Paul II"},
+  {text:"You are not the sum of your weaknesses and failures; you are the sum of the Father's love for you.",source:"St. John Paul II"},
+  {text:"Man always travels along precipices, and his truest obligation is to keep his balance.",source:"St. John Paul II"},
+  {text:"The great danger for family life is the existence of a sin culture which under the name of freedom promotes a kind of slavery.",source:"St. John Paul II"},
+  {text:"An excuse is worse and more terrible than a lie.",source:"Pope St. John Paul II"},
+  {text:"God assigns each of us a particular task in life. To discover what that task is, we must discern our vocation.",source:"St. John Paul II"},
+  {text:"Prayer is not a stratagem for occasional use, a kind of emergency kit we keep in the cabinet for accidents.",source:"St. John Paul II"},
+  // MISC SAINTS AND DOCTORS
+  {text:"If we truly want to follow God we must seek to be other-worldly.",source:"St. Bonaventure"},
+  {text:"Nothing is more practical than finding God, that is, than falling in love in a quite absolute, final way.",source:"Fr. Pedro Arrupe SJ"},
+  {text:"We know that all things work for good for those who love God.",source:"Romans 8:28"},
+  {text:"Woe to those who are at ease in Zion.",source:"Amos 6:1 (DR)"},
+  {text:"Do not be afraid of those who kill the body but cannot kill the soul.",source:"Matthew 10:28 (DR)"},
+  {text:"Whoever exalts himself will be humbled, and whoever humbles himself will be exalted.",source:"Matthew 23:12 (DR)"},
+  {text:"When I am weak, then I am strong.",source:"2 Corinthians 12:10 (DR)"},
+  {text:"For God did not give us a spirit of cowardice, but rather of power and love and self-control.",source:"2 Timothy 1:7 (DR)"},
+  {text:"Be an example to all believers in speech, in conduct, in love, in faith, and in purity.",source:"1 Timothy 4:12 (DR)"},
+  {text:"Do not grow tired of doing good.",source:"2 Thessalonians 3:13 (DR)"},
+  {text:"Remain faithful until death, and I will give you the crown of life.",source:"Revelation 2:10 (DR)"},
+  {text:"Behold, I make all things new.",source:"Revelation 21:5 (DR)"},
+  {text:"I am the Alpha and the Omega, the beginning and the end.",source:"Revelation 21:6 (DR)"},
+  {text:"God shall wipe away all tears from their eyes: and death shall be no more.",source:"Revelation 21:4 (DR)"},
+  {text:"He who has ears to hear, let him hear.",source:"Matthew 11:15 (DR)"},
+  {text:"You shall know them by their fruits.",source:"Matthew 7:16 (DR)"},
+  {text:"No good tree bears bad fruit, nor again does a bad tree bear good fruit.",source:"Luke 6:43 (DR)"},
+  {text:"The servant is not greater than his lord.",source:"John 15:20 (DR)"},
+  {text:"I am the vine; you are the branches.",source:"John 15:5 (DR)"},
+  {text:"Apart from me you can do nothing.",source:"John 15:5 (DR)"},
+  {text:"Peace be with you. As the Father has sent me, so I send you.",source:"John 20:21 (DR)"},
+  {text:"God is love, and he who abides in love abides in God, and God in him.",source:"1 John 4:16 (DR)"},
+  {text:"Perfect love casts out fear.",source:"1 John 4:18 (DR)"},
+  {text:"He who says he is in the light, and hates his brother, is in darkness even until now.",source:"1 John 2:9 (DR)"},
+  {text:"Do not conform yourselves to this age, but be transformed by the renewal of your mind.",source:"Romans 12:2 (DR)"},
+  {text:"I urge you therefore, brothers, by the mercies of God, to offer your bodies as a living sacrifice.",source:"Romans 12:1 (DR)"},
+  {text:"Bless those who persecute you; bless and do not curse them.",source:"Romans 12:14 (DR)"},
+  {text:"Do not repay anyone evil for evil; be concerned for what is noble in the sight of all.",source:"Romans 12:17 (DR)"},
+  {text:"If possible, on your part, live at peace with all.",source:"Romans 12:18 (DR)"},
+  {text:"Vengeance is mine; I will repay, says the Lord.",source:"Romans 12:19 (DR)"},
+  {text:"If your enemy is hungry, feed him; if he is thirsty, give him something to drink.",source:"Romans 12:20 (DR)"},
+  {text:"Put on the Lord Jesus Christ, and make no provision for the desires of the flesh.",source:"Romans 13:14 (DR)"},
+  {text:"None of us lives for oneself, and no one dies for oneself.",source:"Romans 14:7 (DR)"},
+  {text:"For the kingdom of God is not a matter of food and drink, but of righteousness, peace, and joy in the holy Spirit.",source:"Romans 14:17 (DR)"},
+  {text:"May the God of hope fill you with all joy and peace in believing.",source:"Romans 15:13 (DR)"},
+  {text:"Stand firm in the faith, be courageous, be strong.",source:"1 Corinthians 16:13 (DR)"},
+  {text:"Do you not know that your body is a temple of the Holy Spirit within you?",source:"1 Corinthians 6:19 (DR)"},
+  {text:"I am the resurrection and the life. Whoever believes in me, even if he dies, will live.",source:"John 11:25 (DR)"},
+  {text:"Do not let your hearts be troubled. You have faith in God; have faith also in me.",source:"John 14:1 (DR)"},
+  {text:"I will not leave you orphans; I will come to you.",source:"John 14:18 (DR)"},
+  {text:"The Holy Spirit will teach you everything and remind you of all that I told you.",source:"John 14:26 (DR)"},
+  {text:"Do not be afraid; just have faith.",source:"Mark 5:36 (DR)"},
+  {text:"With God all things are possible.",source:"Mark 10:27 (DR)"},
+  {text:"The Son of Man did not come to be served but to serve and to give his life as a ransom for many.",source:"Mark 10:45 (DR)"},
+  {text:"Go into the whole world and proclaim the gospel to every creature.",source:"Mark 16:15 (DR)"},
+  {text:"For everyone who exalts himself will be humbled, and the one who humbles himself will be exalted.",source:"Luke 18:14 (DR)"},
+  {text:"This is my commandment: love one another as I love you.",source:"John 15:12 (DR)"},
+  {text:"You did not choose me, but I chose you.",source:"John 15:16 (DR)"},
+  {text:"No longer do I call you slaves; I have called you friends.",source:"John 15:15 (DR)"},
+  {text:"Ask and you will receive, so that your joy may be complete.",source:"John 16:24 (DR)"},
+  {text:"In the world you will have trouble, but take courage, I have conquered the world.",source:"John 16:33 (DR)"},
+  {text:"Holy Father, keep them in your name that you have given me, so that they may be one just as we are.",source:"John 17:11 (DR)"},
+  {text:"Sanctify them in the truth. Your word is truth.",source:"John 17:17 (DR)"},
+  {text:"And behold, I am with you always, until the end of the age.",source:"Matthew 28:20 (DR)"},
+  {text:"Everything is possible to one who has faith.",source:"Mark 9:23 (DR)"},
+  {text:"Whoever wishes to come after me must deny himself, take up his cross, and follow me.",source:"Mark 8:34 (DR)"},
+  {text:"What God has joined together, no human being must separate.",source:"Mark 10:9 (DR)"},
+  {text:"The sabbath was made for man, not man for the sabbath.",source:"Mark 2:27 (DR)"},
+  {text:"Come after me, and I will make you fishers of men.",source:"Mark 1:17 (DR)"},
+  {text:"This is the time of fulfillment. The kingdom of God is at hand. Repent, and believe in the gospel.",source:"Mark 1:15 (DR)"},
+  {text:"A lamp is not brought to be placed under a bushel basket or under a bed, but to be placed on a lampstand.",source:"Mark 4:21 (DR)"},
+  {text:"Is a lamp brought in to be placed under a bushel basket? No, it is placed on a lampstand.",source:"Mark 4:21 (DR)"},
+  {text:"Amen I say to you, whoever does not accept the kingdom of God like a child will not enter it.",source:"Mark 10:15 (DR)"},
+  // BONUS — PAPAL AND CATECHISM
+  {text:"The Church is not a museum for saints but a hospital for sinners.",source:"Pope Francis — often attributed"},
+  {text:"We are not the sum of our weaknesses and failures; we are the sum of the Father's love for us.",source:"St. John Paul II, World Youth Day 2002"},
+  {text:"Man cannot live without love. He remains a being that is incomprehensible for himself.",source:"St. John Paul II, Redemptor Hominis"},
+  {text:"Truth is not determined by a majority vote.",source:"Pope Benedict XVI"},
+  {text:"The world offers you comfort, but you were not made for comfort. You were made for greatness.",source:"Pope Benedict XVI"},
+  {text:"We are not some casual and meaningless product of evolution. Each of us is the result of a thought of God.",source:"Pope Benedict XVI"},
+  {text:"Dear young people, do not be afraid of holiness.",source:"Pope Benedict XVI"},
+  {text:"Faith is not a feeling. Faith is an act of the will.",source:"Pope Benedict XVI"},
+  {text:"Anyone who does not know God, even though he may entertain all kinds of hopes, is ultimately without hope.",source:"Pope Benedict XVI"},
+  {text:"The Church does not engage in proselytism. Instead, she grows by attraction.",source:"Pope Benedict XVI"},
+  {text:"In the beginning God created the heavens and the earth.",source:"Genesis 1:1 (DR)"},
+  {text:"God saw everything that he had made, and behold, it was very good.",source:"Genesis 1:31 (DR)"},
+  {text:"And God breathed into his nostrils the breath of life; and man became a living soul.",source:"Genesis 2:7 (DR)"},
+  {text:"It is not good for man to be alone.",source:"Genesis 2:18 (DR)"},
+  {text:"The Lord God formed man of the slime of the earth.",source:"Genesis 2:7 (DR)"},
+  {text:"Dust thou art, and into dust thou shalt return.",source:"Genesis 3:19 (DR)"},
+  {text:"Am I my brother's keeper?",source:"Genesis 4:9 (DR)"},
+  {text:"I will establish my covenant between me and thee and thy seed after thee.",source:"Genesis 17:7 (DR)"},
+  {text:"The Lord our God is one Lord.",source:"Deuteronomy 6:4 (DR)"},
+  {text:"Thou shalt love the Lord thy God with thy whole heart, and with thy whole soul, and with thy whole strength.",source:"Deuteronomy 6:5 (DR)"},
+  {text:"Choose life, then, that you and your descendants may live.",source:"Deuteronomy 30:19 (DR)"},
+  {text:"Be strong and steadfast; have no fear or dread of them, for it is the Lord, your God, who marches with you.",source:"Deuteronomy 31:6 (DR)"},
+  {text:"Have I not commanded thee? Take courage, and be strong. Fear not, and be not dismayed.",source:"Joshua 1:9 (DR)"},
+  {text:"As for me and my house, we will serve the Lord.",source:"Joshua 24:15 (DR)"},
+  {text:"The Lord does not see as man sees; man looks at the outward appearance, but the Lord looks at the heart.",source:"1 Samuel 16:7 (DR)"},
+  {text:"I know that my Redeemer liveth, and in the last day I shall rise out of the earth.",source:"Job 19:25 (DR)"},
+  {text:"The Lord gave, and the Lord hath taken away: as it hath pleased the Lord so is it done: blessed be the name of the Lord.",source:"Job 1:21 (DR)"},
+  {text:"Where were you when I laid the foundation of the earth?",source:"Job 38:4 (DR)"},
+  {text:"The fear of the Lord is the beginning of wisdom: a good understanding have all they that do his commandments.",source:"Psalm 111:10 (DR)"},
+  {text:"A time to be born, and a time to die: a time to plant, and a time to pluck up that which is planted.",source:"Ecclesiastes 3:2 (DR)"},
+  {text:"Vanity of vanities, and all is vanity.",source:"Ecclesiastes 1:2 (DR)"},
+  {text:"There is no new thing under the sun.",source:"Ecclesiastes 1:9 (DR)"},
+  {text:"Fear God, and keep his commandments: for this is the whole duty of man.",source:"Ecclesiastes 12:13 (DR)"},
+  {text:"Come now, and let us reason together, saith the Lord: though your sins be as scarlet, they shall be as white as snow.",source:"Isaiah 1:18 (DR)"},
+  {text:"They that hope in the Lord shall renew their strength, they shall take wings as eagles, they shall run and not be weary.",source:"Isaiah 40:31 (DR)"},
+  {text:"Fear not, for I am with thee: turn not aside, for I am thy God: I have strengthened thee, and have helped thee.",source:"Isaiah 41:10 (DR)"},
+  {text:"Can a woman forget her infant, so as not to have pity on the son of her womb? and if she should forget, yet will not I forget thee.",source:"Isaiah 49:15 (DR)"},
+  {text:"Seek ye the Lord while he may be found, call upon him while he is near.",source:"Isaiah 55:6 (DR)"},
+  {text:"My thoughts are not your thoughts: nor your ways my ways, saith the Lord.",source:"Isaiah 55:8 (DR)"},
+  {text:"As high as the heavens are above the earth, so high are my ways above your ways.",source:"Isaiah 55:9 (DR)"},
+  {text:"The word that goes forth from my mouth shall not return to me void.",source:"Isaiah 55:11 (DR)"},
+  {text:"Thou art my servant; I have chosen thee, and have not cast thee away.",source:"Isaiah 41:9 (DR)"},
+  {text:"For the mountains shall be moved, and the hills shall tremble; but my mercy shall not depart from thee.",source:"Isaiah 54:10 (DR)"},
+  {text:"He was wounded for our iniquities, he was bruised for our sins.",source:"Isaiah 53:5 (DR)"},
+  {text:"All we like sheep have gone astray, every one hath turned aside into his own way.",source:"Isaiah 53:6 (DR)"},
+  {text:"He was offered because it was his own will, and he opened not his mouth.",source:"Isaiah 53:7 (DR)"},,
+  // ADDITIONAL
+  // MORE SAINTS
+  {text:"God loves each of us as if there were only one of us.",source:"St. Augustine"},
+  {text:"Our Lord does not care so much for the importance of our works as for the love with which they are done.",source:"St. Teresa of Ávila"},
+  {text:"God is more anxious to bestow his blessings on us than we are to receive them.",source:"St. Augustine"},
+  {text:"We must pray without tiring, for the salvation of mankind does not depend on material success.",source:"St. Frances Xavier Cabrini"},
+  {text:"I can do all things through Christ who strengthens me.",source:"Philippians 4:13"},
+  {text:"Spread love everywhere you go. Let no one ever come to you without leaving happier.",source:"St. Teresa of Calcutta"},
+  {text:"If you judge people, you have no time to love them.",source:"St. Teresa of Calcutta"},
+  {text:"Not all of us can do great things. But we can do small things with great love.",source:"St. Teresa of Calcutta"},
+  {text:"The hunger for love is much more difficult to remove than the hunger for bread.",source:"St. Teresa of Calcutta"},
+  {text:"Be faithful in small things because it is in them that your strength lies.",source:"St. Teresa of Calcutta"},
+  {text:"We shall never know all the good that a simple smile can do.",source:"St. Teresa of Calcutta"},
+  {text:"If you are humble nothing will touch you, neither praise nor disgrace, because you know what you are.",source:"St. Teresa of Calcutta"},
+  {text:"Yesterday is gone. Tomorrow has not yet come. We have only today. Let us begin.",source:"St. Teresa of Calcutta"},
+  {text:"God doesn't require us to succeed; he only requires that you try.",source:"St. Teresa of Calcutta"},
+  {text:"I alone cannot change the world, but I can cast a stone across the waters to create many ripples.",source:"St. Teresa of Calcutta"},
+  {text:"We need to find God, and he cannot be found in noise and restlessness.",source:"St. Teresa of Calcutta"},
+  {text:"The most terrible poverty is loneliness, and the feeling of being unloved.",source:"St. Teresa of Calcutta"},
+  {text:"Peace begins with a smile.",source:"St. Teresa of Calcutta"},
+  {text:"Kind words can be short and easy to speak, but their echoes are truly endless.",source:"St. Teresa of Calcutta"},
+  {text:"If we have no peace, it is because we have forgotten that we belong to each other.",source:"St. Teresa of Calcutta"},
+  {text:"Do small things with great love.",source:"St. Teresa of Calcutta"},
+  {text:"The soul that is united to God is feared by the devil as though it were God himself.",source:"St. John of the Cross"},
+  {text:"Strive always to confess your sins with a contrite heart.",source:"St. John of the Cross"},
+  {text:"He who seeks God already possesses Him.",source:"St. Teresa of Ávila"},
+  {text:"Time plus energy equals character.",source:"St. Josemaría Escrivá"},
+  {text:"Don't try to be older than you are. Each age has its own enchantment.",source:"St. Josemaría Escrivá"},
+  {text:"Maturity: to bear with one's own imperfections patiently.",source:"St. Josemaría Escrivá"},
+  {text:"Give yourself to God through Mary.",source:"St. Louis de Montfort"},
+  {text:"The greatest method of praying is to pray the Rosary.",source:"St. Francis de Sales"},
+  {text:"If you say the Rosary faithfully until death, I do assure you that, in spite of the gravity of your sins, you will receive a never-fading crown of glory.",source:"St. Louis de Montfort"},
+  {text:"Never be discouraged by your imperfections, but always rise up with fresh courage.",source:"St. Francis de Sales"},
+  {text:"Go to the source. Go to the Eucharist.",source:"St. Peter Julian Eymard"},
+  {text:"We must reckon with the possibility that something can be at once humanly impossible and divinely possible.",source:"St. Edith Stein (Teresa Benedicta of the Cross)"},
+  {text:"Do not accept anything as love which lacks truth.",source:"St. Edith Stein"},
+  {text:"The love of souls and the honor of God should be the motive of all our actions.",source:"St. Ignatius of Loyola"},
+  {text:"Act as if everything depended on you; trust as if everything depended on God.",source:"St. Ignatius of Loyola"},
+  {text:"If God causes you to suffer much, it is a sign that He has great designs for you.",source:"St. Ignatius of Loyola"},
+  {text:"Teach us, good Lord, to serve you as you deserve; to give and not to count the cost.",source:"St. Ignatius of Loyola"},
+  {text:"Go forth and set the world on fire.",source:"St. Ignatius of Loyola"},
+  {text:"In times of desolation, never make a change.",source:"St. Ignatius of Loyola"},
+  {text:"He who carries God in his heart bears heaven with him wherever he goes.",source:"St. Ignatius of Loyola"},
+  {text:"Pray as if everything depends on God, work as if everything depends on you.",source:"St. Ignatius of Loyola"},
+  {text:"In prayer I feel the sweetest joy.",source:"St. Pio of Pietrelcina"},
+  {text:"Books, nature, and the saints — three great teachers.",source:"St. Thomas Aquinas"},
+  {text:"Sorrow can be alleviated by good sleep, a bath and a glass of wine.",source:"St. Thomas Aquinas"},
+  {text:"Friendship is the source of the greatest pleasures, and without friends even the most agreeable pursuits become tedious.",source:"St. Thomas Aquinas"},
+  {text:"To live well is to work well, to show a good activity.",source:"St. Thomas Aquinas"},
+  {text:"Wonder is the desire for knowledge.",source:"St. Thomas Aquinas"},
+  {text:"Moral science is better occupied when treating of friendship than of justice.",source:"St. Thomas Aquinas"},
+  {text:"We can't have full knowledge all at once. We must start by believing; then afterwards we may be led on to master the evidence for ourselves.",source:"St. Thomas Aquinas"},
+  {text:"Happiness is secured through virtue; it is a good attained by man's own will.",source:"St. Thomas Aquinas"},
+  {text:"Clearly the person who accepts the Church as an infallible guide will believe whatever the Church teaches.",source:"St. Thomas Aquinas"},
+  {text:"The things that we love tell us what we are.",source:"St. Thomas Aquinas"},
+  {text:"How can we live in harmony? First we need to know we are all madly in love with the same God.",source:"St. Thomas Aquinas"},
+  {text:"All the efforts of the human mind cannot exhaust the essence of a single fly.",source:"St. Thomas Aquinas"},
+  {text:"Beware the man of one book.",source:"St. Thomas Aquinas"},
+  // MORE SCRIPTURE
+  {text:"And now these three remain: faith, hope and love. But the greatest of these is love.",source:"1 Corinthians 13:13"},
+  {text:"For the wisdom of this world is foolishness in God's sight.",source:"1 Corinthians 3:19"},
+  {text:"Do you not know that in a race all the runners run, but only one gets the prize? Run in such a way as to get the prize.",source:"1 Corinthians 9:24"},
+  {text:"My grace is sufficient for you, for my power is made perfect in weakness.",source:"2 Corinthians 12:9"},
+  {text:"Create in me a clean heart, O God, and renew a right spirit within me.",source:"Psalm 51:10"},
+  {text:"The Lord is close to the brokenhearted and saves those who are crushed in spirit.",source:"Psalm 34:18"},
+  {text:"Even youths grow tired and weary, and young men stumble and fall; but those who hope in the Lord will renew their strength.",source:"Isaiah 40:30-31"},
+  {text:"I know the plans I have for you, declares the Lord, plans to prosper you and not to harm you.",source:"Jeremiah 29:11"},
+  {text:"The Lord your God is with you, the Mighty Warrior who saves. He will take great delight in you.",source:"Zephaniah 3:17"},
+  {text:"Have I not commanded you? Be strong and courageous. Do not be afraid; do not be discouraged.",source:"Joshua 1:9"},
+  {text:"But as for you, be strong and do not give up, for your work will be rewarded.",source:"2 Chronicles 15:7"},
+  {text:"Do not grieve, for the joy of the Lord is your strength.",source:"Nehemiah 8:10"},
+  {text:"Give thanks to the Lord, for he is good; his love endures forever.",source:"Psalm 107:1"},
+  {text:"He heals the brokenhearted and binds up their wounds.",source:"Psalm 147:3"},
+  {text:"The Lord is my strength and my shield; my heart trusts in him, and he helps me.",source:"Psalm 28:7"},
+  {text:"I keep my eyes always on the Lord. With him at my right hand, I will not be shaken.",source:"Psalm 16:8"},
+  {text:"You make known to me the path of life; you will fill me with joy in your presence.",source:"Psalm 16:11"},
+  {text:"He gives strength to the weary and increases the power of the weak.",source:"Isaiah 40:29"},
+  {text:"See, I am doing a new thing! Now it springs up; do you not perceive it?",source:"Isaiah 43:19"},
+  {text:"Be on your guard; stand firm in the faith; be courageous; be strong.",source:"1 Corinthians 16:13"},
+  {text:"Let us not become weary in doing good, for at the proper time we will reap a harvest if we do not give up.",source:"Galatians 6:9"},
+  {text:"For the Spirit God gave us does not make us timid, but gives us power, love and self-discipline.",source:"2 Timothy 1:7"},
+  {text:"No discipline seems pleasant at the time, but painful. Later on, however, it produces a harvest of righteousness.",source:"Hebrews 12:11"},
+  {text:"Consider it pure joy whenever you face trials of many kinds, because you know that the testing of your faith produces perseverance.",source:"James 1:2-3"},
+  {text:"If any of you lacks wisdom, you should ask God, who gives generously to all without finding fault.",source:"James 1:5"},
+  {text:"Resist the devil, and he will flee from you.",source:"James 4:7"},
+  {text:"Above all, love each other deeply, because love covers over a multitude of sins.",source:"1 Peter 4:8"},
+  {text:"Do not repay evil with evil or insult with insult. On the contrary, repay evil with blessing.",source:"1 Peter 3:9"},
+  {text:"Always be prepared to give an answer to everyone who asks you to give the reason for the hope that you have.",source:"1 Peter 3:15"},
+  {text:"This is how we know what love is: Jesus Christ laid down his life for us.",source:"1 John 3:16"},
+  {text:"Dear friends, let us love one another, for love comes from God.",source:"1 John 4:7"},
+  {text:"There is no fear in love. But perfect love drives out fear.",source:"1 John 4:18"},
+  {text:"And surely I am with you always, to the very end of the age.",source:"Matthew 28:20"},
+  {text:"Come, follow me.",source:"Matthew 4:19"},
+  {text:"You are the salt of the earth.",source:"Matthew 5:13"},
+  {text:"Do not store up for yourselves treasures on earth, where moths and vermin destroy.",source:"Matthew 6:19"},
+  {text:"But seek first his kingdom and his righteousness, and all these things will be given to you as well.",source:"Matthew 6:33"},
+  {text:"Enter through the narrow gate.",source:"Matthew 7:13"},
+  {text:"Ask and it will be given to you; seek and you will find; knock and the door will be opened to you.",source:"Matthew 7:7"},
+  {text:"Do to others what you would have them do to you.",source:"Matthew 7:12"},
+  {text:"Come to me, all you who are weary and burdened, and I will give you rest.",source:"Matthew 11:28"},
+  {text:"Take my yoke upon you and learn from me, for I am gentle and humble in heart.",source:"Matthew 11:29"},
+  {text:"For my yoke is easy and my burden is light.",source:"Matthew 11:30"},
+  {text:"Whoever wants to be my disciple must deny themselves and take up their cross and follow me.",source:"Matthew 16:24"},
+  {text:"For where two or three gather in my name, there am I with them.",source:"Matthew 18:20"},
+  {text:"Truly I tell you, unless you change and become like little children, you will never enter the kingdom of heaven.",source:"Matthew 18:3"},
+  {text:"Love the Lord your God with all your heart and with all your soul and with all your mind.",source:"Matthew 22:37"},
+  {text:"Love your neighbor as yourself.",source:"Matthew 22:39"},
+  {text:"Well done, good and faithful servant!",source:"Matthew 25:21"},
+  {text:"I have come that they may have life, and have it to the full.",source:"John 10:10"},
+  {text:"I am the good shepherd. The good shepherd lays down his life for the sheep.",source:"John 10:11"},
+  {text:"I am the resurrection and the life. The one who believes in me will live, even though they die.",source:"John 11:25"},
+  {text:"A new command I give you: Love one another. As I have loved you, so you must love one another.",source:"John 13:34"},
+  {text:"If you love me, keep my commands.",source:"John 14:15"},
+  {text:"Peace I leave with you; my peace I give you.",source:"John 14:27"},
+  {text:"Remain in me, as I also remain in you.",source:"John 15:4"},
+  {text:"You did not choose me, but I chose you and appointed you so that you might go and bear fruit.",source:"John 15:16"},
+  {text:"In this world you will have trouble. But take heart! I have overcome the world.",source:"John 16:33"},
+]
+function renderDailyQuote() {
+  const txtEl = document.getElementById('dailyQuoteText');
+  const srcEl = document.getElementById('dailyQuoteSource');
+  if (!txtEl || !srcEl) return;
+  const today = new Date();
+  const dayOfYear = Math.floor((today - new Date(today.getFullYear(), 0, 0)) / 86400000);
+  const q = DAILY_QUOTES[dayOfYear % DAILY_QUOTES.length];
+  txtEl.textContent = '"' + q.text + '"';
+  srcEl.textContent = '— ' + q.source;
+}
+
+function renderAll(){
+  renderCountdowns();renderBudget();renderFunds();
+  renderMilestones(pracMS,'pracMilestones','practice');renderMilestones(faithMS,'faithMilestones','faith');
+  renderDogBoxes();renderCalView();renderDayPanel(selectedDate);renderMealPlan();
+  loadAllLists();loadNotes();populateDefaultLists();populateWhoSelects();updateHomeTodayPanel();renderFocusList();
+  document.getElementById('datePill').textContent=now.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric',year:'numeric'});
+  document.getElementById('homeTodayLbl').textContent=now.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'});
+}
+function initSettings(){
+  const map={sP1Name:'p1Name',sP1Init:'p1Init',sP2Name:'p2Name',sP2Init:'p2Init',sLocation:'location',sTargetDate:'targetDate'};
+  Object.entries(map).forEach(([id,key])=>{const el=document.getElementById(id);if(el)el.value=cfg[key]||'';});
+  const pd=document.getElementById('pracOpenDate');if(pd)pd.value=LS.get('pracDate4',cfg.targetDate);
+  applySettings();
+}
+function applySettings(){
+  const g=id=>document.getElementById(id)?.value||'';
+  cfg.p1Name=g('sP1Name')||cfg.p1Name;cfg.p1Init=g('sP1Init')||cfg.p1Init;
+  cfg.p2Name=g('sP2Name')||cfg.p2Name;cfg.p2Init=g('sP2Init')||cfg.p2Init;
+  cfg.location=g('sLocation')||cfg.location;cfg.targetDate=g('sTargetDate')||cfg.targetDate;
+  LS.set('cfg4',cfg);
+  document.getElementById('hdrLoc').textContent=cfg.location;
+  document.getElementById('avP1').textContent=cfg.p1Init;document.getElementById('avP2').textContent=cfg.p2Init;
+  document.getElementById('avP1').style.background=cfg.p1Color;document.getElementById('avP2').style.background=cfg.p2Color;
+  document.documentElement.style.setProperty('--p1',cfg.p1Color);document.documentElement.style.setProperty('--p2',cfg.p2Color);
+  document.getElementById('pbP1').textContent=cfg.p1Name+"'s View";document.getElementById('pbP2').textContent=cfg.p2Name+"'s View";
+  ['legP1'].forEach(id=>{const e=document.getElementById(id);if(e)e.textContent=cfg.p1Name;});
+  ['legP2'].forEach(id=>{const e=document.getElementById(id);if(e)e.textContent=cfg.p2Name;});
+  const h1=document.getElementById('hhP1Title');if(h1&&!h1.dataset.c)h1.value=cfg.p1Name+"'s Responsibilities";
+  const h2=document.getElementById('hhP2Title');if(h2&&!h2.dataset.c)h2.value=cfg.p2Name+"'s Responsibilities";
+  document.getElementById('viewAs').textContent='Viewing as '+(currentPerson==='p1'?cfg.p1Name:cfg.p2Name);
+  const fs=document.getElementById('focusSub');if(fs)fs.value=(currentPerson==='p1'?cfg.p1Name:cfg.p2Name)+"'s priorities";
+  const pf1=document.getElementById('pfP1');if(pf1)pf1.textContent=cfg.p1Name;
+  const pf2=document.getElementById('pfP2');if(pf2)pf2.textContent=cfg.p2Name;
+  populateWhoSelects();updateCountdownCalc();
+}
+function pickColor(p,c,el){cfg[p+'Color']=c;el.closest('.swatch-row').querySelectorAll('.swatch').forEach(s=>s.classList.remove('sel'));el.classList.add('sel');applySettings();}
+function populateWhoSelects(){
+  ['focusWho','evWho','rtWho','noteWho','pracTaskWho'].forEach(id=>{
+    const s=document.getElementById(id);if(!s)return;const cur=s.value;
+    s.innerHTML='<option value="both">Both</option><option value="p1">'+cfg.p1Name+'</option><option value="p2">'+cfg.p2Name+'</option>';
+    if(cur)s.value=cur;
+  });
+}
+function openM(id){document.getElementById(id).classList.add('open');}
+function closeM(id){document.getElementById(id).classList.remove('open');}
+function showTab(id,el){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');if(el)el.classList.add('active');
+  if(id==='calendar'){renderCalView();renderDayPanel(selectedDate);}
+  if(id==='finances'){renderBudget();renderFunds();}
+  if(id==='faith'){fetchMassReadings();}
+}
+function switchPerson(p){
+  currentPerson=p;
+  document.getElementById('pbP1').className='person-btn'+(p==='p1'?' active-p1':'');
+  document.getElementById('pbP2').className='person-btn'+(p==='p2'?' active-p2':'');
+  document.getElementById('viewAs').textContent='Viewing as '+(p==='p1'?cfg.p1Name:cfg.p2Name);
+  const fs=document.getElementById('focusSub');if(fs)fs.value=(p==='p1'?cfg.p1Name:cfg.p2Name)+"'s priorities";
+  updateHomeTodayPanel();
+  renderFocusList();
+}
+function updateCountdownCalc(){
+  const d=Math.ceil((new Date(cfg.targetDate+'T00:00:00')-new Date())/86400000);const m=Math.round(d/30);
+  ['statDays','pracDays'].forEach(id=>{const e=document.getElementById(id);if(e)e.textContent=d>0?d.toLocaleString():'0';});
+  ['statMonths','pracMonths'].forEach(id=>{const e=document.getElementById(id);if(e)e.textContent=m>0?m:'0';});
+}
+function renderCountdowns(){
+  const c=document.getElementById('countdownsContainer');if(!c)return;c.innerHTML='';
+  countdowns.forEach(cd=>{
+    const d=Math.ceil((new Date(cd.date+'T00:00:00')-new Date())/86400000);
+    const div=document.createElement('div');div.className='cdown';div.style.position='relative';
+    div.innerHTML='<div class="cdown-num">'+(d>0?d.toLocaleString():'🎉')+'</div><div class="cdown-lbl"><input class="editable" value="'+cd.name+'" style="text-align:center;font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.1em;width:auto;max-width:150px;" onchange="cd.name=this.value;LS.set(\'cdns4\',countdowns);"><input type="date" value="'+cd.date+'" style="background:transparent;border:none;color:var(--text-dim);font-size:10px;margin-left:5px;" onchange="cd.date=this.value;LS.set(\'cdns4\',countdowns);renderCountdowns();updateCountdownCalc();"></div><button style="position:absolute;top:5px;right:5px;background:none;border:none;color:var(--rose);cursor:pointer;opacity:0;font-size:11px;" class="cddel" onclick="countdowns=countdowns.filter(x=>x.id!=='+cd.id+');LS.set(\'cdns4\',countdowns);renderCountdowns();">✕</button>';
+    div.onmouseenter=()=>div.querySelector('.cddel').style.opacity='1';
+    div.onmouseleave=()=>div.querySelector('.cddel').style.opacity='0';
+    c.appendChild(div);
+  });updateCountdownCalc();
+}
+function addCountdown(){
+  const name=document.getElementById('cdName').value.trim();const date=document.getElementById('cdDate').value;if(!name||!date)return;
+  countdowns.push({id:Date.now(),name,date});LS.set('cdns4',countdowns);renderCountdowns();
+  document.getElementById('cdName').value='';document.getElementById('cdDate').value='';
+}
+function saveRecurringTask(){
+  const name=document.getElementById('rtName').value.trim();if(!name)return;
+  const who=document.getElementById('rtWho').value,day=parseInt(document.getElementById('rtDay').value),cat=document.getElementById('rtCat').value,freq=document.getElementById('rtFreq').value;
+  const days=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  recurringTasks.push({id:Date.now(),name,who,day,cat,freq});LS.set('rTasks4',recurringTasks);closeM('mTask');
+  document.getElementById('rtName').value='';document.getElementById('rtFreq').value='';
+  renderCalView();renderDayPanel(selectedDate);updateHomeTodayPanel();
+  alert('Added "'+name+'" — appears every '+days[day]+' in the calendar.');
+}
+function getRecForDate(dateStr){const dow=new Date(dateStr+'T12:00:00').getDay();return recurringTasks.filter(t=>t.day===dow&&!skipped[t.id+'_'+dateStr]);}
+function setTaskDoneVal(id,dateStr,val){if(val)taskDone[id+'_'+dateStr]=true;else delete taskDone[id+'_'+dateStr];LS.set('taskDone4',taskDone);}
+function isTaskDone(id,dateStr){return !!taskDone[id+'_'+dateStr];}
+function switchView(v){
+  calView=v;['vbMonth','vbWeek','vbDay'].forEach(id=>{const e=document.getElementById(id);if(e)e.classList.remove('active');});
+  const vb=document.getElementById('vb'+v.charAt(0).toUpperCase()+v.slice(1));if(vb)vb.classList.add('active');
+  renderCalView();
+}
+function navCal(dir){
+  if(calView==='month'){calMonth+=dir;if(calMonth>11){calMonth=0;calYear++;}if(calMonth<0){calMonth=11;calYear--;}}
+  else if(calView==='week'){calWeekStart=addDays(calWeekStart,dir*7);}
+  else{selectedDate=ds(addDays(new Date(selectedDate+'T12:00:00'),dir));renderDayPanel(selectedDate);}
+  renderCalView();
+}
+function goToday(){const t=new Date();calYear=t.getFullYear();calMonth=t.getMonth();calWeekStart=getWeekStart(t);selectedDate=ds(t);renderCalView();renderDayPanel(selectedDate);}
+function renderCalView(){
+  const t=document.getElementById('calTitle');
+  if(calView==='month'){if(t)t.textContent=new Date(calYear,calMonth,1).toLocaleDateString('en-US',{month:'long',year:'numeric'});renderMonthView();}
+  else if(calView==='week'){const we=addDays(calWeekStart,6);if(t)t.textContent=calWeekStart.toLocaleDateString('en-US',{month:'short',day:'numeric'})+' – '+we.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});renderWeekView();}
+  else{const d=new Date(selectedDate+'T12:00:00');if(t)t.textContent=d.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});document.getElementById('calBody').innerHTML='<p style="color:var(--text-dim);font-size:12px;padding:8px 0;">Day detail shown in the panel below — all tasks and events for this day.</p>';}
+}
+function renderMonthView(){
+  const body=document.getElementById('calBody');body.innerHTML='';
+  const grid=document.createElement('div');grid.className='month-grid';
+  ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].forEach(d=>{const h=document.createElement('div');h.className='cal-dh';h.textContent=d;grid.appendChild(h);});
+  const first=new Date(calYear,calMonth,1),startDay=first.getDay(),dim=new Date(calYear,calMonth+1,0).getDate(),prevDim=new Date(calYear,calMonth,0).getDate();
+  for(let i=0;i<startDay;i++)grid.appendChild(makeDayCell(calYear+(calMonth===0?-1:0),calMonth===0?11:calMonth-1,prevDim-startDay+1+i,true));
+  for(let i=1;i<=dim;i++)grid.appendChild(makeDayCell(calYear,calMonth,i,false));
+  const rem=42-startDay-dim;for(let i=1;i<=rem;i++)grid.appendChild(makeDayCell(calYear+(calMonth===11?1:0),calMonth===11?0:calMonth+1,i,true));
+  body.appendChild(grid);
+}
+function makeDayCell(y,m,day,otherMonth){
+  const dateStr=y+'-'+String(m+1).padStart(2,'0')+'-'+String(day).padStart(2,'0');
+  const d=document.createElement('div');
+  d.className='cal-day'+(otherMonth?' other-m':'')+(dateStr===ds(new Date())?' today':'')+(dateStr===selectedDate?' sel':'');
+  const num=document.createElement('div');num.className='cal-day-num';num.textContent=day;d.appendChild(num);
+  const dayEvs=events.filter(e=>e.date===dateStr).concat(gcalEventsForDate(dateStr).map(g=>({id:g.id,title:'📍 '+g.title,who:g.who,time:null}))),recs=getRecForDate(dateStr);
+  let shown=0;
+  dayEvs.slice(0,3).forEach(ev=>{const chip=document.createElement('div');chip.className='cal-chip';chip.style.background=wc(ev.who)+'33';chip.style.color=wc(ev.who);chip.textContent=(ev.time?fmtTime(ev.time).replace(' AM','a').replace(' PM','p')+' ':'')+ev.title;d.appendChild(chip);shown++;});
+  recs.slice(0,3-shown).forEach(t=>{const chip=document.createElement('div');chip.className='cal-chip';chip.style.background=wc(t.who)+'18';chip.style.borderLeft='2px solid '+wc(t.who);chip.style.color=wc(t.who);chip.textContent=t.name;d.appendChild(chip);shown++;});
+  const total=dayEvs.length+recs.length;if(total>shown){const mc=document.createElement('div');mc.className='more-chip';mc.textContent='+'+(total-shown)+' more';d.appendChild(mc);}
+  d.onclick=()=>{document.querySelectorAll('.cal-day').forEach(x=>x.classList.remove('sel'));d.classList.add('sel');selectedDate=dateStr;renderDayPanel(dateStr);};
+  return d;
+}
+function renderWeekView(){
+  const body=document.getElementById('calBody');body.innerHTML='';
+  const wrap=document.createElement('div');wrap.className='week-scroll';
+  const grid=document.createElement('div');grid.className='week-grid';
+  const dayNames=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'],todayStr=ds(new Date());
+  const tl=document.createElement('div');tl.style.cssText='background:var(--navy-mid);border-bottom:1px solid var(--border);';grid.appendChild(tl);
+  for(let i=0;i<7;i++){
+    const d=addDays(calWeekStart,i),dStr=ds(d),isToday=dStr===todayStr;
+    const hdr=document.createElement('div');hdr.className='week-day-header week-day-col';hdr.style.cursor='pointer';
+    hdr.innerHTML='<div class="week-dh-name">'+dayNames[d.getDay()]+'</div><div class="week-dh-date'+(isToday?' week-dh-today':'')+'">'+d.getDate()+'</div>';
+    hdr.onclick=()=>{selectedDate=dStr;renderDayPanel(dStr);};grid.appendChild(hdr);
+  }
+  for(let h=6;h<=22;h++){
+    const tSlot=document.createElement('div');tSlot.className='week-time-slot week-time-col';tSlot.textContent=(h%12||12)+''+(h<12?'a':'p');grid.appendChild(tSlot);
+    for(let i=0;i<7;i++){
+      const d=addDays(calWeekStart,i),dStr=ds(d);
+      const cell=document.createElement('div');cell.className='week-cell week-day-col';
+      events.filter(e=>e.date===dStr&&e.time&&parseInt(e.time.split(':')[0])===h).forEach(ev=>{
+        const chip=document.createElement('div');chip.className='week-event';chip.style.cssText='background:'+wc(ev.who)+'44;color:'+wc(ev.who)+';';chip.textContent=ev.title;chip.onclick=()=>{selectedDate=dStr;renderDayPanel(dStr);};cell.appendChild(chip);
+      });grid.appendChild(cell);
+    }
+  }
+  wrap.appendChild(grid);body.appendChild(wrap);
+}
+function setPersonFilter(f){
+  personFilter=f;document.querySelectorAll('.pf-btn').forEach(b=>b.classList.remove('active'));
+  const map={all:'pfAll',p1:'pfP1',p2:'pfP2'};const el=document.getElementById(map[f]);if(el)el.classList.add('active');
+  renderDayPanel(selectedDate);
+}
+function renderDayPanel(dateStr){
+  selectedDate=dateStr;
+  const d=new Date(dateStr+'T12:00:00');
+  const lbl=document.getElementById('dayPanelDate');if(lbl)lbl.textContent=d.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
+  const c=document.getElementById('dayPanelContent');if(!c)return;c.innerHTML='';
+  const pf=personFilter;
+  const dayEvs=events.filter(e=>e.date===dateStr&&(pf==='all'||e.who===pf||e.who==='both')).concat(gcalEventsForDate(dateStr).map(g=>({id:'gcal',title:'📍 '+g.title+(g.location?' — '+g.location:''),who:g.who,time:g.time==='All day'?null:g.time,notes:'Google Calendar',isGcal:true})));
+  const recs=getRecForDate(dateStr).filter(t=>pf==='all'||t.who===pf||t.who==='both');
+  if(dayEvs.length>0){
+    const sec=mkDaySec('📅 Events');
+    dayEvs.forEach(ev=>{
+      const item=document.createElement('div');item.className='day-event-item';item.style.borderLeftColor=wc(ev.who);
+      item.innerHTML='<div class="day-event-time">'+(ev.isGcal?(ev.time||'All day'):(fmtTime(ev.time)||'All day'))+'</div><div style="flex:1"><div class="day-task-label">'+ev.title+'</div>'+(ev.notes?'<div style="font-size:10px;color:var(--text-dim);">'+ev.notes+'</div>':'')+'</div>'+(ev.isGcal?'':'<button style="background:none;border:none;color:var(--rose);cursor:pointer;font-size:11px;" onclick="deleteEvent('+ev.id+')">✕</button>');
+      sec.list.appendChild(item);
+    });c.appendChild(sec.wrap);
+  }
+  const catGroups={};
+  recs.forEach(t=>{const cat=t.cat||'other';if(!catGroups[cat])catGroups[cat]=[];catGroups[cat].push(t);});
+  const catLabels={household:'🏠 Household',health:'💪 Health',dogs:'🐾 Dogs',faith:'✝️ Faith',personal:'👤 Personal',other:'📋 Tasks'};
+  Object.entries(catGroups).forEach(([cat,tasks])=>{
+    const sec=mkDaySec(catLabels[cat]||cat);
+    tasks.forEach(t=>{
+      const done=isTaskDone(t.id,dateStr);
+      const item=document.createElement('div');item.className='day-task-item'+(done?' done':'');
+      item.innerHTML='<div class="day-task-check"></div><div class="day-task-label">'+t.name+(t.freq?' <span style="font-size:9px;color:var(--text-dim);">('+t.freq+')</span>':'')+'</div><div class="day-who-dot" style="background:'+wc(t.who)+';color:'+(t.who==='p1'?'var(--navy)':'#fff')+'">'+wi(t.who)+'</div><button class="skip-btn" onclick="event.stopPropagation();skipped[\''+t.id+'_'+dateStr+'\']=true;LS.set(\'skipped4\',skipped);renderDayPanel(\''+dateStr+'\');renderCalView();">Skip</button>';
+      const check=item.querySelector('.day-task-check');
+      check.onclick=e=>{e.stopPropagation();const isDone=item.classList.toggle('done');setTaskDoneVal(t.id,dateStr,isDone);updateStatTaskCount();};
+      item.onclick=e=>{if(e.target.tagName==='BUTTON')return;const isDone=item.classList.toggle('done');setTaskDoneVal(t.id,dateStr,isDone);updateStatTaskCount();};
+      sec.list.appendChild(item);
+    });c.appendChild(sec.wrap);
+  });
+  if(dayEvs.length===0&&recs.length===0){const empty=document.createElement('div');empty.className='empty-msg';empty.innerHTML='Nothing scheduled. <span style="color:var(--gold);cursor:pointer;" onclick="document.getElementById(\'evDate\').value=\''+dateStr+'\';openM(\'mEvent\')">Add an event →</span>';c.appendChild(empty);}
+  updateStatTaskCount();
+}
+function mkDaySec(title){const wrap=document.createElement('div');wrap.className='day-section';const t=document.createElement('div');t.className='day-section-title';t.textContent=title;const list=document.createElement('div');wrap.appendChild(t);wrap.appendChild(list);return{wrap,list};}
+function updateStatTaskCount(){const todayStr=ds(new Date());const rem=getRecForDate(todayStr).filter(t=>!isTaskDone(t.id,todayStr)).length;const el=document.getElementById('statTasks');if(el)el.textContent=rem;}
+function updateHomeTodayPanel(){
+  const todayStr=ds(new Date());const c=document.getElementById('homeTodayContent');if(!c)return;c.innerHTML='';
+  const cp=currentPerson;
+  const todayEvs=events.filter(e=>e.date===todayStr&&(e.who===cp||e.who==='both')).concat(gcalEventsForDate(todayStr).filter(g=>g.who===cp).map(g=>({id:g.id,title:'📍 '+g.title,who:g.who,time:null})));
+  const recs=getRecForDate(todayStr).filter(t=>t.who===cp||t.who==='both');
+  const el=document.getElementById('statToday');if(el)el.textContent=todayEvs.length;
+  const lbl=document.getElementById('homeTodayLbl');if(lbl){const cfg=LS.get('cfg4',{});lbl.textContent=(cp==='p1'?cfg.p1Name||'Mitch':cfg.p2Name||'Liz')+"'s day — "+new Date().toLocaleDateString('en-US',{weekday:'long',month:'short',day:'numeric'});}
+  if(todayEvs.length===0&&recs.length===0){c.innerHTML='<div class="empty-msg">Clear day! <span style="color:var(--gold);cursor:pointer;" onclick="showTab(\'calendar\',document.querySelectorAll(\'.tab\')[1])">Open calendar →</span></div>';return;}
+  todayEvs.forEach(ev=>{const d=document.createElement('div');d.className='day-event-item';d.style.borderLeftColor=wc(ev.who);d.innerHTML='<div class="day-event-time">'+(fmtTime(ev.time)||'All day')+'</div><div class="day-task-label">'+ev.title+'</div>';c.appendChild(d);});
+  recs.slice(0,6).forEach(t=>{
+    const done=isTaskDone(t.id,todayStr);const d=document.createElement('div');d.className='day-task-item'+(done?' done':'');
+    d.innerHTML='<div class="day-task-check"></div><div class="day-task-label">'+t.name+'</div><div class="day-who-dot" style="background:'+wc(t.who)+';color:'+(t.who==='p1'?'var(--navy)':'#fff')+';width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;">'+wi(t.who)+'</div>';
+    d.querySelector('.day-task-check').onclick=()=>{const isDone=d.classList.toggle('done');setTaskDoneVal(t.id,todayStr,isDone);updateStatTaskCount();};
+    d.onclick=e=>{if(e.target.tagName==='BUTTON')return;const isDone=d.classList.toggle('done');setTaskDoneVal(t.id,todayStr,isDone);updateStatTaskCount();};
+    c.appendChild(d);
+  });
+  if(recs.length>6){const m=document.createElement('div');m.className='empty-msg';m.innerHTML='<span style="color:var(--gold);cursor:pointer;" onclick="showTab(\'calendar\',document.querySelectorAll(\'.tab\')[1])">+'+(recs.length-6)+' more tasks →</span>';c.appendChild(m);}
+  updateStatTaskCount();
+}
+function saveEvent(){
+  const title=document.getElementById('evTitle').value.trim(),date=document.getElementById('evDate').value;if(!title||!date)return;
+  events.push({id:Date.now(),title,date,time:document.getElementById('evTime').value,notes:document.getElementById('evNotes').value,who:document.getElementById('evWho').value,cat:document.getElementById('evCat').value});
+  events.sort((a,b)=>a.date.localeCompare(b.date)||a.time.localeCompare(b.time));LS.set('events4',events);closeM('mEvent');
+  ['evTitle','evTime','evNotes'].forEach(id=>document.getElementById(id).value='');
+  renderCalView();renderDayPanel(selectedDate);updateHomeTodayPanel();
+}
+function deleteEvent(id){events=events.filter(e=>e.id!==id);LS.set('events4',events);renderCalView();renderDayPanel(selectedDate);updateHomeTodayPanel();}
+function renderPillars(){
+  const c=document.getElementById('pillarsContainer');c.innerHTML='';
+  pillars.forEach(p=>{
+    const d=document.createElement('div');d.className='prog-row';d.style.position='relative';
+    d.innerHTML='<div class="prog-label"><span><input class="editable" value="'+p.name+'" style="font-size:11px;" onchange="p.name=this.value;LS.set(\'pillars4\',pillars);"></span><span id="pct'+p.id+'">'+p.pct+'%<button style="background:none;border:none;color:var(--rose);cursor:pointer;font-size:10px;margin-left:4px;" onclick="pillars=pillars.filter(x=>x.id!=='+p.id+');LS.set(\'pillars4\',pillars);renderPillars();">✕</button></span></div><div class="prog-bar"><div class="prog-fill '+p.color+'" id="pf'+p.id+'" style="width:'+p.pct+'%"></div></div><input type="range" min="0" max="100" value="'+p.pct+'" style="width:100%;margin-top:2px;accent-color:var(--gold);" oninput="p.pct=parseInt(this.value);document.getElementById(\'pf'+p.id+'\').style.width=this.value+\'%\';document.getElementById(\'pct'+p.id+'\').firstChild.textContent=this.value+\'%\';LS.set(\'pillars4\',pillars);">';
+    c.appendChild(d);
+  });
+}
+function savePillar(){const name=document.getElementById('pillarName').value.trim();if(!name)return;pillars.push({id:Date.now(),name,pct:parseInt(document.getElementById('pillarPct').value)||0,color:document.getElementById('pillarColor').value});LS.set('pillars4',pillars);renderPillars();closeM('mPillar');document.getElementById('pillarName').value='';}
+function saveList(listId){
+  const ul=document.getElementById(listId);if(!ul)return;
+  const items=Array.from(ul.children).map(li=>({
+    text: li.querySelector('.task-text-input')?.value || '',
+    who: li.dataset.who || 'both',
+    done: li.classList.contains('done')
+  }));
+  LS.set('list_'+listId, items);
+}
+
+function loadList(listId){
+  const ul=document.getElementById(listId);if(!ul)return false;
+  const saved=LS.get('list_'+listId, null);
+  if(saved===null)return false; // no saved data yet — let defaults populate
+  ul.innerHTML='';
+  saved.forEach(item=>{
+    const li=makeTaskEl(item.text, item.who);
+    if(item.done)li.classList.add('done');
+    ul.appendChild(li);
+  });
+  return true;
+}
+
+function loadAllLists(){
+  PERSISTABLE_LISTS.forEach(loadList);
+}
+
+function makeTaskEl(text,who){
+  const whoKey=who==='p1'||who==='p2'?who:'both';
+  const li=document.createElement('li');li.className='task-item';li.dataset.who=whoKey;
+  li.innerHTML='<div class="task-check" onclick="this.closest(\'li\').classList.toggle(\'done\');saveList(this.closest(\'ul\').id);"></div><div class="task-body"><div class="task-text-el"><input class="task-text-input" value="'+text+'"></div><div class="task-meta"><span style="display:inline-block;font-size:9px;padding:1px 6px;border-radius:8px;background:'+wc(whoKey)+'22;color:'+wc(whoKey)+';">'+wn(whoKey)+'</span></div></div><div class="task-actions"><button class="tbtn tdel" onclick="const lid=this.closest(\'ul\').id;this.closest(\'li\').remove();saveList(lid);">✕</button></div>';
+  const textInput=li.querySelector('.task-text-input');
+  textInput.addEventListener('change',()=>{const ul=li.closest('ul');if(ul)saveList(ul.id);});
+  return li;
+}
+function renderFocusList(){
+  const list=document.getElementById('focusList');if(!list)return;
+  Array.from(list.children).forEach(li=>{
+    const who=li.dataset.who||'both';
+    li.style.display=(who==='both'||who===currentPerson)?'':'none';
+  });
+}
+function addToList(listId,inputId,who){const inp=document.getElementById(inputId);const val=inp?.value?.trim();if(!val)return;document.getElementById(listId).appendChild(makeTaskEl(val,who));inp.value='';saveList(listId);}
+function addFocusTask(){const inp=document.getElementById('focusInput');const who=document.getElementById('focusWho');const val=inp?.value?.trim();if(!val)return;document.getElementById('focusList').appendChild(makeTaskEl(val,who?.value||'both'));inp.value='';renderFocusList();saveList('focusList');}
+function addHHTask(which){
+  const m={P1:{list:'hhP1List',inp:'hhP1Input',freq:'hhP1Freq',who:'p1'},P2:{list:'hhP2List',inp:'hhP2Input',freq:'hhP2Freq',who:'p2'},Shared:{list:'hhSharedList',inp:'hhSharedInput',freq:'hhSharedFreq',who:'both'}};
+  const{list,inp,freq,who}=m[which];const val=document.getElementById(inp).value.trim();const fr=document.getElementById(freq).value.trim();if(!val)return;
+  document.getElementById(list).appendChild(makeTaskEl(val+(fr?' ('+fr+')':''),who));document.getElementById(inp).value='';document.getElementById(freq).value='';saveList(list);
+}
+function addPracTask(){const inp=document.getElementById('pracTaskInput');const who=document.getElementById('pracTaskWho');const val=inp?.value?.trim();if(!val)return;document.getElementById('pracTaskList').appendChild(makeTaskEl(val,who?.value||'both'));inp.value='';saveList('pracTaskList');}
+function renderBudget(){
+  const tbody=document.getElementById('budgetBody');if(!tbody)return;tbody.innerHTML='';let income=0,expense=0,savings=0;
+  budget.forEach(row=>{
+    const cls=row.type==='income'?'col-income':row.type==='savings'?'col-savings':'col-expense';
+    const tr=document.createElement('tr');
+    tr.innerHTML='<td><input class="bud-input" value="'+row.name+'" onchange="row.name=this.value;LS.set(\'bud4\',budget);"></td><td class="'+cls+'" style="font-size:9px;text-transform:uppercase;letter-spacing:.05em;">'+row.type+'</td><td class="'+cls+'">$<input class="bud-input" type="number" value="'+row.amount+'" style="width:75px;" onchange="row.amount=parseFloat(this.value)||0;renderBudget();LS.set(\'bud4\',budget);"></td><td><button class="bud-del" onclick="budget=budget.filter(r=>r.id!=='+row.id+');LS.set(\'bud4\',budget);renderBudget();">✕</button></td>';
+    tbody.appendChild(tr);if(row.type==='income')income+=row.amount;else if(row.type==='savings')savings+=row.amount;else expense+=row.amount;
+  });
+  const net=income-expense-savings;const netEl=document.getElementById('budNet');if(netEl){netEl.textContent=(net>=0?'+':'-')+'$'+Math.abs(net).toLocaleString();netEl.className=net>=0?'col-income':'col-expense';}
+  [['totIncome',income],['totExpenses',expense],['totSavings',savings],['totNet',net]].forEach(([id,v])=>{const el=document.getElementById(id);if(!el)return;el.textContent=(id==='totNet'?(v>=0?'+':'-'):'')+'$'+Math.abs(v).toLocaleString();if(id==='totNet')el.style.color=v>=0?'var(--sage)':'var(--rose)';});
+  LS.set('bud4',budget);
+}
+function addBudgetRow(type){const name=prompt('Category name:');if(!name)return;const amount=parseFloat(prompt('Monthly amount ($):')||'0')||0;budget.push({id:budIdC++,name,type,amount});LS.set('bud4',budget);LS.set('bidC4',budIdC);renderBudget();}
+function renderFunds(){
+  const c=document.getElementById('fundsContainer');if(!c)return;c.innerHTML='';
+  funds.forEach(f=>{
+    const pct=Math.min(100,f.goal>0?(f.saved/f.goal)*100:0);const div=document.createElement('div');div.className='fund-card';
+    div.innerHTML='<div><input class="editable" value="'+f.name+'" style="font-weight:600;font-size:13px;color:var(--text);" onchange="f.name=this.value;LS.set(\'funds4\',funds);"></div><div style="font-size:10px;color:var(--text-dim);margin-top:3px;">Saved: $<input class="bud-input" type="number" value="'+f.saved+'" style="width:80px;display:inline;" onchange="f.saved=parseFloat(this.value)||0;LS.set(\'funds4\',funds);renderFunds();"> of $<input class="bud-input" type="number" value="'+f.goal+'" style="width:90px;display:inline;" onchange="f.goal=parseFloat(this.value)||0;LS.set(\'funds4\',funds);renderFunds();"></div><div class="fund-bar"><div class="fund-fill" style="width:'+pct.toFixed(1)+'%"></div></div><div style="font-size:10px;color:var(--text-dim);">'+pct.toFixed(1)+'% · <input class="editable" value="'+(f.notes||'')+'" placeholder="Notes…" style="font-size:10px;color:var(--text-dim);" onchange="f.notes=this.value;LS.set(\'funds4\',funds);"></div><button class="fund-del" onclick="if(confirm(\'Delete this fund?\')){funds=funds.filter(x=>x.id!=='+f.id+');LS.set(\'funds4\',funds);renderFunds();}">✕</button>';
+    c.appendChild(div);
+  });
+}
+function saveFund(){const name=document.getElementById('fundName').value.trim();if(!name)return;funds.push({id:Date.now(),name,goal:parseFloat(document.getElementById('fundGoal').value)||0,saved:parseFloat(document.getElementById('fundSaved').value)||0,notes:document.getElementById('fundNotes').value});LS.set('funds4',funds);renderFunds();closeM('mFund');['fundName','fundGoal','fundNotes'].forEach(id=>document.getElementById(id).value='');document.getElementById('fundSaved').value='0';}
+function savePracDate(){const d=document.getElementById('pracOpenDate').value;LS.set('pracDate4',d);cfg.targetDate=d;LS.set('cfg4',cfg);updateCountdownCalc();}
+function dotClass(s){return s==='done'?'dot-done':s==='active'?'dot-active':s==='key'?'dot-key':'dot-pending';}
+function renderMilestones(data,containerId,section){
+  const c=document.getElementById(containerId);if(!c)return;c.innerHTML='';
+  const lsKey=section==='practice'?'pracMS4':'faithMS4';const dataRef=section==='practice'?pracMS:faithMS;
+  const statuses=['pending','active','done','key'];
+  data.forEach(m=>{
+    const li=document.createElement('li');li.className='ms-item';
+    li.innerHTML='<div class="ms-dot '+dotClass(m.status)+'" title="Click to cycle status"></div><div class="ms-body"><div><input class="editable" value="'+m.title+'" style="font-size:12px;font-weight:500;width:100%;" onchange="m.title=this.value;LS.set(\''+lsKey+'\',dataRef);"></div><div><input class="editable" value="'+m.date+'" style="font-size:10px;color:var(--text-dim);width:100%;" onchange="m.date=this.value;LS.set(\''+lsKey+'\',dataRef);"></div></div>'+(m.tag?'<span class="tag tag-gold">'+m.tag+'</span>':'')+'<div class="ms-actions"><button class="tbtn tdel" onclick="'+(section==='practice'?'pracMS=pracMS.filter(x=>x.id!=='+m.id+');LS.set(\'pracMS4\',pracMS);renderMilestones(pracMS,\'pracMilestones\',\'practice\')':'faithMS=faithMS.filter(x=>x.id!=='+m.id+');LS.set(\'faithMS4\',faithMS);renderMilestones(faithMS,\'faithMilestones\',\'faith\')')+'">✕</button></div>';
+    li.querySelector('.ms-dot').onclick=()=>{const idx=statuses.indexOf(m.status);m.status=statuses[(idx+1)%4];LS.set(lsKey,dataRef);renderMilestones(dataRef,containerId,section);};
+    c.appendChild(li);
+  });
+}
+function saveMilestone(){const title=document.getElementById('msTitle').value.trim();if(!title)return;const m={id:Date.now(),title,date:document.getElementById('msDate').value,status:document.getElementById('msStatus').value,tag:document.getElementById('msTag').value};const section=document.getElementById('msSection').value;if(section==='practice'){pracMS.push(m);LS.set('pracMS4',pracMS);renderMilestones(pracMS,'pracMilestones','practice');}else{faithMS.push(m);LS.set('faithMS4',faithMS);renderMilestones(faithMS,'faithMilestones','faith');}closeM('mMilestone');['msTitle','msDate','msTag'].forEach(id=>document.getElementById(id).value='');}
+function saveNotes(){const cont=document.getElementById('notesList');if(!cont)return;const notes=Array.from(cont.querySelectorAll('.note-card')).map(d=>({html:d.innerHTML}));LS.set('notes4',notes);}
+function loadNotes(){const saved=LS.get('notes4',null);if(!saved)return;const cont=document.getElementById('notesList');if(!cont)return;cont.innerHTML='';saved.forEach(n=>{const div=document.createElement('div');div.className='note-card';div.innerHTML=n.html;cont.prepend(div);});}
+function addNote(containerId,titleId,bodyId){const title=document.getElementById(titleId)?.value?.trim();const body=document.getElementById(bodyId)?.value?.trim();if(!body)return;const div=document.createElement('div');div.className='note-card';div.innerHTML=(title?'<strong>'+title+'</strong><br>':'')+body+'<button class="note-del" onclick="this.closest(\'.note-card\').remove();saveNotes();">✕</button><div class="note-meta">'+new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})+'</div>';const cont=document.getElementById(containerId);if(cont)cont.prepend(div);if(titleId)document.getElementById(titleId).value='';document.getElementById(bodyId).value='';saveNotes();}
+function renderDogBoxes(){const c=document.getElementById('dogBoxContainer');if(!c)return;c.innerHTML='';dogBoxes.forEach(box=>c.appendChild(makeDogBox(box)));}
+function makeDogBox(box){
+  const wrap=document.createElement('div');wrap.className='dog-box';let inner='';
+  if(box.type==='schedule'){
+    const rows=box.items.map(item=>'<div class="sched-row"><input class="editable" value="'+item.time+'" style="font-family:\'Roboto Mono\',monospace;font-size:10px;color:var(--gold);width:65px;" onchange="item.time=this.value;LS.set(\'dogBoxes4\',dogBoxes);"><input class="editable" value="'+item.text+'" style="flex:1;font-size:12px;color:var(--text);" onchange="item.text=this.value;LS.set(\'dogBoxes4\',dogBoxes);"><div class="sched-actions"><button class="tbtn tdel" onclick="box.items=box.items.filter(x=>x.id!=='+item.id+');LS.set(\'dogBoxes4\',dogBoxes);renderDogBoxes();">✕</button></div></div>').join('');
+    inner=rows+'<div class="add-row" style="margin-top:8px;"><input type="time" id="st_'+box.id+'" style="flex:0 0 auto;width:95px;"><input type="text" id="stxt_'+box.id+'" placeholder="Description…"><button class="btn btn-gold btn-sm" onclick="addSchedItem('+box.id+')">Add</button></div>';
+  }else if(box.type==='checklist'){
+    const items=box.items.map(item=>'<li class="task-item'+(item.done?' done':'')+'" onclick="toggleDogCheck(event,'+box.id+','+item.id+')"><div class="task-check"></div><div class="task-body"><div class="task-text-el"><input class="task-text-input" value="'+item.text+'" onclick="event.stopPropagation()" onchange="item.text=this.value;LS.set(\'dogBoxes4\',dogBoxes);"></div><div class="task-meta"><input class="editable" value="'+(item.freq||'')+'" placeholder="Frequency" style="font-size:10px;color:var(--text-dim);" onclick="event.stopPropagation()" onchange="item.freq=this.value;LS.set(\'dogBoxes4\',dogBoxes);"></div></div><div class="task-actions"><button class="tbtn tdel" onclick="event.stopPropagation();box.items=box.items.filter(x=>x.id!=='+item.id+');LS.set(\'dogBoxes4\',dogBoxes);renderDogBoxes();">✕</button></div></li>').join('');
+    inner='<ul class="task-list">'+items+'</ul><div class="add-row"><input type="text" id="chk_'+box.id+'" placeholder="Task…"><input type="text" id="chkf_'+box.id+'" placeholder="Frequency" style="flex:0 0 auto;width:95px;"><button class="btn btn-gold btn-sm" onclick="addCheckItem('+box.id+')">Add</button></div>';
+  }else{
+    const notesHtml=box.items.map(item=>'<div class="note-card"><textarea class="editable" style="width:100%;min-height:45px;font-size:12px;line-height:1.5;background:transparent;border:none;color:var(--text);resize:vertical;" onchange="item.text=this.value;LS.set(\'dogBoxes4\',dogBoxes);">'+item.text+'</textarea><button class="note-del" onclick="box.items=box.items.filter(x=>x.id!=='+item.id+');LS.set(\'dogBoxes4\',dogBoxes);renderDogBoxes();">✕</button></div>').join('');
+    inner=notesHtml+'<div class="add-row"><textarea id="nt_'+box.id+'" placeholder="Add note…" style="min-height:45px;"></textarea><button class="btn btn-gold btn-sm" style="align-self:flex-end;" onclick="addNoteItem('+box.id+')">Add</button></div>';
+  }
+  wrap.innerHTML='<input class="card-title-input" value="'+box.title+'" onchange="box.title=this.value;LS.set(\'dogBoxes4\',dogBoxes);"><input class="card-sub-input" value="'+box.sub+'" onchange="box.sub=this.value;LS.set(\'dogBoxes4\',dogBoxes);">'+inner+'<button class="dog-box-del" onclick="if(confirm(\'Remove this section?\')){dogBoxes=dogBoxes.filter(b=>b.id!=='+box.id+');LS.set(\'dogBoxes4\',dogBoxes);renderDogBoxes();}">✕</button>';
+  return wrap;
+}
+function toggleDogCheck(e,boxId,itemId){if(e.target.tagName==='INPUT'||e.target.tagName==='BUTTON')return;const box=dogBoxes.find(b=>b.id===boxId);const item=box?.items.find(i=>i.id===itemId);if(item){item.done=!item.done;LS.set('dogBoxes4',dogBoxes);e.currentTarget.classList.toggle('done');}}
+function addSchedItem(boxId){const box=dogBoxes.find(b=>b.id===boxId);if(!box)return;const t=document.getElementById('st_'+boxId).value;const txt=document.getElementById('stxt_'+boxId).value.trim();if(!txt)return;box.items.push({id:Date.now(),time:t||'—',text:txt});LS.set('dogBoxes4',dogBoxes);renderDogBoxes();}
+function addCheckItem(boxId){const box=dogBoxes.find(b=>b.id===boxId);if(!box)return;const txt=document.getElementById('chk_'+boxId).value.trim();const freq=document.getElementById('chkf_'+boxId).value.trim();if(!txt)return;box.items.push({id:Date.now(),text:txt,freq,done:false});LS.set('dogBoxes4',dogBoxes);renderDogBoxes();}
+function addNoteItem(boxId){const box=dogBoxes.find(b=>b.id===boxId);if(!box)return;const txt=document.getElementById('nt_'+boxId).value.trim();if(!txt)return;box.items.push({id:Date.now(),text:txt});LS.set('dogBoxes4',dogBoxes);renderDogBoxes();}
+function saveDogBox(){const title=document.getElementById('dogBoxTitle').value.trim();if(!title)return;dogBoxes.push({id:Date.now(),title,sub:document.getElementById('dogBoxSub').value||'Custom section',type:document.getElementById('dogBoxType').value,items:[]});LS.set('dogBoxes4',dogBoxes);renderDogBoxes();closeM('mDogBox');['dogBoxTitle','dogBoxSub'].forEach(id=>document.getElementById(id).value='');}
+function renderMealPlan(){
+  const c=document.getElementById('mealPlanContainer');if(!c)return;
+  const days=['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],meals=['Breakfast','Lunch','Dinner','Snack'];c.innerHTML='';
+  days.forEach(day=>{const div=document.createElement('div');div.className='meal-day';div.innerHTML='<div class="meal-day-title">'+day+'</div>'+meals.map(meal=>{const key=day+'_'+meal;const val=mealPlan[key]||'';return'<div class="meal-slot"><div class="meal-slot-label">'+meal+'</div><input type="text" value="'+val+'" placeholder="—" style="font-size:11px;" onchange="mealPlan[\''+key+'\']=this.value;LS.set(\'meals4\',mealPlan);"></div>';}).join('');c.appendChild(div);});
+}
+function clearMeals(){if(!confirm('Clear this week\'s meal plan?'))return;mealPlan={};LS.set('meals4',mealPlan);renderMealPlan();}
+function buildWorkoutDays(){
+  const days=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],c=document.getElementById('workoutDays');if(!c)return;
+  days.forEach(d=>{const btn=document.createElement('button');btn.textContent=d;btn.style.cssText='padding:5px 9px;border-radius:7px;border:1px solid var(--border);background:var(--navy-light);color:var(--text-dim);font-size:11px;font-family:Inter,sans-serif;cursor:pointer;transition:all .2s;font-weight:500;';btn.onclick=function(){const on=this.dataset.on==='1';this.dataset.on=on?'0':'1';this.style.background=on?'var(--navy-light)':'var(--sage)';this.style.color=on?'var(--text-dim)':'#fff';this.style.borderColor=on?'var(--border)':'var(--sage)';};c.appendChild(btn);});
+}
+function resetHealth(){['workoutList','dailyHabitList','nutritionList'].forEach(id=>document.querySelectorAll('#'+id+' .task-item').forEach(li=>li.classList.remove('done')));document.querySelectorAll('#workoutDays button').forEach(b=>{b.dataset.on='0';b.style.background='var(--navy-light)';b.style.color='var(--text-dim)';b.style.borderColor='var(--border)';});}
+function resetHousehold(){['hhP1List','hhP2List','hhSharedList'].forEach(id=>document.querySelectorAll('#'+id+' .task-item').forEach(li=>li.classList.remove('done')));}
+function checkWeeklyReset(){const last=LS.get('lastReset4',''),todayStr=ds(new Date());if(new Date().getDay()===0&&last!==todayStr){resetHousehold();resetHealth();LS.set('lastReset4',todayStr);}}
+async function fetchVerseText(ref){
+  // Clean up reference: strip trailing letters on verse numbers (e.g. "18b" -> "18"), normalize psalm wording
+  let clean=ref.replace(/Responsorial Psalm\s*/i,'').replace(/Psalm\s*/i,'Psalms ').trim();
+  clean=clean.replace(/(\d+)[a-z]\b/gi,'$1'); // strip footnote letters like 18b -> 18
+  clean=clean.replace(/\s+and\s+\d+(:\d+)?$/i,''); // drop trailing "and 17" style refs, keep main range
+  clean=clean.replace(/,.*$/,''); // keep first comma-separated range only, e.g. "1-2, 5-6" -> "1-2"
+  const url='https://bible-api.com/'+encodeURIComponent(clean)+'?translation=dra';
+  const res=await fetch(url,{signal:AbortSignal.timeout(7000)});
+  if(!res.ok)return null;
+  const data=await res.json();
+  if(data.error)return null;
+  return (data.text||'').replace(/\n+/g,' ').trim();
+}
+async function fetchMassReadings(){
+  const c=document.getElementById('massReadings');if(!c)return;
+  const today=new Date(),mm=String(today.getMonth()+1).padStart(2,'0'),dd=String(today.getDate()).padStart(2,'0'),yyyy=today.getFullYear();
+  const lbl=document.getElementById('massDateLbl');if(lbl)lbl.textContent=today.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
+  c.innerHTML='<p style="color:var(--text-dim);font-size:12px;">Loading readings…</p>';
+  const usccbLink='https://bible.usccb.org/bible/readings/'+mm+dd+yyyy.toString().slice(2)+'.cfm';
+  try{
+    const apiUrl='https://cpbjr.github.io/catholic-readings-api/readings/'+yyyy+'/'+mm+'-'+dd+'.json';
+    const res=await fetch(apiUrl,{signal:AbortSignal.timeout(8000)});
+    if(!res.ok)throw new Error('not found');
+    const data=await res.json();
+    const r=data.readings||{};
+    const entries=[
+      {label:'First Reading',ref:r.firstReading},
+      {label:'Responsorial Psalm',ref:r.psalm},
+      {label:'Second Reading',ref:r.secondReading},
+      {label:'Gospel',ref:r.gospel}
+    ].filter(e=>e.ref);
+    if(entries.length===0)throw new Error('empty');
+    c.innerHTML='';
+    if(data.season){const seasonDiv=document.createElement('div');seasonDiv.style.cssText='font-size:10px;color:var(--gold);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;';seasonDiv.textContent=data.season;c.appendChild(seasonDiv);}
+    for(const e of entries){
+      const div=document.createElement('div');div.className='reading-card';
+      div.innerHTML='<div class="reading-label">'+e.label+'</div><div class="reading-ref">'+e.ref+'</div><div class="reading-text" style="margin-top:6px;font-size:12px;line-height:1.6;color:var(--text-dim);">Loading text…</div>';
+      c.appendChild(div);
+      const textEl=div.querySelector('.reading-text');
+      fetchVerseText(e.ref).then(txt=>{textEl.textContent=txt||'Text unavailable — see full reading below.';}).catch(()=>{textEl.textContent='Text unavailable — see full reading below.';});
+    }
+    const linkDiv=document.createElement('div');linkDiv.style.cssText='margin-top:10px;';
+    linkDiv.innerHTML='<a href="'+(data.usccbLink||usccbLink)+'" target="_blank" class="btn btn-gold" style="display:inline-block;text-decoration:none;font-size:11px;padding:7px 13px;">Read Official Lectionary Text on USCCB.org ↗</a><div style="font-size:9px;color:var(--text-dim);margin-top:6px;">Verse text above: Douay-Rheims translation. Mass uses the official USCCB Lectionary — tap above for the exact liturgical text.</div>';
+    c.appendChild(linkDiv);
+  }catch(e){
+    c.innerHTML='<div class="reading-card"><div class="reading-label">Today\'s Mass Readings</div><div class="reading-ref">'+today.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'})+'</div><div class="reading-text" style="margin-bottom:10px;">Tap below to open today\'s full readings on the US Bishops\' site.</div><a href="'+usccbLink+'" target="_blank" class="btn btn-gold" style="display:inline-block;text-decoration:none;font-size:11px;padding:7px 13px;">Open Today\'s Readings ↗</a></div>';
+  }
+}
+function populateDefaultLists(){
+  const defaults={focusList:[{t:'Create shared monthly budget (real numbers)',w:'both'},{t:'Research Ponte Vedra Beach office space',w:'p1'},{t:'Set consistent dog walk schedule',w:'both'}],moneyList:[{t:'Telehealth functional neuro consults — high potential, low overhead',w:'p1'},{t:'YouTube / Substack educational content — passive income long-term',w:'p1'},{t:'CE seminars as DACNB ($1–3k per event)',w:'p1'},{t:'Expert witness / neuro legal consulting ($200–500/hr niche)',w:'p1'},{t:'Pediatric chiro parent workshops',w:'p2'}],finTaskList:[{t:'Open Solo 401(k) — up to $66k/yr pre-tax',w:'both'},{t:'Get a Health Share plan (~$300–500/mo)',w:'both'},{t:'Open an HSA (triple tax advantage)',w:'both'},{t:'Meet with a fee-only financial planner',w:'both'},{t:'Set up automatic transfer to practice fund',w:'both'}],workoutList:[{t:'Mon: Strength training (30 min)',w:'both'},{t:'Wed: Dog walk + mobility work',w:'both'},{t:'Fri: Cardio or yoga (30 min)',w:'both'},{t:'Sat: Long dog walk + outdoor time',w:'both'}],dailyHabitList:[{t:'Drink 80oz water',w:'both'},{t:'5 min morning prayer',w:'both'},{t:'Phones off 30 min before bed',w:'both'}],nutritionList:[{t:'Protein at every meal',w:'both'},{t:'Sunday meal prep — avoid takeout traps',w:'both'},{t:'Limit alcohol to weekends only',w:'both'}],engageList:[{t:'Decide on ring style / budget (vintage = 50–70% savings)',w:'p1'},{t:'Open a dedicated ring fund — $100/mo automated',w:'both'},{t:'Talk to a priest about the path forward',w:'both'},{t:'Pre-Cana marriage prep when ready',w:'both'}],faithHabitList:[{t:'Sunday Mass together · protected time',w:'both'},{t:'5 min morning prayer · Magnificat app',w:'both'},{t:'Rosary together once a week · 15 min',w:'both'},{t:'Monthly confession',w:'p1'}],hhP1List:[{t:'Take out trash & recycling (Mon/Thu)',w:'p1'},{t:'Vacuum common areas (Weekly)',w:'p1'},{t:'Grocery run (Weekly)',w:'p1'}],hhP2List:[{t:'Meal planning & prep (Weekly)',w:'p2'},{t:'Laundry both (Weekly)',w:'p2'},{t:'Bathroom cleaning (Weekly)',w:'p2'}],hhSharedList:[{t:'Kitchen dishes after dinner (Alternate nightly)',w:'both'},{t:'Sunday meal prep together (Weekly)',w:'both'}],hhDownsizeList:[{t:'Set target budget for new rent',w:'both'},{t:'Check lease end date / notice period',w:'p1'},{t:'List items to donate, sell, or toss',w:'both'},{t:'Browse apartments in Lancaster',w:'p1'}],pracTaskList:[{t:'Research PVB market & competition',w:'p1'},{t:'Sort out FL CE hour requirements',w:'both'},{t:'Budget for buildout & equipment',w:'both'}],groceryList:[]};
+  Object.entries(defaults).forEach(([id,items])=>{const el=document.getElementById(id);if(!el||el.children.length>0)return;items.forEach(({t,w})=>el.appendChild(makeTaskEl(t,w)));});
+}
+document.addEventListener('keydown',e=>{
+  if(e.key!=='Enter'||e.shiftKey)return;const id=document.activeElement?.id;
+  const map={focusInput:addFocusTask,groceryInput:()=>addToList('groceryList','groceryInput','both'),finTaskInput:()=>addToList('finTaskList','finTaskInput','both'),moneyInput:()=>addToList('moneyList','moneyInput','both'),workoutInput:()=>addToList('workoutList','workoutInput','both'),habitInput:()=>addToList('dailyHabitList','habitInput','both'),nutritionInput:()=>addToList('nutritionList','nutritionInput','both'),engageInput:()=>addToList('engageList','engageInput','both'),faithHabitInput:()=>addToList('faithHabitList','faithHabitInput','both'),pracTaskInput:addPracTask,cdName:addCountdown};
+  if(map[id])map[id]();
+});
+
+/* ===== GOOGLE CALENDAR SYNC — per-person (p1/p2), refresh-token based, both stay connected ===== */
+// gcalTokens[person] = { access_token, refresh_token, expires_at (ms epoch) }
+function gcalInit() {
+  if (typeof google === 'undefined') { setTimeout(gcalInit, 500); return; }
+  gcalTokenClients.p1 = google.accounts.oauth2.initCodeClient({
+    client_id: GCAL_CLIENT_ID,
+    scope: GCAL_SCOPE,
+    ux_mode: 'popup',
+    access_type: 'offline',
+    prompt: 'consent',
+    callback: (resp) => gcalHandleAuthCode('p1', resp)
+  });
+  gcalTokenClients.p2 = google.accounts.oauth2.initCodeClient({
+    client_id: GCAL_CLIENT_ID,
+    scope: GCAL_SCOPE,
+    ux_mode: 'popup',
+    access_type: 'offline',
+    prompt: 'consent',
+    callback: (resp) => gcalHandleAuthCode('p2', resp)
+  });
+  gcalRenderButtons();
+  ['p1','p2'].forEach(p => { if (gcalTokens[p] && gcalTokens[p].refresh_token) gcalEnsureFreshToken(p).then(ok => { if (ok) gcalFetchEvents(p); }); });
+}
+
+async function gcalHandleAuthCode(person, resp) {
+  if (resp.error) { console.error('GCal auth error:', resp); return; }
+  const btn = document.getElementById('gcalSyncBtn_' + person);
+  if (btn) btn.textContent = 'Connecting…';
+  try {
+    const res = await fetch('/.netlify/functions/gcal-token', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ code: resp.code, redirectUri: window.location.origin })
+    });
+    const data = await res.json();
+    if (!res.ok) { console.error('Token exchange failed:', data); alert('Could not connect Google Calendar. Try again.'); gcalRenderButtons(); return; }
+    gcalTokens[person] = {
+      access_token: data.access_token,
+      refresh_token: data.refresh_token || (gcalTokens[person]?.refresh_token || null),
+      expires_at: Date.now() + (data.expires_in * 1000)
+    };
+    LS.set('gcalTokens', gcalTokens);
+    gcalRenderButtons();
+    gcalFetchEvents(person);
+  } catch (e) {
+    console.error('GCal token exchange error:', e);
+    gcalRenderButtons();
+  }
+}
+
+function gcalConnect(person) {
+  if (!gcalTokenClients[person]) { alert('Still loading Google sign-in, try again in a second.'); return; }
+  gcalTokenClients[person].requestCode();
+}
+
+function gcalDisconnect(person) {
+  gcalTokens[person] = null;
+  gcalEvents[person] = [];
+  LS.set('gcalTokens', gcalTokens);
+  LS.set('gcalEvents', gcalEvents);
+  gcalRenderButtons();
+  if (typeof renderCalView === 'function') renderCalView();
+  if (typeof renderDayPanel === 'function') renderDayPanel(selectedDate);
+  if (typeof renderHomeToday === 'function') renderHomeToday();
+}
+
+function gcalRenderButtons() {
+  const cfg = LS.get('cfg4', {});
+  const p1Name = cfg.p1Name || "Mitch's";
+  const p2Name = cfg.p2Name || "Liz's";
+  ['p1','p2'].forEach(person => {
+    const btn = document.getElementById('gcalSyncBtn_' + person);
+    if (!btn) return;
+    const connected = !!(gcalTokens[person] && gcalTokens[person].refresh_token);
+    const name = person === 'p1' ? p1Name : p2Name;
+    btn.textContent = connected ? ('✓ ' + name + ' Synced') : ('Connect ' + name + ' Calendar');
+    btn.onclick = connected ? () => gcalDisconnect(person) : () => gcalConnect(person);
+    btn.style.background = connected ? 'var(--sage)' : 'var(--navy-light)';
+    btn.style.color = connected ? '#fff' : 'var(--text-dim)';
+  });
+}
+
+// Returns true if we have a usable (fresh or freshly-refreshed) access token for this person
+async function gcalEnsureFreshToken(person) {
+  const t = gcalTokens[person];
+  if (!t || !t.refresh_token) return false;
+  const bufferMs = 60000; // refresh 1 min before actual expiry
+  if (t.access_token && t.expires_at && Date.now() < (t.expires_at - bufferMs)) return true;
+  try {
+    const res = await fetch('/.netlify/functions/gcal-refresh', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ refreshToken: t.refresh_token })
+    });
+    const data = await res.json();
+    if (!res.ok) { console.error('Token refresh failed:', data); return false; }
+    gcalTokens[person] = { ...t, access_token: data.access_token, expires_at: Date.now() + (data.expires_in * 1000) };
+    LS.set('gcalTokens', gcalTokens);
+    return true;
+  } catch (e) {
+    console.error('GCal refresh error:', e);
+    return false;
+  }
+}
+
+async function gcalFetchEvents(person) {
+  const btn = document.getElementById('gcalSyncBtn_' + person);
+  const fresh = await gcalEnsureFreshToken(person);
+  if (!fresh) { gcalRenderButtons(); return; }
+  const token = gcalTokens[person].access_token;
+  if (btn) btn.textContent = 'Syncing…';
+  try {
+    const now = new Date();
+    const timeMin = new Date(now.getFullYear(), now.getMonth() - 1, 1).toISOString();
+    const timeMax = new Date(now.getFullYear(), now.getMonth() + 2, 0).toISOString();
+    const url = 'https://www.googleapis.com/calendar/v3/calendars/primary/events?' +
+      'timeMin=' + encodeURIComponent(timeMin) +
+      '&timeMax=' + encodeURIComponent(timeMax) +
+      '&singleEvents=true&orderBy=startTime&maxResults=250';
+    const res = await fetch(url, { headers: { Authorization: 'Bearer ' + token } });
+    if (res.status === 401) {
+      // token was revoked/invalidated server-side — force full reconnect
+      gcalTokens[person] = null; LS.set('gcalTokens', gcalTokens);
+      gcalRenderButtons();
+      alert('Google access was revoked for that account. Please reconnect.');
+      return;
+    }
+    const data = await res.json();
+    gcalEvents[person] = (data.items || []).map(ev => ({
+      id: 'gcal_' + person + '_' + ev.id,
+      title: ev.summary || '(No title)',
+      date: (ev.start.date || ev.start.dateTime || '').slice(0, 10),
+      time: ev.start.dateTime ? new Date(ev.start.dateTime).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' }) : 'All day',
+      location: ev.location || '',
+      who: person,
+      source: 'google'
+    }));
+    LS.set('gcalEvents', gcalEvents);
+    gcalRenderButtons();
+    if (typeof renderCalView === 'function') renderCalView();
+    if (typeof renderDayPanel === 'function') renderDayPanel(selectedDate);
+    if (typeof renderHomeToday === 'function') renderHomeToday();
+  } catch (e) {
+    console.error('GCal fetch failed for ' + person + ':', e);
+    if (btn) btn.textContent = 'Sync failed — retry';
+  }
+}
+
+// Returns Google events for a date, respecting the current person filter (all/p1/p2)
+function gcalEventsForDate(dateStr) {
+  const pf = typeof personFilter !== 'undefined' ? personFilter : 'all';
+  const all = (gcalEvents.p1 || []).concat(gcalEvents.p2 || []);
+  return all.filter(e => e.date === dateStr && (pf === 'all' || e.who === pf));
+}
+
+window.addEventListener('load', () => { gcalInit(); renderDailyQuote(); });
+</script>
+</body>
+</html>
