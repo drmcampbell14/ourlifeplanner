@@ -1,0 +1,1219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Our Life</title>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<script src="https://apis.google.com/js/api.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&family=Roboto+Mono:wght@400;500&display=swap');
+:root{--navy:#1a2332;--navy-mid:#243044;--navy-light:#2e3d56;--gold:#c9a84c;--gold-light:#e8c878;--sage:#7a9e7e;--rose:#c4756b;--sky:#5b8fa8;--text:#e8e4dc;--text-dim:#8a9ab0;--card:#1e2d42;--border:rgba(201,168,76,0.15);--p1:#c9a84c;--p2:#c4756b;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Inter',sans-serif;background:var(--navy);color:var(--text);min-height:100vh;overflow-x:hidden;}
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.78);z-index:2000;align-items:center;justify-content:center;padding:16px;}
+.modal-overlay.open{display:flex;}
+.modal{background:var(--navy-mid);border:1px solid var(--border);border-radius:16px;padding:26px;width:100%;max-width:460px;max-height:92vh;overflow-y:auto;}
+.modal h2{font-family:'Playfair Display',serif;color:var(--gold);font-size:19px;margin-bottom:3px;}
+.modal p{font-size:11px;color:var(--text-dim);margin-bottom:16px;}
+.modal-close{float:right;background:none;border:none;color:var(--text-dim);font-size:17px;cursor:pointer;}
+.form-group{margin-bottom:13px;}
+.form-label{font-size:10px;text-transform:uppercase;letter-spacing:.07em;color:var(--text-dim);margin-bottom:4px;display:block;}
+header{background:linear-gradient(135deg,var(--navy),var(--navy-mid));border-bottom:1px solid var(--border);padding:13px 18px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+.header-left h1{font-family:'Playfair Display',serif;font-size:18px;color:var(--gold);}
+.header-left p{font-size:10px;color:var(--text-dim);letter-spacing:.04em;margin-top:1px;}
+.header-right{display:flex;gap:6px;align-items:center;}
+.avatar{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;cursor:pointer;transition:transform .2s;}
+.avatar:hover{transform:scale(1.1);}
+.avatar.p1{background:var(--p1);color:var(--navy);}
+.avatar.p2{background:var(--p2);color:#fff;}
+.date-pill{font-family:'Roboto Mono',monospace;font-size:10px;color:var(--text-dim);background:var(--navy-light);padding:4px 9px;border-radius:18px;border:1px solid var(--border);}
+.icon-btn{background:var(--navy-light);border:1px solid var(--border);color:var(--text-dim);width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;transition:all .2s;}
+.icon-btn:hover{color:var(--gold);border-color:var(--gold);}
+.person-bar{background:var(--navy-mid);border-bottom:1px solid var(--border);padding:6px 18px;display:flex;gap:6px;align-items:center;}
+.person-btn{padding:4px 13px;border-radius:18px;border:1px solid var(--border);background:transparent;color:var(--text-dim);font-size:11px;font-weight:500;cursor:pointer;transition:all .2s;font-family:'Inter',sans-serif;}
+.person-btn.active-p1{background:var(--p1);color:var(--navy);border-color:var(--p1);}
+.person-btn.active-p2{background:var(--p2);color:#fff;border-color:var(--p2);}
+.person-bar span{font-size:10px;color:var(--text-dim);}
+nav{display:flex;gap:1px;padding:11px 18px 0;border-bottom:1px solid var(--border);overflow-x:auto;scrollbar-width:none;background:var(--navy);}
+nav::-webkit-scrollbar{display:none;}
+.tab{padding:7px 12px 9px;font-size:10px;font-weight:500;letter-spacing:.05em;text-transform:uppercase;color:var(--text-dim);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:all .2s;background:none;border-left:none;border-right:none;border-top:none;font-family:'Inter',sans-serif;}
+.tab:hover{color:var(--text);}
+.tab.active{color:var(--gold);border-bottom-color:var(--gold);}
+main{padding:18px;max-width:1400px;margin:0 auto;}
+.section{display:none;}
+.section.active{display:block;}
+.grid{display:grid;gap:15px;}
+.g2{grid-template-columns:repeat(auto-fit,minmax(280px,1fr));}
+.g3{grid-template-columns:repeat(auto-fit,minmax(200px,1fr));}
+.g4{grid-template-columns:repeat(auto-fit,minmax(145px,1fr));}
+.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px;}
+.card-title{font-family:'Playfair Display',serif;font-size:15px;color:var(--gold);margin-bottom:2px;}
+.card-title-input{font-family:'Playfair Display',serif;font-size:15px;color:var(--gold);background:transparent;border:none;border-bottom:1px dashed transparent;outline:none;width:100%;cursor:text;display:block;margin-bottom:2px;}
+.card-title-input:hover{border-bottom-color:rgba(201,168,76,.4);}
+.card-title-input:focus{border-bottom-color:var(--gold);}
+.card-sub{font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.06em;margin-bottom:13px;}
+.card-sub-input{font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.06em;margin-bottom:13px;background:transparent;border:none;border-bottom:1px dashed transparent;outline:none;width:100%;cursor:text;display:block;}
+.card-sub-input:focus{border-bottom-color:var(--text-dim);}
+.sec-hdr{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:18px;gap:10px;flex-wrap:wrap;}
+.sec-hdr h2{font-family:'Playfair Display',serif;font-size:21px;color:var(--text);}
+.eyebrow{font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.1em;}
+.hdr-actions{display:flex;gap:7px;flex-wrap:wrap;}
+.stat-box{background:var(--navy-light);border-radius:10px;padding:13px;text-align:center;border:1px solid var(--border);}
+.stat-num{font-family:'Playfair Display',serif;font-size:26px;color:var(--gold);line-height:1;}
+.stat-label{font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.06em;margin-top:3px;}
+.prog-row{margin-bottom:9px;}
+.prog-label{display:flex;justify-content:space-between;font-size:11px;margin-bottom:3px;}
+.prog-bar{height:5px;background:var(--navy-light);border-radius:3px;overflow:hidden;}
+.prog-fill{height:100%;border-radius:3px;transition:width .5s;}
+.fill-gold{background:linear-gradient(90deg,var(--gold),var(--gold-light));}
+.fill-sage{background:var(--sage);}
+.fill-rose{background:var(--rose);}
+.fill-sky{background:var(--sky);}
+.task-list{list-style:none;}
+.task-item{display:flex;align-items:flex-start;gap:8px;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.04);position:relative;}
+.task-item:last-child{border-bottom:none;}
+.task-check{width:15px;height:15px;border:1.5px solid var(--text-dim);border-radius:3px;flex-shrink:0;margin-top:1px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:9px;transition:all .2s;}
+.task-item.done .task-check{background:var(--sage);border-color:var(--sage);color:#fff;}
+.task-item.done .task-check::after{content:'✓';}
+.task-item.done .task-text-input{text-decoration:line-through;color:var(--text-dim);}
+.task-body{flex:1;min-width:0;}
+.task-text-input{font-size:12px;background:transparent;border:none;border-bottom:1px dashed transparent;color:var(--text);width:100%;outline:none;font-family:'Inter',sans-serif;cursor:text;line-height:1.4;}
+.task-text-input:focus{border-bottom-color:var(--gold);}
+.task-meta{font-size:10px;color:var(--text-dim);margin-top:2px;}
+.task-actions{display:flex;gap:3px;opacity:0;transition:opacity .2s;flex-shrink:0;}
+.task-item:hover .task-actions{opacity:1;}
+.tbtn{background:none;border:none;cursor:pointer;font-size:11px;padding:1px 3px;border-radius:3px;color:var(--text-dim);}
+.tdel{color:var(--rose)!important;}
+.editable{background:transparent;border:none;border-bottom:1px dashed transparent;color:inherit;font:inherit;cursor:text;transition:border-color .2s;outline:none;}
+.editable:hover{border-bottom-color:rgba(138,154,176,.4);}
+.editable:focus{border-bottom-color:var(--gold);}
+input[type=text],input[type=number],input[type=date],input[type=time],select,textarea{flex:1;background:var(--navy-light);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'Inter',sans-serif;font-size:12px;padding:7px 10px;outline:none;transition:border-color .2s;width:100%;}
+input:focus,select:focus,textarea:focus{border-color:var(--gold);}
+input::placeholder,textarea::placeholder{color:var(--text-dim);}
+textarea{resize:vertical;min-height:55px;}
+select option{background:var(--navy-mid);}
+.btn{padding:7px 13px;border-radius:8px;border:none;cursor:pointer;font-family:'Inter',sans-serif;font-size:11px;font-weight:600;letter-spacing:.04em;transition:all .2s;white-space:nowrap;}
+.btn-gold{background:var(--gold);color:var(--navy);}
+.btn-gold:hover{background:var(--gold-light);}
+.btn-ghost{background:transparent;color:var(--text-dim);border:1px solid var(--border);}
+.btn-ghost:hover{border-color:var(--text-dim);color:var(--text);}
+.btn-sm{padding:5px 10px;font-size:10px;}
+.add-row{display:flex;gap:6px;margin-top:11px;flex-wrap:wrap;}
+.add-row input,.add-row select{flex:1;min-width:70px;}
+.tag{display:inline-block;font-size:9px;padding:2px 6px;border-radius:8px;font-weight:500;letter-spacing:.04em;text-transform:uppercase;}
+.tag-gold{background:rgba(201,168,76,.15);color:var(--gold-light);}
+.ms-list{list-style:none;}
+.ms-item{display:flex;gap:11px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.04);align-items:flex-start;}
+.ms-item:last-child{border-bottom:none;}
+.ms-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;margin-top:3px;cursor:pointer;}
+.dot-done{background:var(--sage);}
+.dot-active{background:var(--gold);}
+.dot-pending{background:var(--navy-light);border:1px solid var(--text-dim);}
+.dot-key{background:var(--rose);}
+.ms-body{flex:1;}
+.ms-actions{opacity:0;transition:opacity .2s;}
+.ms-item:hover .ms-actions{opacity:1;}
+.note-card{background:var(--navy-light);border-radius:8px;padding:11px;margin-bottom:8px;font-size:12px;line-height:1.6;position:relative;}
+.note-meta{font-size:9px;color:var(--text-dim);margin-top:5px;font-family:'Roboto Mono',monospace;}
+.note-del{position:absolute;top:7px;right:7px;background:none;border:none;color:var(--rose);cursor:pointer;opacity:0;font-size:12px;}
+.note-card:hover .note-del{opacity:1;}
+.cal-toolbar{display:flex;align-items:center;gap:8px;margin-bottom:14px;flex-wrap:wrap;}
+.cal-toolbar h3{font-family:'Playfair Display',serif;font-size:17px;flex:1;}
+.view-toggle{display:flex;border:1px solid var(--border);border-radius:8px;overflow:hidden;}
+.view-btn{padding:5px 12px;background:transparent;border:none;color:var(--text-dim);font-size:11px;cursor:pointer;font-family:'Inter',sans-serif;transition:all .2s;}
+.view-btn.active{background:var(--gold);color:var(--navy);font-weight:600;}
+.cal-nav-btn{background:var(--navy-light);border:1px solid var(--border);color:var(--text);width:28px;height:28px;border-radius:7px;cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center;}
+.month-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;}
+.cal-dh{text-align:center;font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.05em;padding:3px;}
+.cal-day{min-height:80px;display:flex;flex-direction:column;padding:5px;border-radius:7px;cursor:pointer;transition:all .2s;border:1px solid transparent;}
+.cal-day:hover{background:var(--navy-light);}
+.cal-day.today{background:rgba(201,168,76,.12);border-color:var(--gold);}
+.cal-day.sel{border-color:var(--gold);background:rgba(201,168,76,.08);}
+.cal-day.other-m{opacity:.3;}
+.cal-day-num{font-size:11px;font-weight:500;margin-bottom:3px;}
+.cal-day.today .cal-day-num{color:var(--gold);font-weight:700;}
+.cal-chip{font-size:9px;padding:1px 5px;border-radius:4px;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;}
+.more-chip{font-size:9px;color:var(--text-dim);padding:1px 3px;}
+.week-scroll{overflow-x:auto;}
+.week-grid{display:grid;grid-template-columns:52px repeat(7,1fr);border:1px solid var(--border);border-radius:10px;overflow:hidden;min-width:580px;}
+.week-time-col{background:var(--navy-light);}
+.week-time-slot{height:44px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-dim);font-family:'Roboto Mono',monospace;border-bottom:1px solid rgba(255,255,255,.04);}
+.week-day-col{border-left:1px solid var(--border);}
+.week-day-header{padding:7px 4px;text-align:center;background:var(--navy-mid);border-bottom:1px solid var(--border);cursor:pointer;}
+.week-dh-name{font-size:9px;color:var(--text-dim);text-transform:uppercase;}
+.week-dh-date{font-size:14px;font-weight:600;font-family:'Playfair Display',serif;}
+.week-dh-today{color:var(--gold);}
+.week-cell{height:44px;border-bottom:1px solid rgba(255,255,255,.03);position:relative;overflow:hidden;}
+.week-event{position:absolute;left:2px;right:2px;top:2px;font-size:9px;padding:2px 4px;border-radius:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer;}
+.day-panel{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px;margin-top:15px;}
+.day-panel-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px;}
+.day-panel-date{font-family:'Playfair Display',serif;font-size:16px;}
+.person-filter{display:flex;gap:5px;}
+.pf-btn{padding:4px 10px;border-radius:14px;border:1px solid var(--border);background:transparent;color:var(--text-dim);font-size:10px;cursor:pointer;font-family:'Inter',sans-serif;transition:all .2s;}
+.pf-all.active{background:var(--navy-light);color:var(--text);border-color:var(--text-dim);}
+.day-section{margin-bottom:14px;}
+.day-section-title{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--text-dim);margin-bottom:6px;padding-bottom:4px;border-bottom:1px solid var(--border);}
+.day-task-item{display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:7px;margin-bottom:4px;cursor:pointer;transition:background .15s;}
+.day-task-item:hover{background:var(--navy-light);}
+.day-task-check{width:14px;height:14px;border:1.5px solid var(--text-dim);border-radius:3px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:8px;transition:all .2s;}
+.day-task-item.done .day-task-check{background:var(--sage);border-color:var(--sage);color:#fff;}
+.day-task-item.done .day-task-check::after{content:'✓';}
+.day-task-item.done .day-task-label{text-decoration:line-through;color:var(--text-dim);}
+.day-task-label{font-size:12px;flex:1;}
+.day-who-dot{width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;flex-shrink:0;}
+.skip-btn{font-size:9px;color:var(--rose);background:none;border:none;cursor:pointer;padding:1px 5px;opacity:0;border-radius:4px;transition:opacity .2s;}
+.day-task-item:hover .skip-btn{opacity:1;}
+.day-event-item{display:flex;gap:8px;padding:6px 8px;border-radius:7px;margin-bottom:4px;border-left:3px solid var(--gold);background:var(--navy-light);}
+.day-event-time{font-family:'Roboto Mono',monospace;font-size:10px;color:var(--text-dim);white-space:nowrap;}
+.empty-msg{font-size:12px;color:var(--text-dim);padding:8px 0;}
+.fund-card{background:var(--navy-light);border-radius:9px;padding:14px;margin-bottom:9px;position:relative;border:1px solid var(--border);}
+.fund-bar{height:7px;background:var(--navy);border-radius:4px;overflow:hidden;margin:7px 0;}
+.fund-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--gold),var(--gold-light));transition:width .5s;}
+.fund-del{position:absolute;top:9px;right:9px;background:none;border:none;color:var(--rose);cursor:pointer;opacity:0;font-size:12px;}
+.fund-card:hover .fund-del{opacity:1;}
+.bud-table{width:100%;border-collapse:collapse;font-size:12px;}
+.bud-table th{text-align:left;font-size:9px;text-transform:uppercase;letter-spacing:.07em;color:var(--text-dim);padding:6px 8px;border-bottom:1px solid var(--border);font-weight:500;}
+.bud-table td{padding:7px 8px;border-bottom:1px solid rgba(255,255,255,.04);vertical-align:middle;}
+.bud-table tr:last-child td{border-bottom:none;}
+.bud-input{background:transparent;border:none;color:var(--text);font-family:'Roboto Mono',monospace;font-size:11px;width:100%;padding:1px 2px;border-radius:3px;}
+.bud-input:focus{background:var(--navy-light);outline:1px solid var(--gold);}
+.col-income{color:var(--sage);font-family:'Roboto Mono',monospace;}
+.col-expense{color:var(--rose);font-family:'Roboto Mono',monospace;}
+.col-savings{color:var(--gold);font-family:'Roboto Mono',monospace;}
+.bud-del{background:none;border:none;color:var(--rose);cursor:pointer;opacity:0;font-size:12px;}
+tr:hover .bud-del{opacity:1;}
+.bud-foot td{font-weight:600;border-top:2px solid var(--border)!important;padding-top:11px;}
+.dog-box{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px;position:relative;}
+.dog-box-del{position:absolute;top:11px;right:11px;background:none;border:none;color:var(--rose);cursor:pointer;opacity:0;font-size:12px;}
+.dog-box:hover .dog-box-del{opacity:1;}
+.sched-row{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.04);}
+.sched-row:last-child{border-bottom:none;}
+.sched-actions{opacity:0;transition:opacity .2s;display:flex;gap:3px;}
+.sched-row:hover .sched-actions{opacity:1;}
+.meal-day{background:var(--navy-light);border-radius:8px;padding:11px;margin-bottom:7px;}
+.meal-day-title{font-size:10px;font-weight:600;color:var(--gold);text-transform:uppercase;letter-spacing:.05em;margin-bottom:7px;}
+.meal-slot{display:flex;align-items:center;gap:7px;margin-bottom:5px;}
+.meal-slot-label{font-size:10px;color:var(--text-dim);width:58px;flex-shrink:0;}
+.swatch-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:4px;}
+.swatch{width:24px;height:24px;border-radius:50%;cursor:pointer;border:2px solid transparent;transition:all .2s;}
+.swatch.sel{border-color:#fff;transform:scale(1.15);}
+.cdown{text-align:center;padding:12px;background:var(--navy-light);border-radius:9px;margin-bottom:9px;position:relative;}
+.cdown-num{font-family:'Playfair Display',serif;font-size:34px;color:var(--gold);line-height:1;}
+.cdown-lbl{font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.1em;margin-top:2px;}
+.reading-card{background:var(--navy-light);border-radius:9px;padding:14px;margin-bottom:9px;border-left:3px solid var(--gold);}
+.reading-label{font-size:9px;color:var(--gold);text-transform:uppercase;letter-spacing:.08em;margin-bottom:3px;}
+.reading-ref{font-size:12px;font-weight:600;margin-bottom:5px;}
+.reading-text{font-size:11px;line-height:1.7;color:var(--text-dim);}
+@media(max-width:640px){header{padding:10px 12px;}nav{padding:8px 12px 0;}main{padding:12px 10px;}.g2,.g3,.g4{grid-template-columns:1fr;}.sec-hdr h2{font-size:19px;}.modal{padding:18px;}.cal-day{min-height:55px;}}
+</style>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj4KICA8cmVjdCB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgcng9IjgwIiBmaWxsPSIjMWEyMzMyIi8+CiAgPHJlY3QgeD0iMjM2IiB5PSI3NSIgd2lkdGg9IjQwIiBoZWlnaHQ9IjI5MCIgcng9IjEwIiBmaWxsPSIjYzlhODRjIi8+CiAgPHJlY3QgeD0iMTM1IiB5PSIxNTUiIHdpZHRoPSIyNDIiIGhlaWdodD0iNDAiIHJ4PSIxMCIgZmlsbD0iI2M5YTg0YyIvPgogIDxjaXJjbGUgY3g9IjI1NiIgY3k9IjQyNCIgcj0iMzIiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2M5YTg0YyIgc3Ryb2tlLXdpZHRoPSI2IiBvcGFjaXR5PSIwLjYiLz4KICA8Y2lyY2xlIGN4PSIyNTYiIGN5PSI0MjQiIHI9IjEwIiBmaWxsPSIjYzlhODRjIiBvcGFjaXR5PSIwLjUiLz4KICA8cmVjdCB4PSIyNDQiIHk9Ijc4IiB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHJ4PSI0IiBmaWxsPSIjZThjODc4IiBvcGFjaXR5PSIwLjUiLz4KPC9zdmc+">
+<link rel="apple-touch-icon" href="data:image/png;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj4KICA8cmVjdCB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgcng9IjgwIiBmaWxsPSIjMWEyMzMyIi8+CiAgPHJlY3QgeD0iMjM2IiB5PSI3NSIgd2lkdGg9IjQwIiBoZWlnaHQ9IjI5MCIgcng9IjEwIiBmaWxsPSIjYzlhODRjIi8+CiAgPHJlY3QgeD0iMTM1IiB5PSIxNTUiIHdpZHRoPSIyNDIiIGhlaWdodD0iNDAiIHJ4PSIxMCIgZmlsbD0iI2M5YTg0YyIvPgogIDxjaXJjbGUgY3g9IjI1NiIgY3k9IjQyNCIgcj0iMzIiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2M5YTg0YyIgc3Ryb2tlLXdpZHRoPSI2IiBvcGFjaXR5PSIwLjYiLz4KICA8Y2lyY2xlIGN4PSIyNTYiIGN5PSI0MjQiIHI9IjEwIiBmaWxsPSIjYzlhODRjIiBvcGFjaXR5PSIwLjUiLz4KICA8cmVjdCB4PSIyNDQiIHk9Ijc4IiB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHJ4PSI0IiBmaWxsPSIjZThjODc4IiBvcGFjaXR5PSIwLjUiLz4KPC9zdmc+">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Our Life">
+<meta name="theme-color" content="#1a2332">
+</head>
+<body>
+<!-- MODALS -->
+<div class="modal-overlay" id="mSettings"><div class="modal">
+  <button class="modal-close" onclick="closeM('mSettings')">✕</button>
+  <h2>Customize</h2><p>All changes save automatically.</p>
+  <div class="form-group"><label class="form-label">Your Name</label><input type="text" id="sP1Name" oninput="applySettings()"></div>
+  <div class="form-group"><label class="form-label">Your Initials</label><input type="text" id="sP1Init" maxlength="3" oninput="applySettings()"></div>
+  <div class="form-group"><label class="form-label">Your Color</label><div class="swatch-row">
+    <div class="swatch sel" style="background:#c9a84c" onclick="pickColor('p1','#c9a84c',this)"></div>
+    <div class="swatch" style="background:#5b8fa8" onclick="pickColor('p1','#5b8fa8',this)"></div>
+    <div class="swatch" style="background:#7a9e7e" onclick="pickColor('p1','#7a9e7e',this)"></div>
+    <div class="swatch" style="background:#8b6fad" onclick="pickColor('p1','#8b6fad',this)"></div>
+  </div></div>
+  <hr style="border-color:var(--border);margin:14px 0;">
+  <div class="form-group"><label class="form-label">Partner's Name</label><input type="text" id="sP2Name" oninput="applySettings()"></div>
+  <div class="form-group"><label class="form-label">Partner's Initials</label><input type="text" id="sP2Init" maxlength="3" oninput="applySettings()"></div>
+  <div class="form-group"><label class="form-label">Partner's Color</label><div class="swatch-row">
+    <div class="swatch sel" style="background:#c4756b" onclick="pickColor('p2','#c4756b',this)"></div>
+    <div class="swatch" style="background:#e8a87c" onclick="pickColor('p2','#e8a87c',this)"></div>
+    <div class="swatch" style="background:#a8c5a0" onclick="pickColor('p2','#a8c5a0',this)"></div>
+    <div class="swatch" style="background:#c4a0c4" onclick="pickColor('p2','#c4a0c4',this)"></div>
+  </div></div>
+  <hr style="border-color:var(--border);margin:14px 0;">
+  <div class="form-group"><label class="form-label">Location</label><input type="text" id="sLocation" oninput="applySettings()"></div>
+  <div class="form-group"><label class="form-label">Practice Open Date</label><input type="date" id="sTargetDate" oninput="applySettings()"></div>
+  <button class="btn btn-gold" style="width:100%;margin-top:6px;" onclick="closeM('mSettings')">Done</button>
+</div></div>
+
+<div class="modal-overlay" id="mEvent"><div class="modal">
+  <button class="modal-close" onclick="closeM('mEvent')">✕</button>
+  <h2>Add Event</h2><p>One-time event — mirrors your Google Calendar.</p>
+  <div class="form-group"><label class="form-label">Title</label><input type="text" id="evTitle" placeholder="Appointment, class, errand…"></div>
+  <div class="form-group"><label class="form-label">Date</label><input type="date" id="evDate"></div>
+  <div class="form-group"><label class="form-label">Time</label><input type="time" id="evTime"></div>
+  <div class="form-group"><label class="form-label">Notes / Location</label><input type="text" id="evNotes" placeholder="Optional details…"></div>
+  <div class="form-group"><label class="form-label">Who</label><select id="evWho"><option value="both">Both</option><option value="p1">Mitch</option><option value="p2">Liz</option></select></div>
+  <div class="form-group"><label class="form-label">Category</label><select id="evCat">
+    <option value="work">Work/Clinical</option><option value="health">Health</option>
+    <option value="faith">Faith</option><option value="dogs">Dogs</option>
+    <option value="practice">Practice</option><option value="finance">Finance</option><option value="personal">Personal</option>
+  </select></div>
+  <button class="btn btn-gold" style="width:100%;margin-top:6px;" onclick="saveEvent()">Add to Calendar</button>
+</div></div>
+
+<div class="modal-overlay" id="mTask"><div class="modal">
+  <button class="modal-close" onclick="closeM('mTask')">✕</button>
+  <h2>Add Recurring Task</h2>
+  <p>Appears in the calendar every week on the chosen day. Skip individual weeks without deleting it.</p>
+  <div class="form-group"><label class="form-label">Task Name</label><input type="text" id="rtName" placeholder="e.g. Take out trash"></div>
+  <div class="form-group"><label class="form-label">Assigned To</label><select id="rtWho"><option value="both">Both</option><option value="p1">Mitch</option><option value="p2">Liz</option></select></div>
+  <div class="form-group"><label class="form-label">Day of Week</label><select id="rtDay">
+    <option value="0">Sunday</option><option value="1">Monday</option><option value="2">Tuesday</option>
+    <option value="3">Wednesday</option><option value="4">Thursday</option><option value="5">Friday</option><option value="6">Saturday</option>
+  </select></div>
+  <div class="form-group"><label class="form-label">Category</label><select id="rtCat">
+    <option value="household">Household</option><option value="health">Health</option>
+    <option value="dogs">Dogs</option><option value="faith">Faith</option><option value="personal">Personal</option>
+  </select></div>
+  <div class="form-group"><label class="form-label">Notes / Frequency label</label><input type="text" id="rtFreq" placeholder="e.g. Weekly, Every Mon…"></div>
+  <button class="btn btn-gold" style="width:100%;margin-top:6px;" onclick="saveRecurringTask()">Add to Calendar</button>
+</div></div>
+
+<div class="modal-overlay" id="mPillar"><div class="modal">
+  <button class="modal-close" onclick="closeM('mPillar')">✕</button>
+  <h2>Add Life Pillar</h2>
+  <div class="form-group"><label class="form-label">Name</label><input type="text" id="pillarName" placeholder="e.g. 💰 Finances"></div>
+  <div class="form-group"><label class="form-label">Starting %</label><input type="number" id="pillarPct" value="0" min="0" max="100"></div>
+  <div class="form-group"><label class="form-label">Color</label><select id="pillarColor"><option value="fill-gold">Gold</option><option value="fill-sage">Sage</option><option value="fill-rose">Rose</option><option value="fill-sky">Sky</option></select></div>
+  <button class="btn btn-gold" style="width:100%;margin-top:6px;" onclick="savePillar()">Add</button>
+</div></div>
+
+<div class="modal-overlay" id="mFund"><div class="modal">
+  <button class="modal-close" onclick="closeM('mFund')">✕</button>
+  <h2>Add Savings Fund</h2>
+  <div class="form-group"><label class="form-label">Fund Name</label><input type="text" id="fundName" placeholder="Practice Fund, Ring Fund…"></div>
+  <div class="form-group"><label class="form-label">Goal ($)</label><input type="number" id="fundGoal"></div>
+  <div class="form-group"><label class="form-label">Saved So Far ($)</label><input type="number" id="fundSaved" value="0"></div>
+  <div class="form-group"><label class="form-label">Notes</label><input type="text" id="fundNotes"></div>
+  <button class="btn btn-gold" style="width:100%;margin-top:6px;" onclick="saveFund()">Create Fund</button>
+</div></div>
+
+<div class="modal-overlay" id="mMilestone"><div class="modal">
+  <button class="modal-close" onclick="closeM('mMilestone')">✕</button>
+  <h2>Add Milestone</h2>
+  <div class="form-group"><label class="form-label">Title</label><input type="text" id="msTitle"></div>
+  <div class="form-group"><label class="form-label">Date / Timeframe</label><input type="text" id="msDate" placeholder="Q1 2027"></div>
+  <div class="form-group"><label class="form-label">Status</label><select id="msStatus"><option value="active">Active (gold)</option><option value="pending">Pending</option><option value="done">Done (green)</option><option value="key">Key milestone (rose)</option></select></div>
+  <div class="form-group"><label class="form-label">Tag</label><input type="text" id="msTag" placeholder="Legal, Career…"></div>
+  <div class="form-group"><label class="form-label">Section</label><select id="msSection"><option value="practice">Practice</option><option value="faith">Faith</option></select></div>
+  <button class="btn btn-gold" style="width:100%;margin-top:6px;" onclick="saveMilestone()">Add</button>
+</div></div>
+
+<div class="modal-overlay" id="mDogBox"><div class="modal">
+  <button class="modal-close" onclick="closeM('mDogBox')">✕</button>
+  <h2>Add Dog Section</h2>
+  <div class="form-group"><label class="form-label">Title</label><input type="text" id="dogBoxTitle" placeholder="Vet Info, Grooming…"></div>
+  <div class="form-group"><label class="form-label">Subtitle</label><input type="text" id="dogBoxSub"></div>
+  <div class="form-group"><label class="form-label">Type</label><select id="dogBoxType"><option value="schedule">Time Schedule</option><option value="checklist">Checklist</option><option value="notes">Notes</option></select></div>
+  <button class="btn btn-gold" style="width:100%;margin-top:6px;" onclick="saveDogBox()">Create</button>
+</div></div>
+
+<!-- HEADER -->
+<header>
+  <div class="header-left"><h1>✝ Our Life</h1><p id="hdrLoc">Lancaster, PA · Ponte Vedra Beach 2027</p></div>
+  <div class="header-right">
+    <div class="date-pill" id="datePill"></div>
+    <div class="avatar p1" id="avP1" onclick="switchPerson('p1')">MD</div>
+    <div class="avatar p2" id="avP2" onclick="switchPerson('p2')">Liz</div>
+    <button class="icon-btn" onclick="openM('mSettings')">⚙</button>
+  </div>
+</header>
+<div class="person-bar">
+  <button class="person-btn active-p1" id="pbP1" onclick="switchPerson('p1')">Mitch's View</button>
+  <button class="person-btn" id="pbP2" onclick="switchPerson('p2')">Liz's View</button>
+  <span id="viewAs">Viewing as Mitch</span>
+  <button class="icon-btn" id="gcalSyncBtn_p1" style="width:auto;border-radius:18px;padding:4px 11px;font-size:10px;margin-left:auto;" onclick="gcalConnect('p1')">Connect Mitch's Calendar</button>
+  <button class="icon-btn" id="gcalSyncBtn_p2" style="width:auto;border-radius:18px;padding:4px 11px;font-size:10px;" onclick="gcalConnect('p2')">Connect Liz's Calendar</button>
+</div>
+<nav>
+  <button class="tab active" onclick="showTab('home',this)">Home</button>
+  <button class="tab" onclick="showTab('calendar',this)">Calendar</button>
+  <button class="tab" onclick="showTab('finances',this)">Finances</button>
+  <button class="tab" onclick="showTab('money',this)">Money Moves</button>
+  <button class="tab" onclick="showTab('practice',this)">Practice</button>
+  <button class="tab" onclick="showTab('household',this)">Household</button>
+  <button class="tab" onclick="showTab('meals',this)">Meals</button>
+  <button class="tab" onclick="showTab('health',this)">Health</button>
+  <button class="tab" onclick="showTab('faith',this)">Faith & Life</button>
+  <button class="tab" onclick="showTab('dogs',this)">🐾 Dogs</button>
+  <button class="tab" onclick="showTab('notes',this)">Notes</button>
+</nav>
+<main>
+
+<!-- HOME -->
+<section class="section active" id="home">
+  <div class="sec-hdr"><div><div class="eyebrow">Dashboard</div><h2>Life at a Glance</h2></div>
+  <div class="hdr-actions"><button class="btn btn-ghost btn-sm" onclick="openM('mTask')">+ Recurring Task</button></div></div>
+  <div class="grid g2" style="margin-bottom:14px;">
+    <div class="card" id="dailyQuoteCard" style="display:flex;flex-direction:column;justify-content:center;text-align:center;padding:24px 18px;background:linear-gradient(135deg,var(--navy-mid),var(--card));">
+      <div style="font-size:9px;text-transform:uppercase;letter-spacing:.12em;color:var(--gold);margin-bottom:10px;" id="dailyQuoteLabel">Today's Word</div>
+      <div style="font-family:'Playfair Display',serif;font-size:16px;line-height:1.5;color:var(--text);font-style:italic;margin-bottom:8px;" id="dailyQuoteText">—</div>
+      <div style="font-size:11px;color:var(--text-dim);letter-spacing:.04em;" id="dailyQuoteSource">—</div>
+    </div>
+    <div class="card"><div class="card-title">Today</div><div class="card-sub" id="homeTodayLbl">—</div><div id="homeTodayContent"></div><button class="btn btn-ghost btn-sm" style="margin-top:10px;" onclick="showTab('calendar',document.querySelectorAll('.tab')[1])">Full Calendar →</button></div>
+  </div>
+  <div class="grid g2" style="margin-bottom:14px;">
+    <div class="card"><input class="card-title-input" value="This Week's Focus"><input class="card-sub-input" id="focusSub" value="Mitch's priorities"><ul class="task-list" id="focusList"></ul>
+      <div class="add-row"><input type="text" id="focusInput" placeholder="Add priority…"><select id="focusWho" style="flex:0 0 auto;width:auto;"></select><button class="btn btn-gold btn-sm" onclick="addFocusTask()">Add</button></div></div>
+    <div class="card"><div class="card-title">Countdowns</div><div class="card-sub">Edit any date · auto-calculated</div><div id="countdownsContainer"></div>
+      <div class="add-row"><input type="text" id="cdName" placeholder="Label…"><input type="date" id="cdDate" style="flex:0 0 auto;width:auto;"><button class="btn btn-gold btn-sm" onclick="addCountdown()">Add</button></div></div>
+  </div>
+  <div class="grid g3">
+    <div class="stat-box"><div class="stat-num" id="statDays">—</div><div class="stat-label">Days to Open</div></div>
+    <div class="stat-box"><div class="stat-num" id="statToday">0</div><div class="stat-label">Today's Events</div></div>
+    <div class="stat-box"><div class="stat-num" id="statTasks">0</div><div class="stat-label">Tasks Due Today</div></div>
+  </div>
+</section>
+
+<!-- CALENDAR -->
+<section class="section" id="calendar">
+  <div class="sec-hdr"><div><div class="eyebrow">Schedule</div><h2>Calendar</h2></div>
+  <div class="hdr-actions"><button class="btn btn-ghost btn-sm" onclick="openM('mTask')">+ Recurring Task</button><button class="btn btn-gold btn-sm" onclick="openM('mEvent')">+ Event</button></div></div>
+  <div class="card">
+    <div class="cal-toolbar">
+      <button class="cal-nav-btn" onclick="navCal(-1)">&#8249;</button>
+      <h3 id="calTitle">—</h3>
+      <button class="cal-nav-btn" onclick="navCal(1)">&#8250;</button>
+      <button class="cal-nav-btn" onclick="goToday()" style="font-size:10px;width:auto;padding:0 8px;">Today</button>
+      <div class="view-toggle">
+        <button class="view-btn active" id="vbMonth" onclick="switchView('month')">Month</button>
+        <button class="view-btn" id="vbWeek" onclick="switchView('week')">Week</button>
+        <button class="view-btn" id="vbDay" onclick="switchView('day')">Day</button>
+      </div>
+    </div>
+    <div style="display:flex;gap:12px;margin-bottom:12px;flex-wrap:wrap;font-size:10px;color:var(--text-dim);">
+      <span><span id="legDot1" style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--p1);margin-right:4px;"></span><span id="legP1">Mitch</span></span>
+      <span><span id="legDot2" style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--p2);margin-right:4px;"></span><span id="legP2">Liz</span></span>
+      <span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--sage);margin-right:4px;"></span>Both</span>
+      <span><span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:rgba(91,143,168,.5);margin-right:4px;"></span>Event</span>
+      <span><span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:rgba(138,154,176,.3);margin-right:4px;"></span>Recurring</span>
+    </div>
+    <div id="calBody"></div>
+  </div>
+  <div class="day-panel" id="dayPanel">
+    <div class="day-panel-hdr">
+      <div class="day-panel-date" id="dayPanelDate">Select a day to zoom in</div>
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+        <div class="person-filter">
+          <button class="pf-btn pf-all active" id="pfAll" onclick="setPersonFilter('all')">All</button>
+          <button class="pf-btn" id="pfP1" onclick="setPersonFilter('p1')" style="border-color:var(--p1);">Mitch</button>
+          <button class="pf-btn" id="pfP2" onclick="setPersonFilter('p2')" style="border-color:var(--p2);">Liz</button>
+        </div>
+        <button class="btn btn-ghost btn-sm" onclick="document.getElementById('evDate').value=selectedDate;openM('mEvent')">+ Event this day</button>
+      </div>
+    </div>
+    <div id="dayPanelContent"><p class="empty-msg">Click any day on the calendar above to zoom in and see all tasks and events for that day.</p></div>
+  </div>
+</section>
+
+<!-- FINANCES -->
+<section class="section" id="finances">
+  <div class="sec-hdr"><div><div class="eyebrow">Financial Pillar</div><h2>Finances</h2></div>
+  <div class="hdr-actions"><button class="btn btn-ghost btn-sm" onclick="addBudgetRow('income')">+ Income</button><button class="btn btn-ghost btn-sm" onclick="addBudgetRow('expense')">+ Expense</button><button class="btn btn-ghost btn-sm" onclick="addBudgetRow('savings')">+ Savings</button><button class="btn btn-gold btn-sm" onclick="openM('mFund')">+ Fund</button></div></div>
+  <div class="grid g4" style="margin-bottom:14px;">
+    <div class="stat-box"><div class="stat-num col-income" id="totIncome">$0</div><div class="stat-label">Monthly Income</div></div>
+    <div class="stat-box"><div class="stat-num col-expense" id="totExpenses">$0</div><div class="stat-label">Expenses</div></div>
+    <div class="stat-box"><div class="stat-num col-savings" id="totSavings">$0</div><div class="stat-label">Saving/mo</div></div>
+    <div class="stat-box"><div class="stat-num" id="totNet">$0</div><div class="stat-label">Net Remaining</div></div>
+  </div>
+  <div class="grid g2">
+    <div class="card"><div class="card-title">Monthly Budget</div><div class="card-sub">Click any field to edit · auto-saves</div>
+      <table class="bud-table"><thead><tr><th>Category</th><th>Type</th><th>$/mo</th><th></th></tr></thead><tbody id="budgetBody"></tbody>
+      <tfoot><tr class="bud-foot"><td colspan="2">Net Monthly</td><td id="budNet">$0</td><td></td></tr></tfoot></table></div>
+    <div>
+      <div class="card" style="margin-bottom:14px;"><div class="card-title">Savings & Funds</div><div class="card-sub">Each goal tracked separately</div><div id="fundsContainer"></div></div>
+      <div class="card"><input class="card-title-input" value="Financial Action List"><input class="card-sub-input" value="Tasks for your money life"><ul class="task-list" id="finTaskList"></ul>
+        <div class="add-row"><input type="text" id="finTaskInput" placeholder="Add task…"><button class="btn btn-gold btn-sm" onclick="addToList('finTaskList','finTaskInput','both')">Add</button></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- MONEY MOVES -->
+<section class="section" id="money">
+  <div class="sec-hdr"><div><div class="eyebrow">Income Strategy</div><h2>Money Moves</h2></div></div>
+  <div class="grid g2">
+    <div class="card"><input class="card-title-input" value="Income Ideas & Side Hustles"><input class="card-sub-input" value="Check off what you're pursuing · delete what's not relevant"><ul class="task-list" id="moneyList"></ul>
+      <div class="add-row"><input type="text" id="moneyInput" placeholder="Add idea…"><button class="btn btn-gold btn-sm" onclick="addToList('moneyList','moneyInput','both')">Add</button></div></div>
+    <div class="card"><input class="card-title-input" value="Strategy Notes"><input class="card-sub-input" value="Plans, research, thoughts"><div id="moneyNotes"></div>
+      <div style="display:flex;flex-direction:column;gap:7px;margin-top:11px;"><input type="text" id="moneyNoteTitle" placeholder="Title"><textarea id="moneyNoteBody" placeholder="Note or strategy…"></textarea>
+      <button class="btn btn-gold btn-sm" style="align-self:flex-end;" onclick="addNote('moneyNotes','moneyNoteTitle','moneyNoteBody')">Save Note</button></div></div>
+  </div>
+</section>
+
+<!-- PRACTICE -->
+<section class="section" id="practice">
+  <div class="sec-hdr"><div><div class="eyebrow">The Dream</div><h2>Ponte Vedra Beach Practice</h2></div>
+  <button class="btn btn-ghost btn-sm" onclick="openM('mMilestone');document.getElementById('msSection').value='practice'">+ Milestone</button></div>
+  <div class="grid g4" style="margin-bottom:14px;">
+    <div class="stat-box"><div class="stat-num" id="pracDays">—</div><div class="stat-label">Days to Open</div></div>
+    <div class="stat-box"><div class="stat-num" id="pracMonths">—</div><div class="stat-label">Months Away</div></div>
+    <div class="stat-box"><div class="stat-label" style="margin-bottom:5px;font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.06em;">Open Date</div><input type="date" id="pracOpenDate" style="background:transparent;border:none;color:var(--gold);font-size:12px;width:100%;text-align:center;" onchange="savePracDate()"></div>
+    <div class="stat-box"><div class="stat-num">2</div><div class="stat-label">Specialties</div></div>
+  </div>
+  <div class="grid g2">
+    <div class="card"><input class="card-title-input" value="Practice Roadmap"><input class="card-sub-input" value="Click dot to cycle status · click text to edit"><ul class="ms-list" id="pracMilestones"></ul></div>
+    <div>
+      <div class="card" style="margin-bottom:14px;"><input class="card-title-input" value="Practice Tasks"><input class="card-sub-input" value="Action items · all editable"><ul class="task-list" id="pracTaskList"></ul>
+        <div class="add-row"><input type="text" id="pracTaskInput" placeholder="Add task…"><select id="pracTaskWho" style="flex:0 0 auto;width:auto;"></select><button class="btn btn-gold btn-sm" onclick="addPracTask()">Add</button></div></div>
+      <div class="card"><input class="card-title-input" value="Practice Notes"><div id="pracNotes"></div>
+        <div style="display:flex;flex-direction:column;gap:7px;margin-top:11px;"><input type="text" id="pracNoteTitle" placeholder="Title"><textarea id="pracNoteBody" placeholder="Ideas, research, plans…"></textarea>
+        <button class="btn btn-gold btn-sm" style="align-self:flex-end;" onclick="addNote('pracNotes','pracNoteTitle','pracNoteBody')">Save Note</button></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- HOUSEHOLD -->
+<section class="section" id="household">
+  <div class="sec-hdr"><div><div class="eyebrow">Home Base</div><h2>Household</h2></div>
+  <div class="hdr-actions"><button class="btn btn-ghost btn-sm" onclick="openM('mTask')">+ Recurring Task</button><button class="btn btn-ghost btn-sm" onclick="resetHousehold()">&#8635; Reset Week</button></div></div>
+  <p style="font-size:11px;color:var(--text-dim);margin-bottom:13px;">Use <strong>+ Recurring Task</strong> to assign a chore a specific day — it shows in the calendar every week. Auto-resets every Sunday.</p>
+  <div class="grid g2">
+    <div class="card"><input class="card-title-input" id="hhP1Title" value="Mitch's Responsibilities"><input class="card-sub-input" value="Weekly recurring"><ul class="task-list" id="hhP1List"></ul>
+      <div class="add-row"><input type="text" id="hhP1Input" placeholder="Add chore…"><input type="text" id="hhP1Freq" placeholder="Day/Freq" style="flex:0 0 auto;width:100px;"><button class="btn btn-gold btn-sm" onclick="addHHTask('P1')">Add</button></div></div>
+    <div class="card"><input class="card-title-input" id="hhP2Title" value="Liz's Responsibilities"><input class="card-sub-input" value="Weekly recurring"><ul class="task-list" id="hhP2List"></ul>
+      <div class="add-row"><input type="text" id="hhP2Input" placeholder="Add chore…"><input type="text" id="hhP2Freq" placeholder="Day/Freq" style="flex:0 0 auto;width:100px;"><button class="btn btn-gold btn-sm" onclick="addHHTask('P2')">Add</button></div></div>
+    <div class="card"><input class="card-title-input" value="Shared / Rotating"><input class="card-sub-input" value="Take turns or together"><ul class="task-list" id="hhSharedList"></ul>
+      <div class="add-row"><input type="text" id="hhSharedInput" placeholder="Add chore…"><input type="text" id="hhSharedFreq" placeholder="Day/Freq" style="flex:0 0 auto;width:100px;"><button class="btn btn-gold btn-sm" onclick="addHHTask('Shared')">Add</button></div></div>
+    <div class="card"><input class="card-title-input" value="Downsize Checklist"><input class="card-sub-input" value="Save $400-800/mo"><ul class="task-list" id="hhDownsizeList"></ul>
+      <div class="add-row"><input type="text" id="hhDownInput" placeholder="Add step…"><button class="btn btn-gold btn-sm" onclick="addToList('hhDownsizeList','hhDownInput','both')">Add</button></div></div>
+  </div>
+</section>
+
+<!-- MEALS -->
+<section class="section" id="meals">
+  <div class="sec-hdr"><div><div class="eyebrow">Nutrition</div><h2>Meal Planning</h2></div><button class="btn btn-ghost btn-sm" onclick="clearMeals()">Clear Week</button></div>
+  <div class="grid g2">
+    <div class="card"><input class="card-title-input" value="This Week's Meals"><input class="card-sub-input" value="Fill in as you plan · saves automatically"><div id="mealPlanContainer"></div></div>
+    <div class="card"><input class="card-title-input" value="Grocery List"><input class="card-sub-input" value="Check off when bought"><ul class="task-list" id="groceryList"></ul>
+      <div class="add-row"><input type="text" id="groceryInput" placeholder="Add item…"><button class="btn btn-gold btn-sm" onclick="addToList('groceryList','groceryInput','both')">Add</button></div></div>
+  </div>
+</section>
+
+<!-- HEALTH -->
+<section class="section" id="health">
+  <div class="sec-hdr"><div><div class="eyebrow">Wellness</div><h2>Health & Energy</h2></div>
+  <div class="hdr-actions"><button class="btn btn-ghost btn-sm" onclick="openM('mTask')">+ Recurring Task</button><button class="btn btn-ghost btn-sm" onclick="resetHealth()">&#8635; Reset Week</button></div></div>
+  <p style="font-size:11px;color:var(--text-dim);margin-bottom:13px;">All section titles are editable — click any gold title to rename it. Resets every Sunday.</p>
+  <div class="grid g2">
+    <div class="card"><input class="card-title-input" value="Weekly Workout Plan"><input class="card-sub-input" value="Tap days · check off workouts · resets Sunday">
+      <div id="workoutDays" style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:12px;"></div>
+      <ul class="task-list" id="workoutList"></ul>
+      <div class="add-row"><input type="text" id="workoutInput" placeholder="Add workout…"><button class="btn btn-gold btn-sm" onclick="addToList('workoutList','workoutInput','both')">Add</button></div></div>
+    <div class="card"><input class="card-title-input" value="Daily Habits"><input class="card-sub-input" value="Click title above to rename this section"><ul class="task-list" id="dailyHabitList"></ul>
+      <div class="add-row"><input type="text" id="habitInput" placeholder="Add habit…"><button class="btn btn-gold btn-sm" onclick="addToList('dailyHabitList','habitInput','both')">Add</button></div></div>
+    <div class="card"><input class="card-title-input" value="Weekly Rules & Intentions"><input class="card-sub-input" value="Rename this section to anything you want"><ul class="task-list" id="nutritionList"></ul>
+      <div class="add-row"><input type="text" id="nutritionInput" placeholder="Add item…"><button class="btn btn-gold btn-sm" onclick="addToList('nutritionList','nutritionInput','both')">Add</button></div></div>
+  </div>
+</section>
+
+<!-- FAITH -->
+<section class="section" id="faith">
+  <div class="sec-hdr"><div><div class="eyebrow">Sacramental Life</div><h2>&#10011;&#65039; Faith &amp; Marriage</h2></div>
+  <button class="btn btn-ghost btn-sm" onclick="openM('mMilestone');document.getElementById('msSection').value='faith'">+ Milestone</button></div>
+  <div class="grid g2">
+    <div class="card"><div class="card-title">Daily Mass Readings</div><div class="card-sub" id="massDateLbl">Today</div><div id="massReadings"><p style="color:var(--text-dim);font-size:12px;">Loading…</p></div>
+      <button class="btn btn-ghost btn-sm" style="margin-top:10px;" onclick="fetchMassReadings()">&#8635; Refresh</button></div>
+    <div class="card"><input class="card-title-input" value="Sacramental Path"><input class="card-sub-input" value="Click dot to change status · click text to edit"><ul class="ms-list" id="faithMilestones"></ul></div>
+    <div class="card"><input class="card-title-input" value="Engagement & Marriage"><input class="card-sub-input" value="Add your own steps · edit or delete anything"><ul class="task-list" id="engageList"></ul>
+      <div class="add-row"><input type="text" id="engageInput" placeholder="Add step…"><button class="btn btn-gold btn-sm" onclick="addToList('engageList','engageInput','both')">Add</button></div></div>
+    <div class="card"><input class="card-title-input" value="Spiritual Habits"><input class="card-sub-input" value="Daily & weekly practices · all editable"><ul class="task-list" id="faithHabitList"></ul>
+      <div class="add-row"><input type="text" id="faithHabitInput" placeholder="Add practice…"><button class="btn btn-gold btn-sm" onclick="addToList('faithHabitList','faithHabitInput','both')">Add</button></div></div>
+  </div>
+</section>
+
+<!-- DOGS -->
+<section class="section" id="dogs">
+  <div class="sec-hdr"><div><div class="eyebrow">The Boys</div><h2>Denver &amp; Gordie &#128062;</h2></div>
+  <button class="btn btn-gold btn-sm" onclick="openM('mDogBox')">+ Add Section</button></div>
+  <p style="font-size:11px;color:var(--text-dim);margin-bottom:13px;">Every title, subtitle, time, and item is editable. Delete any section or item with ✕.</p>
+  <div class="grid g2" id="dogBoxContainer"></div>
+</section>
+
+<!-- NOTES -->
+<section class="section" id="notes">
+  <div class="sec-hdr"><div><div class="eyebrow">Open Pad</div><h2>Notes &amp; Ideas</h2></div></div>
+  <div class="grid g2">
+    <div class="card"><div class="card-title">Add a Note</div>
+      <div style="display:flex;flex-direction:column;gap:8px;"><input type="text" id="noteTitle" placeholder="Title…"><textarea id="noteBody" placeholder="Idea, thought, plan…" style="min-height:90px;"></textarea>
+        <div style="display:flex;gap:7px;"><select id="noteWho" style="flex:1;"></select><button class="btn btn-gold btn-sm" onclick="addNote('notesList','noteTitle','noteBody')">Save</button></div></div></div>
+    <div class="card"><div class="card-title">Saved Notes</div>
+      <div id="notesList"><div class="note-card"><strong>Our Why</strong><br>We want to build a life that reflects what we're called to — ordered, purposeful, sacramental, free. Keep this in view when the day-to-day gets hard.<button class="note-del" onclick="this.closest('.note-card').remove()">&#10005;</button><div class="note-meta">Pinned &middot; Both</div></div></div></div>
+  </div>
+</section>
+</main>
+<script>
+const LS={get:(k,d)=>{try{const v=localStorage.getItem(k);return v!=null?JSON.parse(v):d;}catch{return d;}},set:(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v));}catch{}}};
+let cfg=LS.get('cfg4',{p1Name:'Mitch',p1Init:'MD',p1Color:'#c9a84c',p2Name:'Liz',p2Init:'Liz',p2Color:'#c4756b',location:'Lancaster, PA · Ponte Vedra Beach 2027',targetDate:'2027-09-01'});
+let currentPerson='p1',personFilter='all',calView='month';
+const now=new Date();
+let calYear=now.getFullYear(),calMonth=now.getMonth(),calWeekStart=getWeekStart(now),selectedDate=ds(now);
+let events=LS.get('events4',[]);
+const GCAL_CLIENT_ID = '297776959268-bu61akpvvu49v4cbada6j9on9bbndj2q.apps.googleusercontent.com';
+const GCAL_SCOPE = 'https://www.googleapis.com/auth/calendar.readonly';
+let gcalTokenClients = { p1: null, p2: null };
+let gcalTokens = LS.get('gcalTokens', { p1: null, p2: null });
+let gcalEvents = LS.get('gcalEvents', { p1: [], p2: [] });
+let recurringTasks=LS.get('rTasks4',[
+  {id:1,name:'Take out trash & recycling',who:'p1',day:1,cat:'household',freq:'Weekly'},
+  {id:2,name:'Morning dog walks',who:'p1',day:1,cat:'dogs',freq:''},{id:3,name:'Morning dog walks',who:'p1',day:2,cat:'dogs',freq:''},{id:4,name:'Morning dog walks',who:'p1',day:3,cat:'dogs',freq:''},{id:5,name:'Morning dog walks',who:'p1',day:4,cat:'dogs',freq:''},{id:6,name:'Morning dog walks',who:'p1',day:5,cat:'dogs',freq:''},
+  {id:7,name:'Evening dog walks',who:'p2',day:1,cat:'dogs',freq:''},{id:8,name:'Evening dog walks',who:'p2',day:2,cat:'dogs',freq:''},{id:9,name:'Evening dog walks',who:'p2',day:3,cat:'dogs',freq:''},{id:10,name:'Evening dog walks',who:'p2',day:4,cat:'dogs',freq:''},{id:11,name:'Evening dog walks',who:'p2',day:5,cat:'dogs',freq:''},
+  {id:12,name:'Meal planning & prep',who:'p2',day:0,cat:'household',freq:'Weekly'},{id:13,name:'Laundry',who:'p2',day:6,cat:'household',freq:'Weekly'},{id:14,name:'Vacuum common areas',who:'p1',day:6,cat:'household',freq:'Weekly'},
+  {id:15,name:'Sunday Mass together',who:'both',day:0,cat:'faith',freq:'Weekly'},
+]);
+let skipped=LS.get('skipped4',{});
+let taskDone=LS.get('taskDone4',{});
+let budget=LS.get('bud4',[
+  {id:1,name:'Take-home (est. after PA tax)',type:'income',amount:9200},{id:2,name:'Rent',type:'expense',amount:2200},
+  {id:3,name:'Food & Groceries',type:'expense',amount:600},{id:4,name:'Dog care',type:'expense',amount:300},
+  {id:5,name:'Car / Transportation',type:'expense',amount:700},{id:6,name:'Student Loans',type:'expense',amount:1800},
+  {id:7,name:'Health Insurance',type:'expense',amount:600},{id:8,name:'Subscriptions',type:'expense',amount:200},
+  {id:9,name:'Liz cert costs',type:'expense',amount:200},{id:10,name:'Practice Fund',type:'savings',amount:500},
+]);
+let funds=LS.get('funds4',[{id:1,name:'Practice Fund',goal:80000,saved:0,notes:'PVB office opening'},{id:2,name:'Ring Fund',goal:5000,saved:0,notes:'Engagement ring'}]);
+let pillars=LS.get('pillars4',[{id:1,name:'💰 Financial Health',pct:20,color:'fill-gold'},{id:2,name:'🏥 Practice Build',pct:5,color:'fill-sky'},{id:3,name:'🏠 Household Order',pct:30,color:'fill-sage'},{id:4,name:'💪 Health & Wellness',pct:15,color:'fill-rose'},{id:5,name:'✝️ Faith & Sacramental Life',pct:25,color:'fill-gold'},{id:6,name:'💍 Engagement & Marriage',pct:10,color:'fill-rose'}]);
+let countdowns=LS.get('cdns4',[{id:1,name:'Practice Open',date:'2027-09-01'}]);
+let pracMS=LS.get('pracMS4',[{id:1,title:'Research PVB market & competition',date:'Now — Q3 2025',status:'active',tag:'Active'},{id:2,title:'Liz completes pediatric cranial cert',date:'2025 · In progress',status:'active',tag:'Career'},{id:3,title:'Apply for Florida chiro licenses',date:'Q1 2026',status:'pending',tag:'Legal'},{id:4,title:'Form LLC in Florida',date:'Q2 2026',status:'pending',tag:'Legal'},{id:5,title:'Identify & tour PVB office spaces',date:'Q3–Q4 2026',status:'pending',tag:'Space'},{id:6,title:'Sign lease · begin buildout',date:'Q1 2027',status:'pending',tag:'Big Step'},{id:7,title:'Hire front desk · set up EHR',date:'Q2–Q3 2027',status:'pending',tag:'Ops'},{id:8,title:'🎉 Open Doors',date:'September 2027',status:'key',tag:'Launch'}]);
+let faithMS=LS.get('faithMS4',[{id:1,title:'Find a solid local Catholic parish',date:'Now',status:'active',tag:''},{id:2,title:'Liz: Explore RCIA',date:'RCIA begins Sept each year',status:'pending',tag:''},{id:3,title:'Meet with a priest — guidance on living situation',date:'Soon',status:'pending',tag:''},{id:4,title:'Engagement + Pre-Cana marriage prep',date:'6 months before wedding',status:'pending',tag:''},{id:5,title:'💍 Sacramental marriage',date:'Timeline TBD',status:'key',tag:''}]);
+let dogBoxes=LS.get('dogBoxes4',[{id:1,title:'Daily Schedule',sub:'Consistency = calmer dogs',type:'schedule',items:[{id:1,time:'7:00 AM',text:'Morning walk — Mitch (before work)'},{id:2,time:'12:00 PM',text:'Midday potty break'},{id:3,time:'5:30 PM',text:'Evening walk — Liz (after work)'},{id:4,time:'8:00 PM',text:'Play / wind-down time'},{id:5,time:'9:30 PM',text:'Last potty break before bed'}]},{id:2,title:'Care Checklist',sub:'Weekly & monthly tasks',type:'checklist',items:[{id:1,text:'Denver: flea/tick/heartworm meds',freq:'Monthly',done:false},{id:2,text:'Gordie: flea/tick/heartworm meds',freq:'Monthly',done:false},{id:3,text:'Brush both dogs',freq:'Weekly',done:false},{id:4,text:'Wash dog bowls & bedding',freq:'Weekly',done:false},{id:5,text:'Restock food & treats',freq:'As needed',done:false},{id:6,text:'Annual vet checkups',freq:'Yearly',done:false}]}]);
+let mealPlan=LS.get('meals4',{});
+let budIdC=LS.get('bidC4',20);
+const PERSISTABLE_LISTS = ['focusList','finTaskList','moneyList','pracTaskList','hhP1List','hhP2List','hhSharedList','hhDownsizeList','groceryList','workoutList','dailyHabitList','nutritionList','engageList','faithHabitList'];
+
+function ds(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
+function fmtTime(t){if(!t)return '';const[h,m]=t.split(':');const hr=parseInt(h);return(hr%12||12)+':'+m+' '+(hr<12?'AM':'PM');}
+function getWeekStart(d){const s=new Date(d);s.setDate(d.getDate()-d.getDay());s.setHours(0,0,0,0);return s;}
+function addDays(d,n){const r=new Date(d);r.setDate(r.getDate()+n);return r;}
+function wc(who){return who==='p1'?cfg.p1Color:who==='p2'?cfg.p2Color:'var(--sage)';}
+function wn(who){return who==='p1'?cfg.p1Name:who==='p2'?cfg.p2Name:'Both';}
+function wi(who){return who==='p1'?cfg.p1Init:who==='p2'?cfg.p2Init:'★';}
+
+initSettings();renderAll();fetchMassReadings();buildWorkoutDays();checkWeeklyReset();
+
+/* ===== DAILY QUOTE — Scripture & Saints, rotates by date ===== */
+const DAILY_QUOTES = [
+  {text:"Be not afraid.",source:"John 6:20"},
+  {text:"I can do all things in him who strengtheneth me.",source:"Philippians 4:13 (DR)"},
+  {text:"The Lord is my shepherd; I shall not want.",source:"Psalm 23:1"},
+  {text:"Seek ye first the kingdom of God, and his justice, and all these things shall be added unto you.",source:"Matthew 6:33 (DR)"},
+  {text:"For I know the thoughts that I think toward you, saith the Lord, thoughts of peace, and not of affliction.",source:"Jeremiah 29:11 (DR)"},
+  {text:"Trust in the Lord with all thy heart, and lean not upon thy own prudence.",source:"Proverbs 3:5 (DR)"},
+  {text:"This is the day the Lord hath made; let us be glad and rejoice therein.",source:"Psalm 118:24 (DR)"},
+  {text:"Be strong, and let your heart be strengthened, all ye that hope in the Lord.",source:"Psalm 31:24 (DR)"},
+  {text:"If God be for us, who is against us?",source:"Romans 8:31"},
+  {text:"Give me chastity and continence, but not yet.",source:"St. Augustine, Confessions — on the struggle before conversion"},
+  {text:"Our heart is restless until it rests in Thee.",source:"St. Augustine, Confessions"},
+  {text:"It is not enough to have great qualities; we should also have the management of them.",source:"St. Francis de Sales"},
+  {text:"Do not look forward to what may happen tomorrow. The same everlasting Father who cares for you today will take care of you tomorrow.",source:"St. Francis de Sales"},
+  {text:"Pray as though everything depended on God. Work as though everything depended on you.",source:"Attributed to St. Augustine / St. Ignatius tradition"},
+  {text:"The glory of God is man fully alive.",source:"St. Irenaeus"},
+  {text:"Sanctity is not the privilege of a few, but a duty for all.",source:"St. Maximilian Kolbe"},
+  {text:"He who suffers much will know much.",source:"St. John Vianney"},
+  {text:"Holiness consists simply in doing the will of God, and being just what God wants us to be.",source:"St. Therese of Lisieux"},
+  {text:"In the evening of life, we shall be judged on love alone.",source:"St. John of the Cross"},
+  {text:"I sought my soul, but my soul I could not see. I sought my God, but my God eluded me. I sought my brother, and I found all three.",source:"Attributed proverb in the spirit of the desert fathers"},
+  {text:"Run, jump, shout, but do not sin.",source:"St. John Bosco"},
+  {text:"Charity is patient, is kind: charity envieth not, dealeth not perversely; is not puffed up.",source:"1 Corinthians 13:4 (DR)"},
+  {text:"What does it matter if the wood is cut on the right side or the left side, if it makes God's work and the salvation of souls succeed?",source:"St. Vincent de Paul"},
+  {text:"Set yourself on fire with the love of God, and people will come for miles to watch you burn.",source:"Attributed to St. John Wesley, echoing the desert fathers"},
+  {text:"Christ has no body now on earth but yours; yours are the hands with which He blesses all the world.",source:"Attributed to St. Teresa of Avila"},
+  {text:"Let nothing disturb thee; let nothing dismay thee: all things pass; God never changes.",source:"St. Teresa of Avila"},
+  {text:"It is not the strength, but the constancy, of suffering and labour... which makes the true saint.",source:"St. Vincent de Paul"},
+  {text:"Even though I walk through the valley of the shadow of death, I will fear no evil: for thou art with me.",source:"Psalm 23:4 (DR)"},
+  {text:"Let us not love in word, neither in tongue, but in deed and in truth.",source:"1 John 3:18 (DR)"},
+  {text:"Watch ye, stand fast in the faith, do manfully, and be strengthened.",source:"1 Corinthians 16:13 (DR)"}
+];
+function renderDailyQuote() {
+  const txtEl = document.getElementById('dailyQuoteText');
+  const srcEl = document.getElementById('dailyQuoteSource');
+  if (!txtEl || !srcEl) return;
+  const today = new Date();
+  const dayOfYear = Math.floor((today - new Date(today.getFullYear(), 0, 0)) / 86400000);
+  const q = DAILY_QUOTES[dayOfYear % DAILY_QUOTES.length];
+  txtEl.textContent = '"' + q.text + '"';
+  srcEl.textContent = '— ' + q.source;
+}
+
+function renderAll(){
+  renderCountdowns();renderBudget();renderFunds();
+  renderMilestones(pracMS,'pracMilestones','practice');renderMilestones(faithMS,'faithMilestones','faith');
+  renderDogBoxes();renderCalView();renderDayPanel(selectedDate);renderMealPlan();
+  loadAllLists();loadNotes();populateDefaultLists();populateWhoSelects();updateHomeTodayPanel();renderFocusList();
+  document.getElementById('datePill').textContent=now.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric',year:'numeric'});
+  document.getElementById('homeTodayLbl').textContent=now.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'});
+}
+function initSettings(){
+  const map={sP1Name:'p1Name',sP1Init:'p1Init',sP2Name:'p2Name',sP2Init:'p2Init',sLocation:'location',sTargetDate:'targetDate'};
+  Object.entries(map).forEach(([id,key])=>{const el=document.getElementById(id);if(el)el.value=cfg[key]||'';});
+  const pd=document.getElementById('pracOpenDate');if(pd)pd.value=LS.get('pracDate4',cfg.targetDate);
+  applySettings();
+}
+function applySettings(){
+  const g=id=>document.getElementById(id)?.value||'';
+  cfg.p1Name=g('sP1Name')||cfg.p1Name;cfg.p1Init=g('sP1Init')||cfg.p1Init;
+  cfg.p2Name=g('sP2Name')||cfg.p2Name;cfg.p2Init=g('sP2Init')||cfg.p2Init;
+  cfg.location=g('sLocation')||cfg.location;cfg.targetDate=g('sTargetDate')||cfg.targetDate;
+  LS.set('cfg4',cfg);
+  document.getElementById('hdrLoc').textContent=cfg.location;
+  document.getElementById('avP1').textContent=cfg.p1Init;document.getElementById('avP2').textContent=cfg.p2Init;
+  document.getElementById('avP1').style.background=cfg.p1Color;document.getElementById('avP2').style.background=cfg.p2Color;
+  document.documentElement.style.setProperty('--p1',cfg.p1Color);document.documentElement.style.setProperty('--p2',cfg.p2Color);
+  document.getElementById('pbP1').textContent=cfg.p1Name+"'s View";document.getElementById('pbP2').textContent=cfg.p2Name+"'s View";
+  ['legP1'].forEach(id=>{const e=document.getElementById(id);if(e)e.textContent=cfg.p1Name;});
+  ['legP2'].forEach(id=>{const e=document.getElementById(id);if(e)e.textContent=cfg.p2Name;});
+  const h1=document.getElementById('hhP1Title');if(h1&&!h1.dataset.c)h1.value=cfg.p1Name+"'s Responsibilities";
+  const h2=document.getElementById('hhP2Title');if(h2&&!h2.dataset.c)h2.value=cfg.p2Name+"'s Responsibilities";
+  document.getElementById('viewAs').textContent='Viewing as '+(currentPerson==='p1'?cfg.p1Name:cfg.p2Name);
+  const fs=document.getElementById('focusSub');if(fs)fs.value=(currentPerson==='p1'?cfg.p1Name:cfg.p2Name)+"'s priorities";
+  const pf1=document.getElementById('pfP1');if(pf1)pf1.textContent=cfg.p1Name;
+  const pf2=document.getElementById('pfP2');if(pf2)pf2.textContent=cfg.p2Name;
+  populateWhoSelects();updateCountdownCalc();
+}
+function pickColor(p,c,el){cfg[p+'Color']=c;el.closest('.swatch-row').querySelectorAll('.swatch').forEach(s=>s.classList.remove('sel'));el.classList.add('sel');applySettings();}
+function populateWhoSelects(){
+  ['focusWho','evWho','rtWho','noteWho','pracTaskWho'].forEach(id=>{
+    const s=document.getElementById(id);if(!s)return;const cur=s.value;
+    s.innerHTML='<option value="both">Both</option><option value="p1">'+cfg.p1Name+'</option><option value="p2">'+cfg.p2Name+'</option>';
+    if(cur)s.value=cur;
+  });
+}
+function openM(id){document.getElementById(id).classList.add('open');}
+function closeM(id){document.getElementById(id).classList.remove('open');}
+function showTab(id,el){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');if(el)el.classList.add('active');
+  if(id==='calendar'){renderCalView();renderDayPanel(selectedDate);}
+  if(id==='finances'){renderBudget();renderFunds();}
+  if(id==='faith'){fetchMassReadings();}
+}
+function switchPerson(p){
+  currentPerson=p;
+  document.getElementById('pbP1').className='person-btn'+(p==='p1'?' active-p1':'');
+  document.getElementById('pbP2').className='person-btn'+(p==='p2'?' active-p2':'');
+  document.getElementById('viewAs').textContent='Viewing as '+(p==='p1'?cfg.p1Name:cfg.p2Name);
+  const fs=document.getElementById('focusSub');if(fs)fs.value=(p==='p1'?cfg.p1Name:cfg.p2Name)+"'s priorities";
+  updateHomeTodayPanel();
+  renderFocusList();
+}
+function updateCountdownCalc(){
+  const d=Math.ceil((new Date(cfg.targetDate+'T00:00:00')-new Date())/86400000);const m=Math.round(d/30);
+  ['statDays','pracDays'].forEach(id=>{const e=document.getElementById(id);if(e)e.textContent=d>0?d.toLocaleString():'0';});
+  ['statMonths','pracMonths'].forEach(id=>{const e=document.getElementById(id);if(e)e.textContent=m>0?m:'0';});
+}
+function renderCountdowns(){
+  const c=document.getElementById('countdownsContainer');if(!c)return;c.innerHTML='';
+  countdowns.forEach(cd=>{
+    const d=Math.ceil((new Date(cd.date+'T00:00:00')-new Date())/86400000);
+    const div=document.createElement('div');div.className='cdown';div.style.position='relative';
+    div.innerHTML='<div class="cdown-num">'+(d>0?d.toLocaleString():'🎉')+'</div><div class="cdown-lbl"><input class="editable" value="'+cd.name+'" style="text-align:center;font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.1em;width:auto;max-width:150px;" onchange="cd.name=this.value;LS.set(\'cdns4\',countdowns);"><input type="date" value="'+cd.date+'" style="background:transparent;border:none;color:var(--text-dim);font-size:10px;margin-left:5px;" onchange="cd.date=this.value;LS.set(\'cdns4\',countdowns);renderCountdowns();updateCountdownCalc();"></div><button style="position:absolute;top:5px;right:5px;background:none;border:none;color:var(--rose);cursor:pointer;opacity:0;font-size:11px;" class="cddel" onclick="countdowns=countdowns.filter(x=>x.id!=='+cd.id+');LS.set(\'cdns4\',countdowns);renderCountdowns();">✕</button>';
+    div.onmouseenter=()=>div.querySelector('.cddel').style.opacity='1';
+    div.onmouseleave=()=>div.querySelector('.cddel').style.opacity='0';
+    c.appendChild(div);
+  });updateCountdownCalc();
+}
+function addCountdown(){
+  const name=document.getElementById('cdName').value.trim();const date=document.getElementById('cdDate').value;if(!name||!date)return;
+  countdowns.push({id:Date.now(),name,date});LS.set('cdns4',countdowns);renderCountdowns();
+  document.getElementById('cdName').value='';document.getElementById('cdDate').value='';
+}
+function saveRecurringTask(){
+  const name=document.getElementById('rtName').value.trim();if(!name)return;
+  const who=document.getElementById('rtWho').value,day=parseInt(document.getElementById('rtDay').value),cat=document.getElementById('rtCat').value,freq=document.getElementById('rtFreq').value;
+  const days=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  recurringTasks.push({id:Date.now(),name,who,day,cat,freq});LS.set('rTasks4',recurringTasks);closeM('mTask');
+  document.getElementById('rtName').value='';document.getElementById('rtFreq').value='';
+  renderCalView();renderDayPanel(selectedDate);updateHomeTodayPanel();
+  alert('Added "'+name+'" — appears every '+days[day]+' in the calendar.');
+}
+function getRecForDate(dateStr){const dow=new Date(dateStr+'T12:00:00').getDay();return recurringTasks.filter(t=>t.day===dow&&!skipped[t.id+'_'+dateStr]);}
+function setTaskDoneVal(id,dateStr,val){if(val)taskDone[id+'_'+dateStr]=true;else delete taskDone[id+'_'+dateStr];LS.set('taskDone4',taskDone);}
+function isTaskDone(id,dateStr){return !!taskDone[id+'_'+dateStr];}
+function switchView(v){
+  calView=v;['vbMonth','vbWeek','vbDay'].forEach(id=>{const e=document.getElementById(id);if(e)e.classList.remove('active');});
+  const vb=document.getElementById('vb'+v.charAt(0).toUpperCase()+v.slice(1));if(vb)vb.classList.add('active');
+  renderCalView();
+}
+function navCal(dir){
+  if(calView==='month'){calMonth+=dir;if(calMonth>11){calMonth=0;calYear++;}if(calMonth<0){calMonth=11;calYear--;}}
+  else if(calView==='week'){calWeekStart=addDays(calWeekStart,dir*7);}
+  else{selectedDate=ds(addDays(new Date(selectedDate+'T12:00:00'),dir));renderDayPanel(selectedDate);}
+  renderCalView();
+}
+function goToday(){const t=new Date();calYear=t.getFullYear();calMonth=t.getMonth();calWeekStart=getWeekStart(t);selectedDate=ds(t);renderCalView();renderDayPanel(selectedDate);}
+function renderCalView(){
+  const t=document.getElementById('calTitle');
+  if(calView==='month'){if(t)t.textContent=new Date(calYear,calMonth,1).toLocaleDateString('en-US',{month:'long',year:'numeric'});renderMonthView();}
+  else if(calView==='week'){const we=addDays(calWeekStart,6);if(t)t.textContent=calWeekStart.toLocaleDateString('en-US',{month:'short',day:'numeric'})+' – '+we.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});renderWeekView();}
+  else{const d=new Date(selectedDate+'T12:00:00');if(t)t.textContent=d.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});document.getElementById('calBody').innerHTML='<p style="color:var(--text-dim);font-size:12px;padding:8px 0;">Day detail shown in the panel below — all tasks and events for this day.</p>';}
+}
+function renderMonthView(){
+  const body=document.getElementById('calBody');body.innerHTML='';
+  const grid=document.createElement('div');grid.className='month-grid';
+  ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].forEach(d=>{const h=document.createElement('div');h.className='cal-dh';h.textContent=d;grid.appendChild(h);});
+  const first=new Date(calYear,calMonth,1),startDay=first.getDay(),dim=new Date(calYear,calMonth+1,0).getDate(),prevDim=new Date(calYear,calMonth,0).getDate();
+  for(let i=0;i<startDay;i++)grid.appendChild(makeDayCell(calYear+(calMonth===0?-1:0),calMonth===0?11:calMonth-1,prevDim-startDay+1+i,true));
+  for(let i=1;i<=dim;i++)grid.appendChild(makeDayCell(calYear,calMonth,i,false));
+  const rem=42-startDay-dim;for(let i=1;i<=rem;i++)grid.appendChild(makeDayCell(calYear+(calMonth===11?1:0),calMonth===11?0:calMonth+1,i,true));
+  body.appendChild(grid);
+}
+function makeDayCell(y,m,day,otherMonth){
+  const dateStr=y+'-'+String(m+1).padStart(2,'0')+'-'+String(day).padStart(2,'0');
+  const d=document.createElement('div');
+  d.className='cal-day'+(otherMonth?' other-m':'')+(dateStr===ds(new Date())?' today':'')+(dateStr===selectedDate?' sel':'');
+  const num=document.createElement('div');num.className='cal-day-num';num.textContent=day;d.appendChild(num);
+  const dayEvs=events.filter(e=>e.date===dateStr).concat(gcalEventsForDate(dateStr).map(g=>({id:g.id,title:'📍 '+g.title,who:g.who,time:null}))),recs=getRecForDate(dateStr);
+  let shown=0;
+  dayEvs.slice(0,3).forEach(ev=>{const chip=document.createElement('div');chip.className='cal-chip';chip.style.background=wc(ev.who)+'33';chip.style.color=wc(ev.who);chip.textContent=(ev.time?fmtTime(ev.time).replace(' AM','a').replace(' PM','p')+' ':'')+ev.title;d.appendChild(chip);shown++;});
+  recs.slice(0,3-shown).forEach(t=>{const chip=document.createElement('div');chip.className='cal-chip';chip.style.background=wc(t.who)+'18';chip.style.borderLeft='2px solid '+wc(t.who);chip.style.color=wc(t.who);chip.textContent=t.name;d.appendChild(chip);shown++;});
+  const total=dayEvs.length+recs.length;if(total>shown){const mc=document.createElement('div');mc.className='more-chip';mc.textContent='+'+(total-shown)+' more';d.appendChild(mc);}
+  d.onclick=()=>{document.querySelectorAll('.cal-day').forEach(x=>x.classList.remove('sel'));d.classList.add('sel');selectedDate=dateStr;renderDayPanel(dateStr);};
+  return d;
+}
+function renderWeekView(){
+  const body=document.getElementById('calBody');body.innerHTML='';
+  const wrap=document.createElement('div');wrap.className='week-scroll';
+  const grid=document.createElement('div');grid.className='week-grid';
+  const dayNames=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'],todayStr=ds(new Date());
+  const tl=document.createElement('div');tl.style.cssText='background:var(--navy-mid);border-bottom:1px solid var(--border);';grid.appendChild(tl);
+  for(let i=0;i<7;i++){
+    const d=addDays(calWeekStart,i),dStr=ds(d),isToday=dStr===todayStr;
+    const hdr=document.createElement('div');hdr.className='week-day-header week-day-col';hdr.style.cursor='pointer';
+    hdr.innerHTML='<div class="week-dh-name">'+dayNames[d.getDay()]+'</div><div class="week-dh-date'+(isToday?' week-dh-today':'')+'">'+d.getDate()+'</div>';
+    hdr.onclick=()=>{selectedDate=dStr;renderDayPanel(dStr);};grid.appendChild(hdr);
+  }
+  for(let h=6;h<=22;h++){
+    const tSlot=document.createElement('div');tSlot.className='week-time-slot week-time-col';tSlot.textContent=(h%12||12)+''+(h<12?'a':'p');grid.appendChild(tSlot);
+    for(let i=0;i<7;i++){
+      const d=addDays(calWeekStart,i),dStr=ds(d);
+      const cell=document.createElement('div');cell.className='week-cell week-day-col';
+      events.filter(e=>e.date===dStr&&e.time&&parseInt(e.time.split(':')[0])===h).forEach(ev=>{
+        const chip=document.createElement('div');chip.className='week-event';chip.style.cssText='background:'+wc(ev.who)+'44;color:'+wc(ev.who)+';';chip.textContent=ev.title;chip.onclick=()=>{selectedDate=dStr;renderDayPanel(dStr);};cell.appendChild(chip);
+      });grid.appendChild(cell);
+    }
+  }
+  wrap.appendChild(grid);body.appendChild(wrap);
+}
+function setPersonFilter(f){
+  personFilter=f;document.querySelectorAll('.pf-btn').forEach(b=>b.classList.remove('active'));
+  const map={all:'pfAll',p1:'pfP1',p2:'pfP2'};const el=document.getElementById(map[f]);if(el)el.classList.add('active');
+  renderDayPanel(selectedDate);
+}
+function renderDayPanel(dateStr){
+  selectedDate=dateStr;
+  const d=new Date(dateStr+'T12:00:00');
+  const lbl=document.getElementById('dayPanelDate');if(lbl)lbl.textContent=d.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
+  const c=document.getElementById('dayPanelContent');if(!c)return;c.innerHTML='';
+  const pf=personFilter;
+  const dayEvs=events.filter(e=>e.date===dateStr&&(pf==='all'||e.who===pf||e.who==='both')).concat(gcalEventsForDate(dateStr).map(g=>({id:'gcal',title:'📍 '+g.title+(g.location?' — '+g.location:''),who:g.who,time:g.time==='All day'?null:g.time,notes:'Google Calendar',isGcal:true})));
+  const recs=getRecForDate(dateStr).filter(t=>pf==='all'||t.who===pf||t.who==='both');
+  if(dayEvs.length>0){
+    const sec=mkDaySec('📅 Events');
+    dayEvs.forEach(ev=>{
+      const item=document.createElement('div');item.className='day-event-item';item.style.borderLeftColor=wc(ev.who);
+      item.innerHTML='<div class="day-event-time">'+(ev.isGcal?(ev.time||'All day'):(fmtTime(ev.time)||'All day'))+'</div><div style="flex:1"><div class="day-task-label">'+ev.title+'</div>'+(ev.notes?'<div style="font-size:10px;color:var(--text-dim);">'+ev.notes+'</div>':'')+'</div>'+(ev.isGcal?'':'<button style="background:none;border:none;color:var(--rose);cursor:pointer;font-size:11px;" onclick="deleteEvent('+ev.id+')">✕</button>');
+      sec.list.appendChild(item);
+    });c.appendChild(sec.wrap);
+  }
+  const catGroups={};
+  recs.forEach(t=>{const cat=t.cat||'other';if(!catGroups[cat])catGroups[cat]=[];catGroups[cat].push(t);});
+  const catLabels={household:'🏠 Household',health:'💪 Health',dogs:'🐾 Dogs',faith:'✝️ Faith',personal:'👤 Personal',other:'📋 Tasks'};
+  Object.entries(catGroups).forEach(([cat,tasks])=>{
+    const sec=mkDaySec(catLabels[cat]||cat);
+    tasks.forEach(t=>{
+      const done=isTaskDone(t.id,dateStr);
+      const item=document.createElement('div');item.className='day-task-item'+(done?' done':'');
+      item.innerHTML='<div class="day-task-check"></div><div class="day-task-label">'+t.name+(t.freq?' <span style="font-size:9px;color:var(--text-dim);">('+t.freq+')</span>':'')+'</div><div class="day-who-dot" style="background:'+wc(t.who)+';color:'+(t.who==='p1'?'var(--navy)':'#fff')+'">'+wi(t.who)+'</div><button class="skip-btn" onclick="event.stopPropagation();skipped[\''+t.id+'_'+dateStr+'\']=true;LS.set(\'skipped4\',skipped);renderDayPanel(\''+dateStr+'\');renderCalView();">Skip</button>';
+      const check=item.querySelector('.day-task-check');
+      check.onclick=e=>{e.stopPropagation();const isDone=item.classList.toggle('done');setTaskDoneVal(t.id,dateStr,isDone);updateStatTaskCount();};
+      item.onclick=e=>{if(e.target.tagName==='BUTTON')return;const isDone=item.classList.toggle('done');setTaskDoneVal(t.id,dateStr,isDone);updateStatTaskCount();};
+      sec.list.appendChild(item);
+    });c.appendChild(sec.wrap);
+  });
+  if(dayEvs.length===0&&recs.length===0){const empty=document.createElement('div');empty.className='empty-msg';empty.innerHTML='Nothing scheduled. <span style="color:var(--gold);cursor:pointer;" onclick="document.getElementById(\'evDate\').value=\''+dateStr+'\';openM(\'mEvent\')">Add an event →</span>';c.appendChild(empty);}
+  updateStatTaskCount();
+}
+function mkDaySec(title){const wrap=document.createElement('div');wrap.className='day-section';const t=document.createElement('div');t.className='day-section-title';t.textContent=title;const list=document.createElement('div');wrap.appendChild(t);wrap.appendChild(list);return{wrap,list};}
+function updateStatTaskCount(){const todayStr=ds(new Date());const rem=getRecForDate(todayStr).filter(t=>!isTaskDone(t.id,todayStr)).length;const el=document.getElementById('statTasks');if(el)el.textContent=rem;}
+function updateHomeTodayPanel(){
+  const todayStr=ds(new Date());const c=document.getElementById('homeTodayContent');if(!c)return;c.innerHTML='';
+  const cp=currentPerson;
+  const todayEvs=events.filter(e=>e.date===todayStr&&(e.who===cp||e.who==='both')).concat(gcalEventsForDate(todayStr).filter(g=>g.who===cp).map(g=>({id:g.id,title:'📍 '+g.title,who:g.who,time:null})));
+  const recs=getRecForDate(todayStr).filter(t=>t.who===cp||t.who==='both');
+  const el=document.getElementById('statToday');if(el)el.textContent=todayEvs.length;
+  const lbl=document.getElementById('homeTodayLbl');if(lbl){const cfg=LS.get('cfg4',{});lbl.textContent=(cp==='p1'?cfg.p1Name||'Mitch':cfg.p2Name||'Liz')+"'s day — "+new Date().toLocaleDateString('en-US',{weekday:'long',month:'short',day:'numeric'});}
+  if(todayEvs.length===0&&recs.length===0){c.innerHTML='<div class="empty-msg">Clear day! <span style="color:var(--gold);cursor:pointer;" onclick="showTab(\'calendar\',document.querySelectorAll(\'.tab\')[1])">Open calendar →</span></div>';return;}
+  todayEvs.forEach(ev=>{const d=document.createElement('div');d.className='day-event-item';d.style.borderLeftColor=wc(ev.who);d.innerHTML='<div class="day-event-time">'+(fmtTime(ev.time)||'All day')+'</div><div class="day-task-label">'+ev.title+'</div>';c.appendChild(d);});
+  recs.slice(0,6).forEach(t=>{
+    const done=isTaskDone(t.id,todayStr);const d=document.createElement('div');d.className='day-task-item'+(done?' done':'');
+    d.innerHTML='<div class="day-task-check"></div><div class="day-task-label">'+t.name+'</div><div class="day-who-dot" style="background:'+wc(t.who)+';color:'+(t.who==='p1'?'var(--navy)':'#fff')+';width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;">'+wi(t.who)+'</div>';
+    d.querySelector('.day-task-check').onclick=()=>{const isDone=d.classList.toggle('done');setTaskDoneVal(t.id,todayStr,isDone);updateStatTaskCount();};
+    d.onclick=e=>{if(e.target.tagName==='BUTTON')return;const isDone=d.classList.toggle('done');setTaskDoneVal(t.id,todayStr,isDone);updateStatTaskCount();};
+    c.appendChild(d);
+  });
+  if(recs.length>6){const m=document.createElement('div');m.className='empty-msg';m.innerHTML='<span style="color:var(--gold);cursor:pointer;" onclick="showTab(\'calendar\',document.querySelectorAll(\'.tab\')[1])">+'+(recs.length-6)+' more tasks →</span>';c.appendChild(m);}
+  updateStatTaskCount();
+}
+function saveEvent(){
+  const title=document.getElementById('evTitle').value.trim(),date=document.getElementById('evDate').value;if(!title||!date)return;
+  events.push({id:Date.now(),title,date,time:document.getElementById('evTime').value,notes:document.getElementById('evNotes').value,who:document.getElementById('evWho').value,cat:document.getElementById('evCat').value});
+  events.sort((a,b)=>a.date.localeCompare(b.date)||a.time.localeCompare(b.time));LS.set('events4',events);closeM('mEvent');
+  ['evTitle','evTime','evNotes'].forEach(id=>document.getElementById(id).value='');
+  renderCalView();renderDayPanel(selectedDate);updateHomeTodayPanel();
+}
+function deleteEvent(id){events=events.filter(e=>e.id!==id);LS.set('events4',events);renderCalView();renderDayPanel(selectedDate);updateHomeTodayPanel();}
+function renderPillars(){
+  const c=document.getElementById('pillarsContainer');c.innerHTML='';
+  pillars.forEach(p=>{
+    const d=document.createElement('div');d.className='prog-row';d.style.position='relative';
+    d.innerHTML='<div class="prog-label"><span><input class="editable" value="'+p.name+'" style="font-size:11px;" onchange="p.name=this.value;LS.set(\'pillars4\',pillars);"></span><span id="pct'+p.id+'">'+p.pct+'%<button style="background:none;border:none;color:var(--rose);cursor:pointer;font-size:10px;margin-left:4px;" onclick="pillars=pillars.filter(x=>x.id!=='+p.id+');LS.set(\'pillars4\',pillars);renderPillars();">✕</button></span></div><div class="prog-bar"><div class="prog-fill '+p.color+'" id="pf'+p.id+'" style="width:'+p.pct+'%"></div></div><input type="range" min="0" max="100" value="'+p.pct+'" style="width:100%;margin-top:2px;accent-color:var(--gold);" oninput="p.pct=parseInt(this.value);document.getElementById(\'pf'+p.id+'\').style.width=this.value+\'%\';document.getElementById(\'pct'+p.id+'\').firstChild.textContent=this.value+\'%\';LS.set(\'pillars4\',pillars);">';
+    c.appendChild(d);
+  });
+}
+function savePillar(){const name=document.getElementById('pillarName').value.trim();if(!name)return;pillars.push({id:Date.now(),name,pct:parseInt(document.getElementById('pillarPct').value)||0,color:document.getElementById('pillarColor').value});LS.set('pillars4',pillars);renderPillars();closeM('mPillar');document.getElementById('pillarName').value='';}
+function saveList(listId){
+  const ul=document.getElementById(listId);if(!ul)return;
+  const items=Array.from(ul.children).map(li=>({
+    text: li.querySelector('.task-text-input')?.value || '',
+    who: li.dataset.who || 'both',
+    done: li.classList.contains('done')
+  }));
+  LS.set('list_'+listId, items);
+}
+
+function loadList(listId){
+  const ul=document.getElementById(listId);if(!ul)return false;
+  const saved=LS.get('list_'+listId, null);
+  if(saved===null)return false; // no saved data yet — let defaults populate
+  ul.innerHTML='';
+  saved.forEach(item=>{
+    const li=makeTaskEl(item.text, item.who);
+    if(item.done)li.classList.add('done');
+    ul.appendChild(li);
+  });
+  return true;
+}
+
+function loadAllLists(){
+  PERSISTABLE_LISTS.forEach(loadList);
+}
+
+function makeTaskEl(text,who){
+  const whoKey=who==='p1'||who==='p2'?who:'both';
+  const li=document.createElement('li');li.className='task-item';li.dataset.who=whoKey;
+  li.innerHTML='<div class="task-check" onclick="this.closest(\'li\').classList.toggle(\'done\');saveList(this.closest(\'ul\').id);"></div><div class="task-body"><div class="task-text-el"><input class="task-text-input" value="'+text+'"></div><div class="task-meta"><span style="display:inline-block;font-size:9px;padding:1px 6px;border-radius:8px;background:'+wc(whoKey)+'22;color:'+wc(whoKey)+';">'+wn(whoKey)+'</span></div></div><div class="task-actions"><button class="tbtn tdel" onclick="const lid=this.closest(\'ul\').id;this.closest(\'li\').remove();saveList(lid);">✕</button></div>';
+  const textInput=li.querySelector('.task-text-input');
+  textInput.addEventListener('change',()=>{const ul=li.closest('ul');if(ul)saveList(ul.id);});
+  return li;
+}
+function renderFocusList(){
+  const list=document.getElementById('focusList');if(!list)return;
+  Array.from(list.children).forEach(li=>{
+    const who=li.dataset.who||'both';
+    li.style.display=(who==='both'||who===currentPerson)?'':'none';
+  });
+}
+function addToList(listId,inputId,who){const inp=document.getElementById(inputId);const val=inp?.value?.trim();if(!val)return;document.getElementById(listId).appendChild(makeTaskEl(val,who));inp.value='';saveList(listId);}
+function addFocusTask(){const inp=document.getElementById('focusInput');const who=document.getElementById('focusWho');const val=inp?.value?.trim();if(!val)return;document.getElementById('focusList').appendChild(makeTaskEl(val,who?.value||'both'));inp.value='';renderFocusList();saveList('focusList');}
+function addHHTask(which){
+  const m={P1:{list:'hhP1List',inp:'hhP1Input',freq:'hhP1Freq',who:'p1'},P2:{list:'hhP2List',inp:'hhP2Input',freq:'hhP2Freq',who:'p2'},Shared:{list:'hhSharedList',inp:'hhSharedInput',freq:'hhSharedFreq',who:'both'}};
+  const{list,inp,freq,who}=m[which];const val=document.getElementById(inp).value.trim();const fr=document.getElementById(freq).value.trim();if(!val)return;
+  document.getElementById(list).appendChild(makeTaskEl(val+(fr?' ('+fr+')':''),who));document.getElementById(inp).value='';document.getElementById(freq).value='';saveList(list);
+}
+function addPracTask(){const inp=document.getElementById('pracTaskInput');const who=document.getElementById('pracTaskWho');const val=inp?.value?.trim();if(!val)return;document.getElementById('pracTaskList').appendChild(makeTaskEl(val,who?.value||'both'));inp.value='';saveList('pracTaskList');}
+function renderBudget(){
+  const tbody=document.getElementById('budgetBody');if(!tbody)return;tbody.innerHTML='';let income=0,expense=0,savings=0;
+  budget.forEach(row=>{
+    const cls=row.type==='income'?'col-income':row.type==='savings'?'col-savings':'col-expense';
+    const tr=document.createElement('tr');
+    tr.innerHTML='<td><input class="bud-input" value="'+row.name+'" onchange="row.name=this.value;LS.set(\'bud4\',budget);"></td><td class="'+cls+'" style="font-size:9px;text-transform:uppercase;letter-spacing:.05em;">'+row.type+'</td><td class="'+cls+'">$<input class="bud-input" type="number" value="'+row.amount+'" style="width:75px;" onchange="row.amount=parseFloat(this.value)||0;renderBudget();LS.set(\'bud4\',budget);"></td><td><button class="bud-del" onclick="budget=budget.filter(r=>r.id!=='+row.id+');LS.set(\'bud4\',budget);renderBudget();">✕</button></td>';
+    tbody.appendChild(tr);if(row.type==='income')income+=row.amount;else if(row.type==='savings')savings+=row.amount;else expense+=row.amount;
+  });
+  const net=income-expense-savings;const netEl=document.getElementById('budNet');if(netEl){netEl.textContent=(net>=0?'+':'-')+'$'+Math.abs(net).toLocaleString();netEl.className=net>=0?'col-income':'col-expense';}
+  [['totIncome',income],['totExpenses',expense],['totSavings',savings],['totNet',net]].forEach(([id,v])=>{const el=document.getElementById(id);if(!el)return;el.textContent=(id==='totNet'?(v>=0?'+':'-'):'')+'$'+Math.abs(v).toLocaleString();if(id==='totNet')el.style.color=v>=0?'var(--sage)':'var(--rose)';});
+  LS.set('bud4',budget);
+}
+function addBudgetRow(type){const name=prompt('Category name:');if(!name)return;const amount=parseFloat(prompt('Monthly amount ($):')||'0')||0;budget.push({id:budIdC++,name,type,amount});LS.set('bud4',budget);LS.set('bidC4',budIdC);renderBudget();}
+function renderFunds(){
+  const c=document.getElementById('fundsContainer');if(!c)return;c.innerHTML='';
+  funds.forEach(f=>{
+    const pct=Math.min(100,f.goal>0?(f.saved/f.goal)*100:0);const div=document.createElement('div');div.className='fund-card';
+    div.innerHTML='<div><input class="editable" value="'+f.name+'" style="font-weight:600;font-size:13px;color:var(--text);" onchange="f.name=this.value;LS.set(\'funds4\',funds);"></div><div style="font-size:10px;color:var(--text-dim);margin-top:3px;">Saved: $<input class="bud-input" type="number" value="'+f.saved+'" style="width:80px;display:inline;" onchange="f.saved=parseFloat(this.value)||0;LS.set(\'funds4\',funds);renderFunds();"> of $<input class="bud-input" type="number" value="'+f.goal+'" style="width:90px;display:inline;" onchange="f.goal=parseFloat(this.value)||0;LS.set(\'funds4\',funds);renderFunds();"></div><div class="fund-bar"><div class="fund-fill" style="width:'+pct.toFixed(1)+'%"></div></div><div style="font-size:10px;color:var(--text-dim);">'+pct.toFixed(1)+'% · <input class="editable" value="'+(f.notes||'')+'" placeholder="Notes…" style="font-size:10px;color:var(--text-dim);" onchange="f.notes=this.value;LS.set(\'funds4\',funds);"></div><button class="fund-del" onclick="if(confirm(\'Delete this fund?\')){funds=funds.filter(x=>x.id!=='+f.id+');LS.set(\'funds4\',funds);renderFunds();}">✕</button>';
+    c.appendChild(div);
+  });
+}
+function saveFund(){const name=document.getElementById('fundName').value.trim();if(!name)return;funds.push({id:Date.now(),name,goal:parseFloat(document.getElementById('fundGoal').value)||0,saved:parseFloat(document.getElementById('fundSaved').value)||0,notes:document.getElementById('fundNotes').value});LS.set('funds4',funds);renderFunds();closeM('mFund');['fundName','fundGoal','fundNotes'].forEach(id=>document.getElementById(id).value='');document.getElementById('fundSaved').value='0';}
+function savePracDate(){const d=document.getElementById('pracOpenDate').value;LS.set('pracDate4',d);cfg.targetDate=d;LS.set('cfg4',cfg);updateCountdownCalc();}
+function dotClass(s){return s==='done'?'dot-done':s==='active'?'dot-active':s==='key'?'dot-key':'dot-pending';}
+function renderMilestones(data,containerId,section){
+  const c=document.getElementById(containerId);if(!c)return;c.innerHTML='';
+  const lsKey=section==='practice'?'pracMS4':'faithMS4';const dataRef=section==='practice'?pracMS:faithMS;
+  const statuses=['pending','active','done','key'];
+  data.forEach(m=>{
+    const li=document.createElement('li');li.className='ms-item';
+    li.innerHTML='<div class="ms-dot '+dotClass(m.status)+'" title="Click to cycle status"></div><div class="ms-body"><div><input class="editable" value="'+m.title+'" style="font-size:12px;font-weight:500;width:100%;" onchange="m.title=this.value;LS.set(\''+lsKey+'\',dataRef);"></div><div><input class="editable" value="'+m.date+'" style="font-size:10px;color:var(--text-dim);width:100%;" onchange="m.date=this.value;LS.set(\''+lsKey+'\',dataRef);"></div></div>'+(m.tag?'<span class="tag tag-gold">'+m.tag+'</span>':'')+'<div class="ms-actions"><button class="tbtn tdel" onclick="'+(section==='practice'?'pracMS=pracMS.filter(x=>x.id!=='+m.id+');LS.set(\'pracMS4\',pracMS);renderMilestones(pracMS,\'pracMilestones\',\'practice\')':'faithMS=faithMS.filter(x=>x.id!=='+m.id+');LS.set(\'faithMS4\',faithMS);renderMilestones(faithMS,\'faithMilestones\',\'faith\')')+'">✕</button></div>';
+    li.querySelector('.ms-dot').onclick=()=>{const idx=statuses.indexOf(m.status);m.status=statuses[(idx+1)%4];LS.set(lsKey,dataRef);renderMilestones(dataRef,containerId,section);};
+    c.appendChild(li);
+  });
+}
+function saveMilestone(){const title=document.getElementById('msTitle').value.trim();if(!title)return;const m={id:Date.now(),title,date:document.getElementById('msDate').value,status:document.getElementById('msStatus').value,tag:document.getElementById('msTag').value};const section=document.getElementById('msSection').value;if(section==='practice'){pracMS.push(m);LS.set('pracMS4',pracMS);renderMilestones(pracMS,'pracMilestones','practice');}else{faithMS.push(m);LS.set('faithMS4',faithMS);renderMilestones(faithMS,'faithMilestones','faith');}closeM('mMilestone');['msTitle','msDate','msTag'].forEach(id=>document.getElementById(id).value='');}
+function saveNotes(){const cont=document.getElementById('notesList');if(!cont)return;const notes=Array.from(cont.querySelectorAll('.note-card')).map(d=>({html:d.innerHTML}));LS.set('notes4',notes);}
+function loadNotes(){const saved=LS.get('notes4',null);if(!saved)return;const cont=document.getElementById('notesList');if(!cont)return;cont.innerHTML='';saved.forEach(n=>{const div=document.createElement('div');div.className='note-card';div.innerHTML=n.html;cont.prepend(div);});}
+function addNote(containerId,titleId,bodyId){const title=document.getElementById(titleId)?.value?.trim();const body=document.getElementById(bodyId)?.value?.trim();if(!body)return;const div=document.createElement('div');div.className='note-card';div.innerHTML=(title?'<strong>'+title+'</strong><br>':'')+body+'<button class="note-del" onclick="this.closest(\'.note-card\').remove();saveNotes();">✕</button><div class="note-meta">'+new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})+'</div>';const cont=document.getElementById(containerId);if(cont)cont.prepend(div);if(titleId)document.getElementById(titleId).value='';document.getElementById(bodyId).value='';saveNotes();}
+function renderDogBoxes(){const c=document.getElementById('dogBoxContainer');if(!c)return;c.innerHTML='';dogBoxes.forEach(box=>c.appendChild(makeDogBox(box)));}
+function makeDogBox(box){
+  const wrap=document.createElement('div');wrap.className='dog-box';let inner='';
+  if(box.type==='schedule'){
+    const rows=box.items.map(item=>'<div class="sched-row"><input class="editable" value="'+item.time+'" style="font-family:\'Roboto Mono\',monospace;font-size:10px;color:var(--gold);width:65px;" onchange="item.time=this.value;LS.set(\'dogBoxes4\',dogBoxes);"><input class="editable" value="'+item.text+'" style="flex:1;font-size:12px;color:var(--text);" onchange="item.text=this.value;LS.set(\'dogBoxes4\',dogBoxes);"><div class="sched-actions"><button class="tbtn tdel" onclick="box.items=box.items.filter(x=>x.id!=='+item.id+');LS.set(\'dogBoxes4\',dogBoxes);renderDogBoxes();">✕</button></div></div>').join('');
+    inner=rows+'<div class="add-row" style="margin-top:8px;"><input type="time" id="st_'+box.id+'" style="flex:0 0 auto;width:95px;"><input type="text" id="stxt_'+box.id+'" placeholder="Description…"><button class="btn btn-gold btn-sm" onclick="addSchedItem('+box.id+')">Add</button></div>';
+  }else if(box.type==='checklist'){
+    const items=box.items.map(item=>'<li class="task-item'+(item.done?' done':'')+'" onclick="toggleDogCheck(event,'+box.id+','+item.id+')"><div class="task-check"></div><div class="task-body"><div class="task-text-el"><input class="task-text-input" value="'+item.text+'" onclick="event.stopPropagation()" onchange="item.text=this.value;LS.set(\'dogBoxes4\',dogBoxes);"></div><div class="task-meta"><input class="editable" value="'+(item.freq||'')+'" placeholder="Frequency" style="font-size:10px;color:var(--text-dim);" onclick="event.stopPropagation()" onchange="item.freq=this.value;LS.set(\'dogBoxes4\',dogBoxes);"></div></div><div class="task-actions"><button class="tbtn tdel" onclick="event.stopPropagation();box.items=box.items.filter(x=>x.id!=='+item.id+');LS.set(\'dogBoxes4\',dogBoxes);renderDogBoxes();">✕</button></div></li>').join('');
+    inner='<ul class="task-list">'+items+'</ul><div class="add-row"><input type="text" id="chk_'+box.id+'" placeholder="Task…"><input type="text" id="chkf_'+box.id+'" placeholder="Frequency" style="flex:0 0 auto;width:95px;"><button class="btn btn-gold btn-sm" onclick="addCheckItem('+box.id+')">Add</button></div>';
+  }else{
+    const notesHtml=box.items.map(item=>'<div class="note-card"><textarea class="editable" style="width:100%;min-height:45px;font-size:12px;line-height:1.5;background:transparent;border:none;color:var(--text);resize:vertical;" onchange="item.text=this.value;LS.set(\'dogBoxes4\',dogBoxes);">'+item.text+'</textarea><button class="note-del" onclick="box.items=box.items.filter(x=>x.id!=='+item.id+');LS.set(\'dogBoxes4\',dogBoxes);renderDogBoxes();">✕</button></div>').join('');
+    inner=notesHtml+'<div class="add-row"><textarea id="nt_'+box.id+'" placeholder="Add note…" style="min-height:45px;"></textarea><button class="btn btn-gold btn-sm" style="align-self:flex-end;" onclick="addNoteItem('+box.id+')">Add</button></div>';
+  }
+  wrap.innerHTML='<input class="card-title-input" value="'+box.title+'" onchange="box.title=this.value;LS.set(\'dogBoxes4\',dogBoxes);"><input class="card-sub-input" value="'+box.sub+'" onchange="box.sub=this.value;LS.set(\'dogBoxes4\',dogBoxes);">'+inner+'<button class="dog-box-del" onclick="if(confirm(\'Remove this section?\')){dogBoxes=dogBoxes.filter(b=>b.id!=='+box.id+');LS.set(\'dogBoxes4\',dogBoxes);renderDogBoxes();}">✕</button>';
+  return wrap;
+}
+function toggleDogCheck(e,boxId,itemId){if(e.target.tagName==='INPUT'||e.target.tagName==='BUTTON')return;const box=dogBoxes.find(b=>b.id===boxId);const item=box?.items.find(i=>i.id===itemId);if(item){item.done=!item.done;LS.set('dogBoxes4',dogBoxes);e.currentTarget.classList.toggle('done');}}
+function addSchedItem(boxId){const box=dogBoxes.find(b=>b.id===boxId);if(!box)return;const t=document.getElementById('st_'+boxId).value;const txt=document.getElementById('stxt_'+boxId).value.trim();if(!txt)return;box.items.push({id:Date.now(),time:t||'—',text:txt});LS.set('dogBoxes4',dogBoxes);renderDogBoxes();}
+function addCheckItem(boxId){const box=dogBoxes.find(b=>b.id===boxId);if(!box)return;const txt=document.getElementById('chk_'+boxId).value.trim();const freq=document.getElementById('chkf_'+boxId).value.trim();if(!txt)return;box.items.push({id:Date.now(),text:txt,freq,done:false});LS.set('dogBoxes4',dogBoxes);renderDogBoxes();}
+function addNoteItem(boxId){const box=dogBoxes.find(b=>b.id===boxId);if(!box)return;const txt=document.getElementById('nt_'+boxId).value.trim();if(!txt)return;box.items.push({id:Date.now(),text:txt});LS.set('dogBoxes4',dogBoxes);renderDogBoxes();}
+function saveDogBox(){const title=document.getElementById('dogBoxTitle').value.trim();if(!title)return;dogBoxes.push({id:Date.now(),title,sub:document.getElementById('dogBoxSub').value||'Custom section',type:document.getElementById('dogBoxType').value,items:[]});LS.set('dogBoxes4',dogBoxes);renderDogBoxes();closeM('mDogBox');['dogBoxTitle','dogBoxSub'].forEach(id=>document.getElementById(id).value='');}
+function renderMealPlan(){
+  const c=document.getElementById('mealPlanContainer');if(!c)return;
+  const days=['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],meals=['Breakfast','Lunch','Dinner','Snack'];c.innerHTML='';
+  days.forEach(day=>{const div=document.createElement('div');div.className='meal-day';div.innerHTML='<div class="meal-day-title">'+day+'</div>'+meals.map(meal=>{const key=day+'_'+meal;const val=mealPlan[key]||'';return'<div class="meal-slot"><div class="meal-slot-label">'+meal+'</div><input type="text" value="'+val+'" placeholder="—" style="font-size:11px;" onchange="mealPlan[\''+key+'\']=this.value;LS.set(\'meals4\',mealPlan);"></div>';}).join('');c.appendChild(div);});
+}
+function clearMeals(){if(!confirm('Clear this week\'s meal plan?'))return;mealPlan={};LS.set('meals4',mealPlan);renderMealPlan();}
+function buildWorkoutDays(){
+  const days=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],c=document.getElementById('workoutDays');if(!c)return;
+  days.forEach(d=>{const btn=document.createElement('button');btn.textContent=d;btn.style.cssText='padding:5px 9px;border-radius:7px;border:1px solid var(--border);background:var(--navy-light);color:var(--text-dim);font-size:11px;font-family:Inter,sans-serif;cursor:pointer;transition:all .2s;font-weight:500;';btn.onclick=function(){const on=this.dataset.on==='1';this.dataset.on=on?'0':'1';this.style.background=on?'var(--navy-light)':'var(--sage)';this.style.color=on?'var(--text-dim)':'#fff';this.style.borderColor=on?'var(--border)':'var(--sage)';};c.appendChild(btn);});
+}
+function resetHealth(){['workoutList','dailyHabitList','nutritionList'].forEach(id=>document.querySelectorAll('#'+id+' .task-item').forEach(li=>li.classList.remove('done')));document.querySelectorAll('#workoutDays button').forEach(b=>{b.dataset.on='0';b.style.background='var(--navy-light)';b.style.color='var(--text-dim)';b.style.borderColor='var(--border)';});}
+function resetHousehold(){['hhP1List','hhP2List','hhSharedList'].forEach(id=>document.querySelectorAll('#'+id+' .task-item').forEach(li=>li.classList.remove('done')));}
+function checkWeeklyReset(){const last=LS.get('lastReset4',''),todayStr=ds(new Date());if(new Date().getDay()===0&&last!==todayStr){resetHousehold();resetHealth();LS.set('lastReset4',todayStr);}}
+async function fetchVerseText(ref){
+  // Clean up reference: strip trailing letters on verse numbers (e.g. "18b" -> "18"), normalize psalm wording
+  let clean=ref.replace(/Responsorial Psalm\s*/i,'').replace(/Psalm\s*/i,'Psalms ').trim();
+  clean=clean.replace(/(\d+)[a-z]\b/gi,'$1'); // strip footnote letters like 18b -> 18
+  clean=clean.replace(/\s+and\s+\d+(:\d+)?$/i,''); // drop trailing "and 17" style refs, keep main range
+  clean=clean.replace(/,.*$/,''); // keep first comma-separated range only, e.g. "1-2, 5-6" -> "1-2"
+  const url='https://bible-api.com/'+encodeURIComponent(clean)+'?translation=dra';
+  const res=await fetch(url,{signal:AbortSignal.timeout(7000)});
+  if(!res.ok)return null;
+  const data=await res.json();
+  if(data.error)return null;
+  return (data.text||'').replace(/\n+/g,' ').trim();
+}
+async function fetchMassReadings(){
+  const c=document.getElementById('massReadings');if(!c)return;
+  const today=new Date(),mm=String(today.getMonth()+1).padStart(2,'0'),dd=String(today.getDate()).padStart(2,'0'),yyyy=today.getFullYear();
+  const lbl=document.getElementById('massDateLbl');if(lbl)lbl.textContent=today.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
+  c.innerHTML='<p style="color:var(--text-dim);font-size:12px;">Loading readings…</p>';
+  const usccbLink='https://bible.usccb.org/bible/readings/'+mm+dd+yyyy.toString().slice(2)+'.cfm';
+  try{
+    const apiUrl='https://cpbjr.github.io/catholic-readings-api/readings/'+yyyy+'/'+mm+'-'+dd+'.json';
+    const res=await fetch(apiUrl,{signal:AbortSignal.timeout(8000)});
+    if(!res.ok)throw new Error('not found');
+    const data=await res.json();
+    const r=data.readings||{};
+    const entries=[
+      {label:'First Reading',ref:r.firstReading},
+      {label:'Responsorial Psalm',ref:r.psalm},
+      {label:'Second Reading',ref:r.secondReading},
+      {label:'Gospel',ref:r.gospel}
+    ].filter(e=>e.ref);
+    if(entries.length===0)throw new Error('empty');
+    c.innerHTML='';
+    if(data.season){const seasonDiv=document.createElement('div');seasonDiv.style.cssText='font-size:10px;color:var(--gold);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;';seasonDiv.textContent=data.season;c.appendChild(seasonDiv);}
+    for(const e of entries){
+      const div=document.createElement('div');div.className='reading-card';
+      div.innerHTML='<div class="reading-label">'+e.label+'</div><div class="reading-ref">'+e.ref+'</div><div class="reading-text" style="margin-top:6px;font-size:12px;line-height:1.6;color:var(--text-dim);">Loading text…</div>';
+      c.appendChild(div);
+      const textEl=div.querySelector('.reading-text');
+      fetchVerseText(e.ref).then(txt=>{textEl.textContent=txt||'Text unavailable — see full reading below.';}).catch(()=>{textEl.textContent='Text unavailable — see full reading below.';});
+    }
+    const linkDiv=document.createElement('div');linkDiv.style.cssText='margin-top:10px;';
+    linkDiv.innerHTML='<a href="'+(data.usccbLink||usccbLink)+'" target="_blank" class="btn btn-gold" style="display:inline-block;text-decoration:none;font-size:11px;padding:7px 13px;">Read Official Lectionary Text on USCCB.org ↗</a><div style="font-size:9px;color:var(--text-dim);margin-top:6px;">Verse text above: Douay-Rheims translation. Mass uses the official USCCB Lectionary — tap above for the exact liturgical text.</div>';
+    c.appendChild(linkDiv);
+  }catch(e){
+    c.innerHTML='<div class="reading-card"><div class="reading-label">Today\'s Mass Readings</div><div class="reading-ref">'+today.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'})+'</div><div class="reading-text" style="margin-bottom:10px;">Tap below to open today\'s full readings on the US Bishops\' site.</div><a href="'+usccbLink+'" target="_blank" class="btn btn-gold" style="display:inline-block;text-decoration:none;font-size:11px;padding:7px 13px;">Open Today\'s Readings ↗</a></div>';
+  }
+}
+function populateDefaultLists(){
+  const defaults={focusList:[{t:'Create shared monthly budget (real numbers)',w:'both'},{t:'Research Ponte Vedra Beach office space',w:'p1'},{t:'Set consistent dog walk schedule',w:'both'}],moneyList:[{t:'Telehealth functional neuro consults — high potential, low overhead',w:'p1'},{t:'YouTube / Substack educational content — passive income long-term',w:'p1'},{t:'CE seminars as DACNB ($1–3k per event)',w:'p1'},{t:'Expert witness / neuro legal consulting ($200–500/hr niche)',w:'p1'},{t:'Pediatric chiro parent workshops',w:'p2'}],finTaskList:[{t:'Open Solo 401(k) — up to $66k/yr pre-tax',w:'both'},{t:'Get a Health Share plan (~$300–500/mo)',w:'both'},{t:'Open an HSA (triple tax advantage)',w:'both'},{t:'Meet with a fee-only financial planner',w:'both'},{t:'Set up automatic transfer to practice fund',w:'both'}],workoutList:[{t:'Mon: Strength training (30 min)',w:'both'},{t:'Wed: Dog walk + mobility work',w:'both'},{t:'Fri: Cardio or yoga (30 min)',w:'both'},{t:'Sat: Long dog walk + outdoor time',w:'both'}],dailyHabitList:[{t:'Drink 80oz water',w:'both'},{t:'5 min morning prayer',w:'both'},{t:'Phones off 30 min before bed',w:'both'}],nutritionList:[{t:'Protein at every meal',w:'both'},{t:'Sunday meal prep — avoid takeout traps',w:'both'},{t:'Limit alcohol to weekends only',w:'both'}],engageList:[{t:'Decide on ring style / budget (vintage = 50–70% savings)',w:'p1'},{t:'Open a dedicated ring fund — $100/mo automated',w:'both'},{t:'Talk to a priest about the path forward',w:'both'},{t:'Pre-Cana marriage prep when ready',w:'both'}],faithHabitList:[{t:'Sunday Mass together · protected time',w:'both'},{t:'5 min morning prayer · Magnificat app',w:'both'},{t:'Rosary together once a week · 15 min',w:'both'},{t:'Monthly confession',w:'p1'}],hhP1List:[{t:'Take out trash & recycling (Mon/Thu)',w:'p1'},{t:'Vacuum common areas (Weekly)',w:'p1'},{t:'Grocery run (Weekly)',w:'p1'}],hhP2List:[{t:'Meal planning & prep (Weekly)',w:'p2'},{t:'Laundry both (Weekly)',w:'p2'},{t:'Bathroom cleaning (Weekly)',w:'p2'}],hhSharedList:[{t:'Kitchen dishes after dinner (Alternate nightly)',w:'both'},{t:'Sunday meal prep together (Weekly)',w:'both'}],hhDownsizeList:[{t:'Set target budget for new rent',w:'both'},{t:'Check lease end date / notice period',w:'p1'},{t:'List items to donate, sell, or toss',w:'both'},{t:'Browse apartments in Lancaster',w:'p1'}],pracTaskList:[{t:'Research PVB market & competition',w:'p1'},{t:'Sort out FL CE hour requirements',w:'both'},{t:'Budget for buildout & equipment',w:'both'}],groceryList:[]};
+  Object.entries(defaults).forEach(([id,items])=>{const el=document.getElementById(id);if(!el||el.children.length>0)return;items.forEach(({t,w})=>el.appendChild(makeTaskEl(t,w)));});
+}
+document.addEventListener('keydown',e=>{
+  if(e.key!=='Enter'||e.shiftKey)return;const id=document.activeElement?.id;
+  const map={focusInput:addFocusTask,groceryInput:()=>addToList('groceryList','groceryInput','both'),finTaskInput:()=>addToList('finTaskList','finTaskInput','both'),moneyInput:()=>addToList('moneyList','moneyInput','both'),workoutInput:()=>addToList('workoutList','workoutInput','both'),habitInput:()=>addToList('dailyHabitList','habitInput','both'),nutritionInput:()=>addToList('nutritionList','nutritionInput','both'),engageInput:()=>addToList('engageList','engageInput','both'),faithHabitInput:()=>addToList('faithHabitList','faithHabitInput','both'),pracTaskInput:addPracTask,cdName:addCountdown};
+  if(map[id])map[id]();
+});
+
+/* ===== GOOGLE CALENDAR SYNC — per-person (p1/p2), refresh-token based, both stay connected ===== */
+// gcalTokens[person] = { access_token, refresh_token, expires_at (ms epoch) }
+function gcalInit() {
+  if (typeof google === 'undefined') { setTimeout(gcalInit, 500); return; }
+  gcalTokenClients.p1 = google.accounts.oauth2.initCodeClient({
+    client_id: GCAL_CLIENT_ID,
+    scope: GCAL_SCOPE,
+    ux_mode: 'popup',
+    access_type: 'offline',
+    prompt: 'consent',
+    callback: (resp) => gcalHandleAuthCode('p1', resp)
+  });
+  gcalTokenClients.p2 = google.accounts.oauth2.initCodeClient({
+    client_id: GCAL_CLIENT_ID,
+    scope: GCAL_SCOPE,
+    ux_mode: 'popup',
+    access_type: 'offline',
+    prompt: 'consent',
+    callback: (resp) => gcalHandleAuthCode('p2', resp)
+  });
+  gcalRenderButtons();
+  ['p1','p2'].forEach(p => { if (gcalTokens[p] && gcalTokens[p].refresh_token) gcalEnsureFreshToken(p).then(ok => { if (ok) gcalFetchEvents(p); }); });
+}
+
+async function gcalHandleAuthCode(person, resp) {
+  if (resp.error) { console.error('GCal auth error:', resp); return; }
+  const btn = document.getElementById('gcalSyncBtn_' + person);
+  if (btn) btn.textContent = 'Connecting…';
+  try {
+    const res = await fetch('/.netlify/functions/gcal-token', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ code: resp.code, redirectUri: window.location.origin })
+    });
+    const data = await res.json();
+    if (!res.ok) { console.error('Token exchange failed:', data); alert('Could not connect Google Calendar. Try again.'); gcalRenderButtons(); return; }
+    gcalTokens[person] = {
+      access_token: data.access_token,
+      refresh_token: data.refresh_token || (gcalTokens[person]?.refresh_token || null),
+      expires_at: Date.now() + (data.expires_in * 1000)
+    };
+    LS.set('gcalTokens', gcalTokens);
+    gcalRenderButtons();
+    gcalFetchEvents(person);
+  } catch (e) {
+    console.error('GCal token exchange error:', e);
+    gcalRenderButtons();
+  }
+}
+
+function gcalConnect(person) {
+  if (!gcalTokenClients[person]) { alert('Still loading Google sign-in, try again in a second.'); return; }
+  gcalTokenClients[person].requestCode();
+}
+
+function gcalDisconnect(person) {
+  gcalTokens[person] = null;
+  gcalEvents[person] = [];
+  LS.set('gcalTokens', gcalTokens);
+  LS.set('gcalEvents', gcalEvents);
+  gcalRenderButtons();
+  if (typeof renderCalView === 'function') renderCalView();
+  if (typeof renderDayPanel === 'function') renderDayPanel(selectedDate);
+  if (typeof renderHomeToday === 'function') renderHomeToday();
+}
+
+function gcalRenderButtons() {
+  const cfg = LS.get('cfg4', {});
+  const p1Name = cfg.p1Name || "Mitch's";
+  const p2Name = cfg.p2Name || "Liz's";
+  ['p1','p2'].forEach(person => {
+    const btn = document.getElementById('gcalSyncBtn_' + person);
+    if (!btn) return;
+    const connected = !!(gcalTokens[person] && gcalTokens[person].refresh_token);
+    const name = person === 'p1' ? p1Name : p2Name;
+    btn.textContent = connected ? ('✓ ' + name + ' Synced') : ('Connect ' + name + ' Calendar');
+    btn.onclick = connected ? () => gcalDisconnect(person) : () => gcalConnect(person);
+    btn.style.background = connected ? 'var(--sage)' : 'var(--navy-light)';
+    btn.style.color = connected ? '#fff' : 'var(--text-dim)';
+  });
+}
+
+// Returns true if we have a usable (fresh or freshly-refreshed) access token for this person
+async function gcalEnsureFreshToken(person) {
+  const t = gcalTokens[person];
+  if (!t || !t.refresh_token) return false;
+  const bufferMs = 60000; // refresh 1 min before actual expiry
+  if (t.access_token && t.expires_at && Date.now() < (t.expires_at - bufferMs)) return true;
+  try {
+    const res = await fetch('/.netlify/functions/gcal-refresh', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ refreshToken: t.refresh_token })
+    });
+    const data = await res.json();
+    if (!res.ok) { console.error('Token refresh failed:', data); return false; }
+    gcalTokens[person] = { ...t, access_token: data.access_token, expires_at: Date.now() + (data.expires_in * 1000) };
+    LS.set('gcalTokens', gcalTokens);
+    return true;
+  } catch (e) {
+    console.error('GCal refresh error:', e);
+    return false;
+  }
+}
+
+async function gcalFetchEvents(person) {
+  const btn = document.getElementById('gcalSyncBtn_' + person);
+  const fresh = await gcalEnsureFreshToken(person);
+  if (!fresh) { gcalRenderButtons(); return; }
+  const token = gcalTokens[person].access_token;
+  if (btn) btn.textContent = 'Syncing…';
+  try {
+    const now = new Date();
+    const timeMin = new Date(now.getFullYear(), now.getMonth() - 1, 1).toISOString();
+    const timeMax = new Date(now.getFullYear(), now.getMonth() + 2, 0).toISOString();
+    const url = 'https://www.googleapis.com/calendar/v3/calendars/primary/events?' +
+      'timeMin=' + encodeURIComponent(timeMin) +
+      '&timeMax=' + encodeURIComponent(timeMax) +
+      '&singleEvents=true&orderBy=startTime&maxResults=250';
+    const res = await fetch(url, { headers: { Authorization: 'Bearer ' + token } });
+    if (res.status === 401) {
+      // token was revoked/invalidated server-side — force full reconnect
+      gcalTokens[person] = null; LS.set('gcalTokens', gcalTokens);
+      gcalRenderButtons();
+      alert('Google access was revoked for that account. Please reconnect.');
+      return;
+    }
+    const data = await res.json();
+    gcalEvents[person] = (data.items || []).map(ev => ({
+      id: 'gcal_' + person + '_' + ev.id,
+      title: ev.summary || '(No title)',
+      date: (ev.start.date || ev.start.dateTime || '').slice(0, 10),
+      time: ev.start.dateTime ? new Date(ev.start.dateTime).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' }) : 'All day',
+      location: ev.location || '',
+      who: person,
+      source: 'google'
+    }));
+    LS.set('gcalEvents', gcalEvents);
+    gcalRenderButtons();
+    if (typeof renderCalView === 'function') renderCalView();
+    if (typeof renderDayPanel === 'function') renderDayPanel(selectedDate);
+    if (typeof renderHomeToday === 'function') renderHomeToday();
+  } catch (e) {
+    console.error('GCal fetch failed for ' + person + ':', e);
+    if (btn) btn.textContent = 'Sync failed — retry';
+  }
+}
+
+// Returns Google events for a date, respecting the current person filter (all/p1/p2)
+function gcalEventsForDate(dateStr) {
+  const pf = typeof personFilter !== 'undefined' ? personFilter : 'all';
+  const all = (gcalEvents.p1 || []).concat(gcalEvents.p2 || []);
+  return all.filter(e => e.date === dateStr && (pf === 'all' || e.who === pf));
+}
+
+window.addEventListener('load', () => { gcalInit(); renderDailyQuote(); });
+</script>
+</body>
+</html>
